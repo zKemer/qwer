@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+
+    <style>.row { width: 100%; }</style>
+    <div class="row" style="height: 50px;"></div>
+    <center><h1 style="color: white;"><i class="epic fad fa-coins"></i>&#160 DarkCoin Cüzdanı</h1></center>
+    <div class="row" style="height: 50px;"></div>
+
+    <% var bakiye = system.db.fetch(`wallet.${user.id}`) ? system.db.fetch(`wallet.${user.id}`).toString().split(".") : ["0", "000"]; %>
+
+    <div class="row">
+        <div class="col">
+            <style>
+                .mainHeader {
+                    margin: 20px;
+                    padding: 5px 10px;
+                    border-radius: 10px;
+                    color: white;
+                    background: linear-gradient(to bottom right, rgba(138, 35, 135, .9), rgba(233, 64, 87, .8), rgba(242, 113, 33, .7));
+                }
+                .walletContext {
+                    margin: 20px;
+                    padding: 5px 10px;
+                    border-radius: 10px;
+                    color: white;
+                    border: 3px solid rgba(102, 102, 102, .4);
+                    background: linear-gradient(to bottom right, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, .8), rgba(20, 20, 20, .7));
+                }
+                .digging {
+                    animation: digging 3s linear infinite;
+                }
+                @keyframes digging {
+                    0%, 10%, 20%, 30% {
+                        transform: rotate(-110deg);
+                        color: #2ECC71;
+                    }
+                    40%, 50%, 60% {
+                        transform: rotate(-190deg);
+                        color: #F1C40F;
+                    }
+                    100% {
+                        transform: rotate(-110deg);
+                        color: #2ECC71;
+                    }
+                }
+
+                .no-digging {
+                    animation: no-digging 3s linear infinite;
+                }
+                .no-digging-text {
+                    content: "asd"
+                }
+                @keyframes no-digging {
+                    0% {
+                        transform: rotate(-110deg);
+                        color: #A93226;
+                    }
+                    50% {
+                        transform: rotate(-130deg);
+                        color: #E74C3C;
+                    }
+                    100% {
+                        transform: rotate(-110deg);
+                        color: #A93226;
+                    }
+                }
+            </style>
+            <div style="width: 90%; margin: auto;">
+                <h3 style="color: white; text-align: left;">
+                    <i class="epic fad fa-wallet"></i>&#160 Bakiye İşlemleri &#160<a class="btn" id="refreshDaha" onclick="bakiyeGüncelle();"><span class="badge badge-danger">Güncelle</span></a>
+                </h3>
+                <hr style="border: 1px solid #3a3b3c;">
+            </div>
+            <div class="mainHeader">
+                <div data-toggle="tooltip" data-placement="top" title="Bakiye'nin güncellenmesi için güncelle tuşuna basınız." style="background-color: #202020; width: 97.5%; margin: 5px; padding: 7px 0px 1px 0px; border-radius: 10px;"><center><h1><b id="bakiyeMain"><%= bakiye[0] %></b><b id="bakiyeSub" style="font-size: 70%; opacity: .7;">,<%= bakiye[1] ? bakiye[1].toString().slice(0, 4 - bakiye[0].toString().length) : "000000".slice(0, 4 - bakiye[0].toString().length) %></b> &#160<i class="fad fa-coins epic"></i></h1></center></div>
+            </div>
+            <div class="walletContext">
+                <h3 style="padding: 8px 0px 0px 8px;">Madenci &#160&#160&#160<b data-toggle="tooltip" data-placement="top" title="Madenci her 3 saniyede bir DarkCoin kazandırır, her 3 saniyede bir 0.003 DarkCoin kazanacaksınız. Madenci başlattıktan 3 saat sonra durur. Siteden çıkarsanız sistem durur. Madenci süresi dolunca 2 saat yenilenme süresi vardır. DarkCoin göstergesi her 2 dakikada bir yenilenir." style="color: #E74C3C; opacity: .7; font-size: 40%;">NASIL ÇALIŞIR</b></h3>
+                <div class="row" style="width: 95%; margin: auto;">
+                    <script>
+                        delete localStorage['cooldown_001'];
+                        function bakiyeGüncelle() {
+                            if (localStorage['cooldown_001']) return alert("Tekrar bakiyeyi güncellemek için 15 saniye beklemelisiniz!");
+
+                            var xhr = new XMLHttpRequest();
+                            xhr.open("POST", "/wallet/balance");
+                            xhr.send();
+                            xhr.onload = () => {
+                                var body = typeof xhr.response == "string" ? xhr.response.toString().split('.') : ["0", "000"];
+                                document.getElementById('bakiyeMain').innerHTML = body[0];
+                                document.getElementById('bakiyeSub').innerHTML = ',' + body[1].slice(0, 4 - body[0].length);
+                            };
+
+                            localStorage['cooldown_001'] = true;
+                            setTimeout(() => {
+                                delete localStorage['cooldown_001'];
+                            }, 15000);
+                        };
+
+                        $(document).ready(function(){
+                            $('#startMiner').click(function(){
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("POST", "/wallet/miner");
+                                xhr.send();
+                                xhr.onload = () => {
+                                    var body = xhr.response;
+                                    if (body !== "true") {
+                                        alert('Hata: ' + body);
+                                    } else {
+                                        alert('Bildirim: Madenci başarıyla başlatıldı ve aktif edildi!');
+                                        location.reload();
+                                    };
+                                };
+                            });
+                        });
+                    </script>
+                    <div class="col">
+                        <center><i id="minerIcon" class="<% if (system.db.fetch(`walletMine.${user.id}`)) { %>digging<% } else { %>no-digging<% } %> fad fa-shovel fa-5x epic"></i></center>
+                    </div>
+                    <div class="col-8">
+                        <% if (system.db.fetch(`walletMine.${user.id}`)) { %>
+                        <h5 id="trueText" style="color: #2ECC71;"><i class="fad fa-check-double"></i>&#160 Çalışıyor</h5>
+                        <% } else { %>
+                        <h5 id="falseText" style="color: #E74C3C;"><i class="fad fa-times"></i>&#160 Çalışmıyor</h5>
+                        <% } %>
+                        <h7 style="color: white;"><b id="earning"><% if (system.db.fetch(`walletMine.${user.id}`)) { %><%= ((0.002 * 20) * 60).toString().slice(0, 5).split(".").join(",") + " DarkCoin" %><% } else { %>0,000<% } %></b><b style="font-size: 90%; opacity: .7;">/saat</b></h7>
+                    </div>
+                    <div style="margin: auto; margin-top: 5px; margin-bottom: 5px;">
+                        <% if (system.db.fetch(`walletMine.${user.id}`)) { %>
+                            <a id="startMiner" style="border-radius: 25px 0px 0px 25px; margin-top: 5px;" class="btn btn-success" disabled>Başlatıldı</a><a style="margin-top: 5px; background-color: #28B463; border-radius: 0px 25px 25px 0px;" class="btn btn-success" id="minerTime"></a>
+                            <script>
+                                setInterval(() => {
+                                    var countdownTime = (10800000 - (new Date().getTime() - parseInt('<%= system.db.fetch(`walletMine.${user.id}`) %>')));
+                                    var parsedTime = countdownTime;
+
+                                    parsedTime = parsedTime - 1000;
+                                    document.getElementById('minerTime').innerHTML = (Math.floor((parsedTime / 1000 / 60) << 0) + ' dakika, ' + Math.floor((parsedTime / 1000) % 60) + ' saniye');
+                                }, 1000);
+                            </script>
+                        <% } else { %>
+                            <a id="startMiner" style="border-radius: 25px;" class="btn btn-success">Başlat</a>
+                        <% } %>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-8">
+            <div style="width: 90%; margin: auto;">
+                <h3 style="color: white; text-align: left;">
+                    <i class="epic fad fa-users"></i>&#160 Transfer İşlemleri
+                </h3>
+                <hr style="border: 1px solid #3a3b3c;">
+            </div>
+            <div class="walletContext">
+                <div class="row">
+                    <div class="col">
+                        <center><a data-toggle="modal" data-target="#createCode" style="width: 90%; border: 3px solid rgba(46, 204, 113, .4); margin: 10px 0px; background: linear-gradient(to bottom right, rgba(46, 204, 113, .9), rgba(46, 204, 113, .8), rgba(46, 204, 113, .7));" class="btn">Kod Oluştur</a></center>
+                    </div>
+                    <div class="col">
+                        <center><a data-toggle="modal" data-target="#removeCode" style="width: 90%; border: 3px solid rgba(231, 76, 60, .4); margin: 10px 0px; background: linear-gradient(to bottom right, rgba(231, 76, 60, .9), rgba(231, 76, 60, .8), rgba(231, 76, 60, .7));" class="btn">Kod Kaldır</a></center>
+                    </div>
+                    <div class="col">
+                        <center><a data-toggle="modal" data-target="#yourCodes" style="width: 90%; border: 3px solid rgba(243, 156, 18, .4); margin: 10px 0px; background: linear-gradient(to bottom right, rgba(243, 156, 18, .9), rgba(243, 156, 18, .8), rgba(243, 156, 18, .7));" class="btn">Kodların</a></center>
+                    </div>
+                    <div class="col">
+                        <center><a data-toggle="modal" data-target="#useCode" style="width: 90%; border: 3px solid rgba(65, 103, 128, 0.4); margin: 10px 0px; background: linear-gradient(to bottom right, rgba(52, 152, 219, .9), rgba(52, 152, 219, .8), rgba(52, 152, 219, .7));" class="btn">Kod Kullan</a></center>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="createCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+                        <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+                          <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #48C9B0;" class="epic fad fa-coins"></i>&#160 Kod Oluştur &#160<span class="badge" style="background-color: rgba(72,201,176,.5);">Bakiye: <%= bakiye[0] %>,<%= bakiye[1] ? bakiye[1].toString().slice(0, 5 - bakiye[0].toString().length) : "000000".slice(0, 5 - bakiye[0].toString().length) %> DarkCoin</span></h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+                            <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+                          </button>
+                        </div>
+                        <div class="modal-body" style="color: white;">
+                            <div id="baloncuk" style="display: none; padding: 10px; margin: 10px 0px; border-radius: 10px; color: white; background: linear-gradient(to bottom right, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, .8), rgba(20, 20, 20, .7));">
+                                Yükleniyor...
+                            </div>
+                            <label for="codeBalance"><i class="fad fa-wallet"></i>&#160 Kod Değeri:</label>
+                            <input class="form-control" type="number" name="codeBalance" id="codeBalance">
+                            <% if (system.admins.includes(user.id)) { %>
+                                <div class="form-check" style="margin: 10px 0px;">
+                                    <input class="form-check-input" type="checkbox" value="" id="adminMode">
+                                    <label class="form-check-label" for="defaultCheck1">
+                                        Admin Modu: Kod oluştururken coin kesilmez.
+                                    </label>
+                                </div>
+                            <% } %>
+                            <hr style="border: 1px solid rgba(0,0,0,0);">
+                            <a id="createCodeButton" class="btn btn-success" style="color: white;"><i class="fad fa-users"></i>&#160 Kod Oluştur</a>
+                            <script>
+                            $(document).ready(function(){
+                                $('#createCodeButton').click(function(){
+                                    if (!$('#codeBalance').val()) return alert("Hata: Kod değerini yazınız!");
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("POST", "/wallet/createCode?balance=" + $('#codeBalance').val() + ($('#adminMode').length > 0 ? ("&admin=" + $('#adminMode').is(':checked')) : ""));
+                                    xhr.send();
+                                    xhr.onload = () => {
+                                        var body = xhr.response;
+                                        if (!body.includes('true')) {
+                                            $('#baloncuk').show(100);
+                                            $('#baloncuk').text('Hata: ' + body);
+                                        } else {
+                                            $('#baloncuk').show(100);
+                                            $('#baloncuk').text('Oluşturuldu: ' + body.split('||')[1]);
+                                        };
+                                    };
+                                });
+                            });
+                            </script>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="removeCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+                        <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+                          <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #E74C3C;" class="epic fad fa-trash"></i>&#160 Kod Kaldır &#160</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+                            <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+                          </button>
+                        </div>
+                        <div class="modal-body" style="color: white;">
+                            <div id="baloncuk2" style="display: none; padding: 10px; margin: 10px 0px; border-radius: 10px; color: white; background: linear-gradient(to bottom right, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, .8), rgba(20, 20, 20, .7));">
+                                Yükleniyor...
+                            </div>
+                            <p>Kod kullanılmamış ise bakiyen sana geri dönecektir.</p>
+                            <a id="removeCodeButton" class="btn btn-danger" style="color: white;"><i class="fad fa-trash"></i>&#160 Kodu Kaldır</a>
+                            <script>
+                            $(document).ready(function(){
+                                $('#removeCodeButton').click(function(){
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("POST", "/wallet/deleteCode");
+                                    xhr.send();
+                                    xhr.onload = () => {
+                                        var body = xhr.response;
+                                        if (body !== 'true') {
+                                            $('#baloncuk2').show(100);
+                                            $('#baloncuk2').text('Hata: ' + body);
+                                        } else {
+                                            $('#baloncuk2').show(100);
+                                            $('#baloncuk2').text('Kod kaldırıldı, yeni kod oluşturabilirsin!');
+                                        };
+                                    };
+                                });
+                            });
+                            </script>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="yourCodes" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+                        <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+                          <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #48C9B0;" class="epic fad fa-crown"></i>&#160 Kodların &#160</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+                            <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+                          </button>
+                        </div>
+                        <div class="modal-body" style="color: white;">
+                            <% if (!system.db.fetch(`walletKey.${user.id}`)) { %>
+                                <div id="baloncuk3" style="padding: 10px; margin: 10px 0px; border-radius: 10px; color: white; background: linear-gradient(to bottom right, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, .8), rgba(20, 20, 20, .7));">
+                                    Kod bulunmamaktadır, yeni oluşturduysanız sayfayı yenileyin!
+                                </div>
+                            <% } else { %>
+                                <% var info = system.db.fetch(`walletKey.${user.id}`); %>
+                                <label for="codeShowlink"><i class="fad fa-code"></i>&#160 Kod:</label>
+                                <input disabled value="<%= info.id %>" id="codeShowlink" class="form-control" type="text">
+
+                                <br>
+                                <label for="codeShowlink"><i class="fad fa-user"></i>&#160 Kullanan:</label>
+                                <input disabled value="<%= info.used == false ? 'Kullanılmadı' : (info.used.username + '#' + info.used.discriminator) %>" id="codeShowlink" class="form-control" type="text">
+
+                                <br>
+                                <label for="codeShowlink"><i class="fad fa-coins"></i>&#160 Değeri:</label>
+                                <input disabled value="<%= info.balance || 1 %> DarkCoin" id="codeShowlink" class="form-control" type="text">
+                            <% } %>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="useCode" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+                        <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+                          <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #48C9B0;" class="epic fad fa-code"></i>&#160 Kod Kullan &#160</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+                            <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+                          </button>
+                        </div>
+                        <div class="modal-body" style="color: white;">
+                            <div id="baloncuk3" style="display: none; padding: 10px; margin: 10px 0px; border-radius: 10px; color: white; background: linear-gradient(to bottom right, rgba(40, 40, 40, 0.9), rgba(30, 30, 30, .8), rgba(20, 20, 20, .7));">
+                                Yükleniyor...
+                            </div>
+                            <label for="codeLink"><i class="fad fa-pencil"></i>&#160 Kod:</label>
+                            <input class="form-control" minlength="32" maxlength="32" type="text" name="codeLink" id="codeLink">
+                            <hr style="border: 1px solid rgba(0,0,0,0);">
+                            <a id="useCodeButton" class="btn btn-primary" style="color: white;"><i class="fad fa-code"></i>&#160 Kod Kullan</a>
+                            <script>
+                            $(document).ready(function(){
+                                $('#useCodeButton').click(function(){
+                                    if (!$('#codeLink').val()) return alert("Hata: Kod değerini yazınız!");
+                                    var xhr = new XMLHttpRequest();
+                                    xhr.open("POST", "/wallet/useCode?code=" + $('#codeLink').val());
+                                    xhr.send();
+                                    xhr.onload = () => {
+                                        var body = xhr.response;
+                                        if (body !== 'true') {
+                                            $('#baloncuk3').show(100);
+                                            $('#baloncuk3').text('Hata: ' + body);
+                                        } else {
+                                            $('#baloncuk3').show(100);
+                                            $('#baloncuk3').text('Kod başarıyla kullanıldı!');
+                                        };
+                                    };
+                                });
+                            });
+                            </script>
+                        </div>
+                      </div>
+                    </div>
+                </div>
+
+            </div>
+
+
+            <br>
+            <div style="width: 90%; margin: auto;">
+                <h3 style="color: white; text-align: left;">
+                    <i class="epic fad fa-shopping-basket"></i>&#160 Mağaza
+                </h3>
+                <hr style="border: 1px solid #3a3b3c;">
+            </div>
+            <div class="walletContext">
+                <div class="row">
+                    <div class="col">
+                        <div class="market">
+                            <center>
+                                <h4>Özel URL</h4>
+                                <a class="market-btn btn btn-info" style="background-color: #252525; border: 2px solid #252525;">
+                                    15 <i class="fad fa-coins epic"></i>
+                                </a><a id="item1" class="market-btn-2 btn btn-primary">
+                                    Satın Al
+                                </a>
+                                <script>
+                                    $(document).ready(function(){
+                                        $('#item1').click(function(){
+                                            var data = "001";
+                                            var onay = prompt('DarkCode Mağaza: Özelliği satın almak istediğiniz botun ID\'sini yazınız.');
+                                            if (!onay) return alert("DarkCode Mağaza: Lütfen bir ID yazınız!")
+                                            var xhr = new XMLHttpRequest();xhr.open("POST", "/wallet/shop?data=" + data + "&id=" + onay);xhr.send();xhr.onload = () => {var body = xhr.response;if (body !== 'true') {alert('DarkCode Mağaza: ' + body);} else {alert('Satın alma işlemi başarıyla gerçekleştirildi!');};};
+                                        });
+                                    });
+                                </script>
+                            </center>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="market">
+                            <center>
+                                <h4>Bot Afişi</h4>
+                                <a class="market-btn btn btn-info" style="background-color: #252525; border: 2px solid #252525;">
+                                    15 <i class="fad fa-coins epic"></i>
+                                </a><a id="item2" class="market-btn-2 btn btn-primary">
+                                    Satın Al
+                                </a>
+                                <script>
+                                    $(document).ready(function(){
+                                        $('#item2').click(function(){
+                                            var data = "002";
+                                            var onay = prompt('DarkCode Mağaza: Özelliği satın almak istediğiniz botun ID\'sini yazınız.');
+                                            if (!onay) return alert("DarkCode Mağaza: Lütfen bir ID yazınız!")
+                                            var xhr = new XMLHttpRequest();xhr.open("POST", "/wallet/shop?data=" + data + "&id=" + onay);xhr.send();xhr.onload = () => {var body = xhr.response;if (body !== 'true') {alert('DarkCode Mağaza: ' + body);} else {alert('Satın alma işlemi başarıyla gerçekleştirildi!');};};
+                                        });
+                                    });
+                                </script>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col">
+                        <div class="market">
+                            <center>
+                                <h4>Reklam</h4>
+                                <a class="market-btn btn btn-info" style="background-color: #252525; border: 2px solid #252525;">
+                                    25 <i class="fad fa-coins epic"></i>
+                                </a><a id="item3" class="market-btn-2 btn btn-primary">
+                                    Satın Al
+                                </a>
+                                <script>
+                                    $(document).ready(function(){
+                                        $('#item3').click(function(){
+                                            var data = "003";
+
+                                            var gün = prompt('DarkCode Mağaza: Reklamın kaç gün sürmesini istediğinizi yazınız!');
+                                            var href = prompt('DarkCode Mağaza: Reklama tıklayınca yönlendirilecek linki yazınız!');
+                                            var link = prompt('DarkCode Mağaza: Reklam auto.creavite.co afişinin linkini yazınız! (Oluşturmak için: auto.creavite.co)');
+
+                                            if (!gün) return alert("DarkCode Mağaza: Lütfen reklam gününü yazınız!")
+                                            if (!href) return alert("DarkCode Mağaza: Lütfen reklam yönlendirme linkini yazınız!")
+                                            if (!link) return alert("DarkCode Mağaza: Lütfen reklam linkini yazınız!")
+
+                                            if (isNaN(gün)) return alert("DarkCode Mağaza: Lütfen geçerli bir gün sayısı yazınız!");
+                                            if (parseInt(gün) < 1 || parseInt(gün) > 7) return alert("DarkCode Mağaza: En az 1 günlük, en fazla 7 günlük reklam alabilirsiniz!");
+                                            var xhr = new XMLHttpRequest();xhr.open("POST", "/wallet/shop?data=" + data + "&id=REKLAM&day=" + gün + "&link=" + link + "&href=" + href);xhr.send();xhr.onload = () => {var body = xhr.response;if (body !== 'true') {alert('DarkCode Mağaza: ' + body);} else {alert('Satın alma işlemi başarıyla gerçekleştirildi!');};};
+                                        });
+                                    });
+                                </script>
+                            </center>
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="market">
+                            <center>
+                                <h4>Oy</h4>
+                                <a class="market-btn btn btn-info" style="background-color: #252525; border: 2px solid #252525;">
+                                    3 <i class="fad fa-coins epic"></i>
+                                </a><a id="item4" class="market-btn-2 btn btn-primary">
+                                    Satın Al
+                                </a>
+                                <script>
+                                    $(document).ready(function(){
+                                        $('#item4').click(function(){
+                                            var data = "004";
+
+                                            var adet = prompt('DarkCode Mağaza: Kaç adet oy almak istediğinizi yazınız!');
+                                            var bot = prompt('DarkCode Mağaza: Oyların verilmesini istediğiniz botun ID\'sini yazınız!');
+
+                                            if (!adet) return alert("DarkCode Mağaza: Lütfen oy sayısını yazınız!")
+                                            if (!bot) return alert("DarkCode Mağaza: Lütfen bot ID'sini yazınız!")
+
+                                            if (isNaN(adet)) return alert("DarkCode Mağaza: Lütfen geçerli bir oy sayısı yazınız!");
+                                            if (parseInt(adet) < 1 || parseInt(adet) > 100) return alert("DarkCode Mağaza: Tek seferde en az 1, en fazla 100 oy alabilirsiniz!");
+                                            var xhr = new XMLHttpRequest();xhr.open("POST", "/wallet/shop?data=" + data + "&id=" + bot + "&adet=" + adet);xhr.send();xhr.onload = () => {var body = xhr.response;if (body !== 'true') {alert('DarkCode Mağaza: ' + body);} else {alert('Satın alma işlemi başarıyla gerçekleştirildi!');};};
+                                        });
+                                    });
+                                </script>
+                            </center>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <style>
+                .market-btn {
+                    border-radius: 25px 0px 0px 25px;
+                }
+                .market-btn-2 {
+                    border-radius: 0px 25px 25px 0px;
+                }
+                .market {
+                    width: 97%;
+                    padding: 7px 10px;
+                    margin: auto;
+                    height: 100px;
+                    border: 3px solid rgba(25,25,25,.4);
+                    border-radius: 7px;
+                    margin: 10px 0px;
+                    box-shadow: 0px 0px 10px black;
+                    background: linear-gradient(to bottom right, rgba(60,60,60,.9), rgba(60,60,60,.8), rgba(60,60,60,.7));
+                }
+            </style>
+
+
+            <br>
+            <div style="width: 90%; margin: auto;">
+                <h3 style="color: white; text-align: left;">
+                    <i class="epic fad fa-question"></i>&#160 Nasıl kazanırım?
+                </h3>
+                <hr style="border: 1px solid #3a3b3c;">
+            </div>
+            <div class="walletContext">
+                <ul style="margin-top: 15px;">
+                    <li>Madenciyi kullanarak 3 saatte 3 DarkCoin civarında kazanabilirsin.</li>
+                    <li>Botunuz oy alınca botunuz her oy aldığında 0.25 DarkCoin kazanabilirsiniz.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" style="height: 50px;"></div>
+    <%- include('templates/footer') %>
+  </body>
+</html>

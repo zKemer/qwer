@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <script>
+        $(document).keydown(function(e){if(e.which === 123){ return false; }});
+        $(document).bind("contextmenu", function(e) { e.preventDefault(); });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <title><%= name %> | Projelerini aktif tutun! | <%= version %></title>
+    <link rel="shortcut icon" href="<%= logo %>">
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/plugins.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/pages/error/style-maintanence.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+</head>
+<body class="maintanence text-center">
+    
+    <div class="container-fluid maintanence-content">
+        <div class="">
+            <div class="maintanence-hero-img">
+                <img alt="logo" src="<%= logo %>">
+            </div>
+            <h1 class="error-title">Giriş Yapınız</h1>
+            <p class="error-text"></p>
+            <p class="text">Uptime sayfalarını görebilmek için <br/> giriş yapman gereklidir.</p>
+            <p class="text"></p>
+            <a href="/login" class="btn btn-info mt-4">Giriş Yap</a>
+        </div>
+    </div>
+    
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script src="assets/js/libs/jquery-3.1.1.min.js"></script>
+    <script src="bootstrap/js/popper.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+</body>
+</html>

@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+   
+		<div style="width: 95%; padding: 25px; margin: auto; border-left: 5px solid #18191a; border-right: 5px solid #18191a; background-color: #1E1E1E;">
+			<center><img src="https://cdn.discordapp.com/attachments/738444534236840078/770672213007138916/darkcodebannerturuncu1.png" style="padding: 0;"></center><hr style="opacity: 0;">
+			<div style="background-color: rgba(0,0,0,.05); border-radius: 5px; padding: 20px;">
+				<div class="row">
+					<div style="padding: 0px 50px;">
+						<h1 style="color: white;" class="slogan"><%=name%> Bot List & Kod Paylaşım &#160<b style="opacity: .3;">|</b>&#160 <b style="opacity: 1;"><%=version%></b></h1>
+						<h5 style="color: white;" class="slogan">Modern, şık ve hızlı! Botunu ekleyerek hemen başla...</h5>
+						<hr style="opacity: 0;">
+						<h6 style="color: white;"><i class="fad fa-tags" style="color: white;"></i> &#160 Mevcut Etiketler<b>:</b></h6>
+						<a href="/bots?page=1&tag=Müzik" class="btn tag1"><i class="fad fa-list-music"></i>&#160 Müzik</a>
+						<a href="/bots?page=1&tag=Moderasyon" class="btn tag2"><i class="fad fa-tools"></i>&#160 Moderasyon</a>
+						<a href="/bots?page=1&tag=Eğlence" class="btn tag3"><i class="fad fa-grin-squint"></i>&#160 Eğlence</a>
+						<a href="/bots?page=1&tag=Diğer" class="btn tag4"><i class="fad fa-ellipsis-h-alt"></i> Diğer</a>
+					</div>
+				</div>
+			</div>
+			<hr style="opacity: 0;"><hr style="opacity: 0;"><hr style="opacity: 0;"><hr style="opacity: 0;">
+			
+			<!-- ====================================================================== -->
+			
+			<h2 style="color: white;"><i style="padding: 7px; border-radius: 5px;" class="darkcode fad fa-vote-yea"></i> &#160 Popüler Botlar</h2>
+			<hr>
+			
+			<style>
+				.bot {
+					width: 95%;
+					margin: auto;
+					background-color: #262626;
+					border-radius: 5px;
+					padding: 15px;
+					border-left: 5px solid white;
+				}
+			</style>
+			
+			<div class="row">
+				<div class="col">
+					<div class="bot">
+					<% if (bots.topVoted.one) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.one.id%>/<%=bots.topVoted.one.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topVoted.one.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topVoted.one.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topVoted.one.shortDesc%></h7>
+								<a href="/bot/<%=bots.topVoted.one.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topVoted.one.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+				<div class="col">
+					<div class="bot">
+					<% if (bots.topVoted.two) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.two.id%>/<%=bots.topVoted.two.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topVoted.two.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topVoted.two.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topVoted.two.shortDesc%></h7>
+								<a href="/bot/<%=bots.topVoted.two.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topVoted.two.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					<div class="bot">
+					<% if (bots.topVoted.three) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.three.id%>/<%=bots.topVoted.three.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topVoted.three.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topVoted.three.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topVoted.three.shortDesc%></h7>
+								<a href="/bot/<%=bots.topVoted.three.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topVoted.three.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+				<div class="col">
+					<div class="bot">
+					<% if (bots.topVoted.four) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.four.id%>/<%=bots.topVoted.four.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topVoted.four.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topVoted.four.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topVoted.four.shortDesc%></h7>
+								<a href="/bot/<%=bots.topVoted.four.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topVoted.four.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					<div class="bot">
+					<% if (bots.topVoted.five) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.five.id%>/<%=bots.topVoted.five.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topVoted.five.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topVoted.five.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topVoted.five.shortDesc%></h7>
+								<a href="/bot/<%=bots.topVoted.five.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topVoted.five.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+				<div class="col">
+					<div class="bot">
+						<% if (bots.topVoted.six) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.six.id%>/<%=bots.topVoted.six.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topVoted.six.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topVoted.six.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topVoted.six.shortDesc%></h7>
+								<a href="/bot/<%=bots.topVoted.six.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topVoted.six.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+			</div>
+			
+			<br><br><br>
+			<h2 style="color: white;"><i style="padding: 7px; border-radius: 5px;" class="darkcode fad fa-file-certificate"></i> &#160 Sertifikalı Popüler Botlar</h2>
+			<hr>
+			
+			<div class="row">
+				<div class="col">
+					<div class="bot">
+						<% if (bots.topCertified.one) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.one.id%>/<%=bots.topCertified.one.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topCertified.one.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topCertified.one.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topCertified.one.shortDesc%></h7>
+								<a href="/bot/<%=bots.topCertified.one.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topCertified.one.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+				<div class="col">
+					<div class="bot">
+						<% if (bots.topCertified.two) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.two.id%>/<%=bots.topCertified.two.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topCertified.two.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topCertified.two.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topCertified.two.shortDesc%></h7>
+								<a href="/bot/<%=bots.topCertified.two.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topCertified.two.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					<div class="bot">
+						<% if (bots.topCertified.three) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.three.id%>/<%=bots.topCertified.three.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topCertified.three.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topCertified.three.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topCertified.three.shortDesc%></h7>
+								<a href="/bot/<%=bots.topCertified.three.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topCertified.three.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+				<div class="col">
+					<div class="bot">
+						<% if (bots.topCertified.four) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.four.id%>/<%=bots.topCertified.four.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topCertified.four.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topCertified.four.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topCertified.four.shortDesc%></h7>
+								<a href="/bot/<%=bots.topCertified.four.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topCertified.four.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col">
+					<div class="bot">
+						<% if (bots.topCertified.five) { %>
+						<div class="row">
+							<div class="col">
+								<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.five.id%>/<%=bots.topCertified.five.avatar%>"></center>
+							</div>
+							<div class="col-8">
+								<h3 style="color: white;"><%=bots.topCertified.five.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topCertified.five.discriminator%></b></h3>
+								<h7 style="color: white; opacity: .8;"><%=bots.topCertified.five.shortDesc%></h7>
+								<a href="/bot/<%=bots.topCertified.five.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topCertified.five.votes%></a>
+							</div>
+						</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+				<div class="col">
+					<div class="bot">
+						<% if (bots.topCertified.six) { %>
+							<div class="row">
+								<div class="col">
+									<center><img style="width: 128px; height: 128px; border-radius: 5px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.six.id%>/<%=bots.topCertified.six.avatar%>"></center>
+								</div>
+								<div class="col-8">
+									<h3 style="color: white;"><%=bots.topCertified.six.username%><b style="font-size: 80%; opacity: .5;">#<%=bots.topCertified.six.discriminator%></b></h3>
+									<h7 style="color: white; opacity: .8;"><%=bots.topCertified.six.shortDesc%></h7>
+									<a href="/bot/<%=bots.topCertified.six.id%>" style="left: 0; margin-left: 12px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-eye"></i>&#160 Görüntüle</a> &#160<a style="right: 0; margin-right: 10px; bottom: 0; position: absolute; color: white; background-color: rgba(256,256,256,.1);" class="btn"><i class="fad fa-vote-yea"></i>&#160 <%=bots.topCertified.six.votes%></a>
+								</div>
+							</div>
+						<% } else { %>
+							<center>
+								<i class="fad fa-layer-plus ekleButonu" style="color: white; font-size: 128px;"></i>
+							</center>
+						<% } %>
+					</div>
+				</div>
+			</div>
+			
+			<br><br>
+			<center><a class="btn" href="/bots?page=1" style="padding: 15px; background-color: rgba(256,256,256,.1); color: #fff; border-radius: 10px; border-right: 5px solid #fff; border-left: 5px solid #fff;"><i class="fad fa-globe-africa"></i>&#160 Bütün Botları Görüntüle</a></center>
+			<br>
+			
+			<script>
+				$(document).ready(function(){
+				  $('.ekleButonu').click(function(){
+						window.location.href = "/submit"
+					});
+				});
+			</script>
+			
+		</div>
+		
+		<style>
+			.tag1 {
+				margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 5px; transition: .2s;
+			}
+			.tag2 {
+				margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 5px; transition: .2s;
+			}
+			.tag3 {
+				margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 5px; transition: .2s;
+			}
+			.tag4 {
+				background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 5px; transition: .2s;
+			}
+			.tag1:hover {
+				margin-right: 3px; background-color: rgba(231, 76, 60, 0.2); color: #E74C3C; padding: 0 7px; border-radius: 5px; transition: .2s;
+			}
+			.tag2:hover {
+				margin-right: 3px; background-color: rgba(165, 105, 189, 0.2); color: #A569BD; padding: 0 7px; border-radius: 5px; transition: .2s;
+			}
+			.tag3:hover {
+				margin-right: 3px; background-color: rgba(46, 204, 113, 0.2); color: #2ECC71; padding: 0 7px; border-radius: 5px; transition: .2s;
+			}
+			.tag4:hover {
+				background-color: rgba(230, 126, 34, 0.2); color: #E67E22; padding: 0 7px; border-radius: 5px; transition: .2s;
+			}
+			.slogan {
+			  opacity: 1;
+			  transition: .2s;
+				text-shadow: 0px 0px 1px black;
+			}
+			.slogan:hover {
+			  opacity: .9;
+			  transition: .2s;
+				text-shadow: -3px 3px 1px black;
+			}
+		</style>
+		
+    <%- include('templates/footer') %>
+  </body>
+</html>

@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+		<style>.row { width: 101%; }</style>
+		<div class="row" style="height: 75px;"></div>
+		<center>
+			<h1 style="color: white;"><% if (code.category == "Sizden Gelenler") { %><i style="color: #3498DB;" class="fad fa-user"></i><% } %><% if (code.category == "JavaScript") { %><i style="color: #f0db4f;" class="fab fa-js"></i><% } %><% if (code.category == "HTML") { %><i style="color: #e34c26;" class="fab fa-html5"></i><% } %><% if (code.category == "Altyapı") { %><i style="color: #28B463;" class="fad fa-toolbox"></i><% } %>&#160 <%=code.title%></h1>
+			<h4 style="color: white;"><%=code.desc%></h4>
+		</center>
+		<div class="row" style="height: 30px;"></div>
+		
+		<script>
+		$(document).ready(function(){
+		  $('#copyButton1').click(function(){
+				alert("Kod kopyalandı!");
+				var $temp = $("<input>");
+				$("body").append($temp);
+				$temp.val($('#editor1').text()).select();
+				document.execCommand("copy");
+				$temp.remove();
+		  });
+			$('#copyButton2').click(function(){
+				alert("Kod kopyalandı!");
+				var $temp = $("<input>");
+				$("body").append($temp);
+				$temp.val($('#editor2').text()).select();
+				document.execCommand("copy");
+				$temp.remove();
+		  });
+			$('#copyButton3').click(function(){
+				alert("Kod kopyalandı!");
+				var $temp = $("<input>");
+				$("body").append($temp);
+				$temp.val($('#editor3').text()).select();
+				document.execCommand("copy");
+				$temp.remove();
+		  });
+			$('#copyButton4').click(function(){
+				alert("Kod kopyalandı!");
+				var $temp = $("<input>");
+				$("body").append($temp);
+				$temp.val($('#editor4').text()).select();
+				document.execCommand("copy");
+				$temp.remove();
+		  });
+			$('#copyButton5').click(function(){
+				alert("Kod kopyalandı!");
+				var $temp = $("<input>");
+				$("body").append($temp);
+				$temp.val($('#editor5').text()).select();
+				document.execCommand("copy");
+				$temp.remove();
+		  });
+		});
+		</script>
+		
+		<script>
+			$(document).ready(function(){
+				<% if (!code.file1.code) { %>
+					$('#fullEditor1').hide(100);
+				<% } %>
+				<% if (!code.file2.code) { %>
+					$('#fullEditor2').hide(100);
+				<% } %>
+				<% if (!code.file3.code) { %>
+					$('#fullEditor3').hide(100);
+				<% } %>
+				<% if (!code.file4.code) { %>
+					$('#fullEditor4').hide(100);
+				<% } %>
+				<% if (!code.file5.code) { %>
+					$('#fullEditor5').hide(100);
+				<% } %>
+			});
+		</script>
+		
+		
+		<div class="row" style="width: 200px; margin: auto; border: 5px solid #3a3b3c; background-color: #242526; border-radius: 10px; color: white;">
+			<div class="col" style="width: 90%; margin: auto; padding: 20px;">
+				<center>
+					<a href="/code/like/<%=code.id%>" data-toggle="tooltip" data-placement="top" title="<% if (system.db.fetch(`codes.${code.id}.voted.${user.id}`) == "like") { %>Beğendin<% } else { %>Beğen<% } %>" class="btn" style="background-color: #242526; <% if (system.db.fetch(`codes.${code.id}.voted.${user.id}`) == "like") { %>color: #3498DB;<% } else { %>color: white;<% } %>">
+						<% const allLikes = Object.keys(system.db.fetch(`codes.${code.id}.voted`) ? system.db.fetch(`codes.${code.id}.voted`) : []).filter(x => system.db.fetch(`codes.${code.id}.voted.${x}`) == "like"); %>
+						<% const likesMap = allLikes.map(like => like); %>
+						<i class="fad fa-thumbs-up"></i>&#160 <%= likesMap.length %>
+					</a>
+					&#160
+					<a href="/code/dislike/<%=code.id%>" data-toggle="tooltip" data-placement="top" title="<% if (system.db.fetch(`codes.${code.id}.voted.${user.id}`) == "dislike") { %>Beğenmedin<% } else { %>Beğenme<% } %>" class="btn" style="background-color: #242526; <% if (system.db.fetch(`codes.${code.id}.voted.${user.id}`) == "dislike") { %>color: #3498DB;<% } else { %>color: white;<% } %>">
+						<% const allDisLikes = Object.keys(system.db.fetch(`codes.${code.id}.voted`) ? system.db.fetch(`codes.${code.id}.voted`) : []).filter(x => system.db.fetch(`codes.${code.id}.voted.${x}`) == "dislike"); %>
+						<% const disLikesMap = allDisLikes.map(dislike => dislike); %>
+						<i class="fad fa-thumbs-down"></i>&#160 <%= disLikesMap.length %>
+					</a>
+				</center>
+			</div>
+		</div>
+		<br>
+		
+		
+		<div class="row" style="width: 60%; margin: auto; border: 5px solid #3a3b3c; background-color: #242526; border-radius: 10px; color: white;">
+			<div class="col" style="width: 90%; margin: auto; padding: 20px;">
+				<label for="package"><i class="fad fa-box-check"></i>&#160 Gerekli Modüller:</label><br>
+				<input style="color: white; background-color: #18191a; border: 2px solid #3a3b3c;" id="package" type="text" class="form-control" value="<%=code.package%>" disabled>
+				<hr>
+				<label for="category"><i class="fad fa-sort-amount-up-alt"></i>&#160 Kategori:</label><br>
+				<input style="color: white; background-color: #18191a; border: 2px solid #3a3b3c;" id="category" type="text" class="form-control" value="<%=code.category%>" disabled>
+			</div>
+			<div class="col" style="width: 90%; margin: auto; padding: 20px;">
+				<label for="perm"><i class="fad fa-id-card"></i>&#160 Gerekli Rol:</label><br>
+				<input style="color: white; background-color: #18191a; border: 2px solid #3a3b3c;" id="perm" type="text" class="form-control" value="<%=system.guilds.cache.get('707544645168660490').roles.cache.get(code.perm).name%>" disabled>
+				<hr>
+				<label for="owner"><i class="fad fa-crown"></i>&#160 Paylaşan:</label><br>
+				<input style="color: white; background-color: #18191a; border: 2px solid #3a3b3c;" id="owner" type="text" class="form-control" value="<%=code.owner.username%>#<%=code.owner.discriminator%>" disabled>
+			</div>
+		</div>
+		<br>
+		
+		
+		<div id="fullEditor1">
+			<hr>
+			<div style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+				<div style="padding: 25px;">
+					<label for="codeTitle"><i class="fad fa-file"></i>&#160 Kod Adı:</label> <a id="copyButton1" style="float: right;" class="btn btn-success"><i class="fad fa-copy"></i>&#160 Kopyala</a>
+					<input disabled type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c; width: 500px;" value="<%=code.file1.name%>">
+					<hr>
+					<textarea readonly style="width: 100%;" id="editor1" name="editor1"><%=code.file1.code%></textarea>
+					<script>
+					var editor1 = CodeMirror.fromTextArea(document.getElementById('editor1'), {
+							mode: "javascript",
+							theme: "3024-night",
+							lineNumbers: true,
+							readOnly: 'true'
+					});
+					editor1.save()
+					</script>
+				</div>
+			</div>
+		</div>
+		
+		<div id="fullEditor2">
+			<hr>
+			<div style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+				<div style="padding: 25px;">
+					<label for="codeTitle"><i class="fad fa-file"></i>&#160 Kod Adı:</label> <a id="copyButton2" style="float: right;" class="btn btn-success"><i class="fad fa-copy"></i>&#160 Kopyala</a>
+					<input disabled type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c; width: 500px;" value="<%=code.file2.name%>">
+					<hr>
+					<textarea readonly style="width: 100%;" id="editor2" name="editor2"><%=code.file2.code%></textarea>
+					<script>
+					var editor2 = CodeMirror.fromTextArea(document.getElementById('editor2'), {
+							mode: "javascript",
+							theme: "3024-night",
+							lineNumbers: true,
+							readOnly: 'true'
+					});
+					editor2.save()
+					</script>
+				</div>
+			</div>
+		</div>
+		
+		<div id="fullEditor3">
+			<hr>
+			<div style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+				<div style="padding: 25px;">
+					<label for="codeTitle"><i class="fad fa-file"></i>&#160 Kod Adı:</label> <a id="copyButton3" style="float: right;" class="btn btn-success"><i class="fad fa-copy"></i>&#160 Kopyala</a>
+					<input disabled type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c; width: 500px;" value="<%=code.file3.name%>">
+					<hr>
+					<textarea readonly style="width: 100%;" id="editor3" name="editor3"><%=code.file3.code%></textarea>
+					<script>
+					var editor3 = CodeMirror.fromTextArea(document.getElementById('editor3'), {
+							mode: "javascript",
+							theme: "3024-night",
+							lineNumbers: true,
+							readOnly: 'true'
+					});
+					editor3.save()
+					</script>
+				</div>
+			</div>
+		</div>
+		
+		<div id="fullEditor4">
+			<hr>
+			<div style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+				<div style="padding: 25px;">
+					<label for="codeTitle"><i class="fad fa-file"></i>&#160 Kod Adı:</label> <a id="copyButton4" style="float: right;" class="btn btn-success"><i class="fad fa-copy"></i>&#160 Kopyala</a>
+					<input disabled type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c; width: 500px;" value="<%=code.file4.name%>">
+					<hr>
+					<textarea readonly style="width: 100%;" id="editor4" name="editor4"><%=code.file4.code%></textarea>
+					<script>
+					var editor4 = CodeMirror.fromTextArea(document.getElementById('editor4'), {
+							mode: "javascript",
+							theme: "3024-night",
+							lineNumbers: true,
+							readOnly: 'true'
+					});
+					editor4.save()
+					</script>
+				</div>
+			</div>
+		</div>
+		
+		<div id="fullEditor5">
+			<hr>
+			<div style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+				<div style="padding: 25px;">
+					<label for="codeTitle"><i class="fad fa-file"></i>&#160 Kod Adı:</label> <a id="copyButton5" style="float: right;" class="btn btn-success"><i class="fad fa-copy"></i>&#160 Kopyala</a>
+					<input disabled type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c; width: 500px;" value="<%=code.file5.name%>">
+					<hr>
+					<textarea readonly style="width: 100%;" id="editor5" name="editor5"><%=code.file5.code%></textarea>
+					<script>
+					var editor5 = CodeMirror.fromTextArea(document.getElementById('editor5'), {
+							mode: "javascript",
+							theme: "3024-night",
+							lineNumbers: true,
+							readOnly: 'true'
+					});
+					editor5.save()
+					</script>
+				</div>
+			</div>
+		</div>
+		
+		<hr>
+		<% if (system.admins.includes(user.id)) { %>
+		<center><a href="/code/delete/<%=code.id%>" class="btn btn-danger"><i class="fad fa-trash-alt"></i>&#160 Kodu Kaldır</a></center>
+		<% } else { %>
+		  <% if (user.id === code.owner.id) { %>
+		    <center><a href="/code/delete/<%=code.id%>" class="btn btn-danger"><i class="fad fa-trash-alt"></i>&#160 Kodu Kaldır</a></center>
+		  <% } %>
+		<% } %>
+		&#160 
+		<% if (user.id == code.owner.id) { %>
+		<center><a href="#" class="btn btn-primary" disabled data-toggle="tooltip" data-placement="top" title="Yakında eklencektir!"><i class="fad fa-edit"></i>&#160 Kodu Düzenle</a></center>
+		<% } %>
+		
+		<div class="row" style="height: 75px;"></div>
+    <%- include('templates/footer') %>
+  </body>
+</html>

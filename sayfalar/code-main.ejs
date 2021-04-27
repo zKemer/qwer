@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+	
+		<% var codes = system.db.fetch(`codes`); %>
+
+		<style>.row { width: 100%; } a, a:hover { text-decoration: none; color: white; }</style>
+		<div class="row" style="height: 75px;"></div>
+		<center>
+			<h1 style="color: white;"><i style="color: #3498DB;" class="fad fa-code"></i>&#160 <%=name%> Kod Paylaşım</h1>
+		</center>
+		<div class="row" style="height: 25px;"></div>
+		
+		<center>
+			<style>
+			.codeButton {
+				width: 250px;
+				border-radius: 25px;
+				border: 2px solid #fff;
+				color: #fff;
+				transition: .2s;
+				background-color: rgba(256, 256, 256, 0.2);
+			}
+			.codeButton:hover {
+				transition: .2s;
+				color: #fff;
+				transform: scale(1.03);
+			}
+			</style>
+			<form style="margin-top: 15px;">
+				<div class="input-group mb-3" style="width: 400px;">
+					<input type="text" name="searchBox" style="border-radius: 10px 0px 0px 10px; border: 0; height: 40px;" id="searchBox" required="true" class="form-control" placeholder="<%=name%> Kod Paylaşım'da ara..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+					<div class="input-group-append">
+						<button id="searchButton" data-toggle="tooltip" data-placement="top" title="Yükleniyor..." class="btn btn-primary" style="min-width: 50px; border-radius: 0px 10px 10px 0px; border: 0;" type="button"><i class="fad fa-search"></i></button>
+						<script>
+						$(document).ready(function(){
+							$('#searchButton').hover(function(){
+								if (!$('#searchBox').val()) {
+									$('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Arama kutusunu doldurun!</div>')
+								} else {
+									$('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Aramak için tıkla!</div>') 
+								}
+							});
+							$('#searchButton').click(function(){
+								if (!$('#searchBox').val()) return $('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Arama kutusunu doldurun!</div>') 
+								window.location.href = "/code/codes?page=1&q=" + $('#searchBox').val();
+							});
+						});
+						</script>
+					</div>
+				</div>
+			</form>
+			<% const TOTAL = Object.keys(codes).map(code => code).length; %>
+			<a class="btn codeButton" href="/code/codes"><i class="fad fa-list-ul"></i>&#160 Bütün Kodlar &#160<span class="badge badge-secondary"><%=TOTAL%> Kod</span></a>
+			&#160
+			<a class="btn codeButton" href="/code/publish"><i class="fad fa-edit"></i>&#160 Kod Paylaş</a>
+		</center>
+		
+		<div class="row" style="height: 25px;"></div>
+
+		<h2 style="color: white; padding: 25px 40px;"><i style="color: #1ABC9C;" class="fad fa-file-code"></i>&#160 Kod Kategorileri</h2>
+		<div class="row" style="width: 95%; color: white; margin: auto; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+			<div class="col" style="padding: 15px;">
+				<a href="/code/codes?page=1&tag=JavaScript" class="btn" style="background: linear-gradient(to bottom right, rgba(24, 25, 26, .9), rgba(24, 25, 26, .2)); border: 2px solid #242526; border-radius: 10px; width: 100%; height: 150px;">
+					<div class="row">
+						<div class="col">
+							<i style="margin-top: 18px; font-size: 80px; color: #f0db4f;" class="fab fa-js"></i>
+						</div>
+						<div class="col">
+							<br>
+							<h4 style="margin-top: 15px; text-align: left;">JavaScript</h4>
+							<% const JS = Object.keys(codes).filter(code => "JavaScript" == codes[code].category).map(code => code).length; %>
+							<p style="margin-top: -5px; text-align: left; opacity: .5;">Kod Sayısı: <%=JS%></p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col" style="padding: 15px;">
+				<a href="/code/codes?page=1&tag=HTML" class="btn" style="background: linear-gradient(to bottom right, rgba(24, 25, 26, .9), rgba(24, 25, 26, .2)); border: 2px solid #242526; border-radius: 10px; width: 100%; height: 150px;">
+					<div class="row">
+						<div class="col">
+							<i style="margin-top: 18px; font-size: 80px; color: #e34c26;" class="fab fa-html5"></i>
+						</div>
+						<div class="col">
+							<br>
+							<h4 style="margin-top: 15px; text-align: left;">HTML</h4>
+							<% const HTML = Object.keys(codes).filter(code => "HTML" == codes[code].category).map(code => code).length; %>
+							<p style="margin-top: -5px; text-align: left; opacity: .5;">Kod Sayısı: <%=HTML%></p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col" style="padding: 15px;">
+				<a href="/code/codes?page=1&tag=Altyapı" class="btn" style="background: linear-gradient(to bottom right, rgba(24, 25, 26, .9), rgba(24, 25, 26, .2)); border: 2px solid #242526; border-radius: 10px; width: 100%; height: 150px;">
+					<div class="row">
+						<div class="col">
+							<i style="margin-top: 18px; font-size: 80px; color: #28B463;" class="fad fa-toolbox"></i>
+						</div>
+						<div class="col">
+							<br>
+							<h4 style="margin-top: 15px; text-align: left;">Altyapı</h4>
+							<% const ALTYAPI = Object.keys(codes).filter(code => "Altyapı" == codes[code].category).map(code => code).length; %>
+							<p style="margin-top: -5px; text-align: left; opacity: .5;">Kod Sayısı: <%=ALTYAPI%></p>
+						</div>
+					</div>
+				</a>
+			</div>
+			<div class="col" style="padding: 15px;">
+				<a href="/code/codes?page=1&tag=Sizden Gelenler" class="btn" style="background: linear-gradient(to bottom right, rgba(24, 25, 26, .9), rgba(24, 25, 26, .2)); border: 2px solid #242526; border-radius: 10px; width: 100%; height: 150px;">
+					<div class="row">
+						<div class="col">
+							<i style="margin-top: 18px; font-size: 80px; color: #3498DB;" class="fad fa-user"></i>
+						</div>
+						<div class="col">
+							<br>
+							<h4 style="margin-top: 15px; text-align: left;">Sizden G.</h4>
+							<% const SIZDEN = Object.keys(codes).filter(code => "Sizden Gelenler" == codes[code].category).map(code => code).length; %>
+							<p style="margin-top: -5px; text-align: left; opacity: .5;">Kod Sayısı: <%=SIZDEN%></p>
+						</div>
+					</div>
+				</a>
+			</div>
+		</div>
+		<div class="row" style="height: 75px;"></div>
+    
+    <%- include('templates/footer') %>
+  </body>
+</html>

@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<title><%=name%> | Bot List & Code Share | <%=version%></title>
+<nav class="navbar navbar-expand-lg navbar-light" style="padding: 10px 80px; background-color: #242526; <% if (path !== '/') { %>border-bottom: 5px solid #3a3b3c;<% } %>">
+  <a class="navbar-brand" href="/" style="color: white;"><img src="https://cdn.discordapp.com/attachments/738444534236840078/770672213007138916/darkcodebannerturuncu1.png" style="height: 45px; padding: 0;"><!--<i class="fad fa-user-robot" style="color: #5DADE2; font-size: 130%;"></i>&#160 <%=name%> <span class="badge" style="background-color: #18191a; box-shadow: 0px 0px 3px #18191a;"><%=version%></span>--></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item active">
+        <a style="color: white;" class="nav-link" href="/"><i style="color: #AF7AC5;" class="fad fa-home-lg-alt"></i>&#160 Explore</a>
+      </li>
+      <li class="nav-item">
+        <a style="color: white;" class="nav-link" href="/bots?page=1"><i style="color: #2ECC71;" class="fad fa-robot"></i>&#160 Bots</a>
+      </li>
+			<li class="nav-item">
+        <a style="color: white;" class="nav-link" href="/team"><i style="color: #AED6F1;" class="fad fa-users"></i>&#160 Team</a>
+      </li>
+      <li class="nav-item">
+        <a style="color: white;" class="nav-link" href="/uptime"><i style="color: #FF9F33;" class="fad fa-battery-bolt"></i>&#160 Uptime</a>
+      </li>
+			<li class="nav-item">
+        <a style="color: white;" class="nav-link" href="/code"><i style="color: #9FE2BF;" class="fad fa-code"></i>&#160 Code S.</a>
+      </li>
+      <% if (user) { %>
+        <% if (system.db.fetch(`mods.${user.id}`) === true) { %>
+          <li class="nav-item">
+            <a style="color: white;" class="nav-link" href="/panel"><i style="color: #EC7063;" class="fad fa-toolbox"></i>&#160 Panel</a>
+          </li>
+        <% } %>
+      <% } %>
+
+      <% if (user) { %>
+        <li class="nav-item">
+          <a href="/wallet" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link"><b style="opacity: 0;">.</b><%= system.db.fetch(`wallet.${user.id}`) ? system.db.fetch(`wallet.${user.id}`).toString().split(".").join(",").slice(0, 5) : 0 %> &#160<i style="color: #40E0D0;" class="epic fad fa-coins"></i>&#160</a>
+        </li>
+      <% } %>
+
+			<li class="nav-item">
+				<a data-toggle="modal" data-target="#gotoProfile" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link">&#160<i style="color: #2FACFF;" class="fad fa-search"></i>&#160</a>
+			</li>
+      <% if (user) { %>
+        <li class="nav-item">
+          <a data-toggle="modal" data-target="#userNotification" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link">&#160<i style="color: #F39C12;" class="fad fa-bell"></i>&#160<% if (system.db.fetch(`notifications.${user.id}`)) { %>&#160<span class="badge badge-danger"><%=Object.keys(system.db.fetch(`notifications.${user.id}`)).length%></span>&#160<% } %></a>
+        </li>
+      
+        <% if (system.admins.includes(user.id)) { %>
+        <% if (!system.db.fetch(`siteBakım`)) { %>
+        <li class="nav-item">
+          <a data-toggle="modal" data-target="#maintenance" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link">&#160<i style="color: #E74C3C;" class="fad fa-ban"></i>&#160</a>
+        </li>
+        <% } else { %>
+        <li class="nav-item">
+          <a data-toggle="modal" data-target="#maintenance" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link">&#160<i style="color: #E74C3C;" class="fad fa-ban"></i>&#160 Maintenance Active&#160</a>
+        </li>
+        <% } %>
+        <% } %>
+      
+        <li class="nav-item">
+          <a data-toggle="modal" data-target="#userOptions" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link"><i style="color: #48C9B0;" class="fad fa-user-circle"></i>&#160 <%=user.username%> &#160<i style="color: #48C9B0;" class="fad fa-angle-down"></i></a>
+        </li>
+      <% } else { %>
+        <li class="nav-item">
+          <a style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link" href="/login"><i style="color: #F1C40F;" class="fad fa-sign-in"></i>&#160 Login</a>
+        </li>
+      <% } %>
+    </ul>
+  </div>
+</nav>
+
+
+<div class="modal fade" id="gotoProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+      <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+        <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #48C9B0;" class="fad fa-user-circle"></i>&#160 Go Profile &#160<span class="badge" style="background-color: rgba(72,201,176,.5);">Write a ID</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+          <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: white;">
+        <label for="profileUserID"><i class="fad fa-id-card-alt"></i>&#160 ID:</label>
+				<input class="form-control" max-length="18" min-length="18" type="text" name="profileUserID" id="profileUserID">
+				<hr style="border: 1px solid rgba(0,0,0,0);">
+				<a id="gotoProfileButton" class="btn btn-success" style="color: white;"><i class="fad fa-users"></i>&#160 Go</a>
+				<script>
+				$(document).ready(function(){
+					$('#gotoProfileButton').click(function(){
+						if (!$('#profileUserID').val()) return alert("Error: Please write a ID!");
+						window.location.href = "/user/" + $('#profileUserID').val();
+					});
+				});
+				</script>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<% if (user) { %>
+<div class="modal fade" id="userOptions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+      <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+        <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #48C9B0;" class="fad fa-user-circle"></i>&#160 <%=user.username%><b style="opacity: .4;">#<%=user.discriminator%></b> &#160<span class="badge" style="background-color: rgba(72,201,176,.5);">User Options</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+          <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: white;">
+        <a href="/user/<%=user.id%>" style="background: transparent; color: white; text-decoration: none;"><i style="color: #3498DB;" class="fad fa-user-circle"></i>&#160 Profile &#160<span class="badge" style="background-color: rgba(52,152,219,.5);">Kendi profiline gözatabilirsin.</span></a>
+        <hr style="background-color: rgba(68,69,70,1);">
+        <a href="/submit" style="background: transparent; color: white; text-decoration: none;"><i style="color: #A569BD;" class="fad fa-plus"></i>&#160 Bot Appeal &#160<span class="badge" style="background-color: rgba(165,105,189,.5);">Botunu eklemek için başvurabilirsin.</span></a>
+        <hr style="background-color: rgba(68,69,70,1);">
+        <a href="/certificate" style="background: transparent; color: white; text-decoration: none;"><i style="color: #D4AC0D;" class="fad fa-file-certificate"></i>&#160 Certificate Appeal &#160<span class="badge" style="background-color: rgba(212,172,13,.5);">Sertifika almak için başvurabilirsin.</span></a>
+        <hr style="background-color: rgba(68,69,70,1);">
+        <a href="/logout" style="background: transparent; color: white; text-decoration: none;"><i style="color: #EC7063;" class="fad fa-sign-out"></i>&#160 Logout &#160<span class="badge" style="background-color: rgba(236,112,99,.7);">Sitedeki oturumunu kapatır.</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="userNotification" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+      <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+        <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #F39C12;" class="fad fa-bell"></i>&#160 <%=user.username%><b style="opacity: .4;">#<%=user.discriminator%></b> &#160<span class="badge" style="background-color: rgba(243,156,18,.5);">Notifications</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+          <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: white;">
+        <% if (system.db.fetch(`notifications.${user.id}`)) { %>
+        <% for(var i = 0; i < Object.keys(system.db.fetch(`notifications.${user.id}`)).length; i++) { %>
+        <% let userNot = system.db.fetch(`notifications.${user.id}`)[i] %>
+        <h6>
+          <%=userNot%>
+        </h6>
+        <% } %>
+        <hr style="background-color: rgba(68,69,70,1);">
+        <a class="btn btn-danger" href="/clearNotifications/<%=user.id%>"><i class="fad fa-trash"></i>&#160 Clear</a>
+        <% } else { %>
+        <h6>
+          ▪ No notification found!
+        </h6>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if (system.admins.includes(user.id)) { %>
+<% if (!system.db.fetch(`siteBakım`)) { %>
+<div class="modal fade" id="maintenance" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+      <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+        <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #E74C3C;" class="fad fa-ban"></i>&#160 Open Maintenance Mode &#160<span class="badge" style="background-color: rgba(231,76,60,.5);">Are you sure?</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+          <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: white;">
+        <a href="#" data-toggle="modal" data-target="#mainReason" style="background: transparent; color: #fff; text-decoration: none;"><i style="color: #2ECC71;" class="fad fa-plus-hexagon"></i>&#160 Yes &#160<span class="badge" style="background-color: rgba(46,204,113,0.5);">Activate Maintenance Mode.</span></a>
+        <hr style="border: 1px solid rgba(68,69,70,1);">
+        <a href="#" data-dismiss="modal" aria-label="Close" style="background: transparent; color: #fff; text-decoration: none;"><i style="color: #EC7063;" class="fad fa-times-hexagon"></i>&#160 No &#160<span class="badge" style="background-color: rgba(236,112,99,.7);">Cancel.</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="mainReason" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content" style="border-radius: 20px; background-color: #2471A3;">
+			<div class="modal-header" style="border-bottom: 2px solid #1A5276;">
+				<h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i class="fad fa-crown"></i>&#160 Maintenance Reason &#160<span class="badge" style="background-color: #922B21; border: 2px solid #922B21; color: white;">Write a reason!</span></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+					<i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+				</button>
+			</div>
+			<div class="modal-body" style="color: #fff;">
+				<form>
+					<label for="removeReason"><i class="fad fa-flag-checkered"></i>&#160 Reason:</label>
+					<input class="form-control" max-length="100" min-length="1" type="text" name="removeReason" id="removeReason">
+					<hr style="border: 1px solid #1A5276;">
+					<a id="removeButton" class="btn btn-danger" style="color: white;"><i class="fad fa-times-circle"></i>&#160 Activate</a>
+					<script>
+					$(document).ready(function(){
+						$('#removeButton').click(function(){
+							if (!$('#removeReason').val()) return alert("Error: Please write a reason!");
+							window.location.href = "/panel/maintenance?reason=" + $('#removeReason').val();
+						});
+					});
+					</script>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<% } else { %>
+<div class="modal fade" id="maintenance" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+      <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+        <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #E74C3C;" class="fad fa-ban"></i>&#160 Close Maintenance &#160<span class="badge" style="background-color: rgba(231,76,60,.5);">Are you sure?</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+          <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: white;">
+        <a href="/panel/maintenance" style="background: transparent; color: #fff; text-decoration: none;"><i style="color: #2ECC71;" class="fad fa-plus-hexagon"></i>&#160 Yes &#160<span class="badge" style="background-color: rgba(46,204,113,0.5);">Close Maintenance Mode.</span></a>
+        <hr style="border: 1px solid rgba(68,69,70,1);">
+        <a href="#" data-dismiss="modal" aria-label="Close" style="background: transparent; color: #fff; text-decoration: none;"><i style="color: #EC7063;" class="fad fa-times-hexagon"></i>&#160 No &#160<span class="badge" style="background-color: rgba(236,112,99,.7);">Cancel.</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
+<% } %>
+<% } %>
+
+<style>
+  .nav-link:hover {
+    background-color: rgba(24,25,26,.4);
+    border-radius: 7px;
+    transition: .2s;
+  }
+  .nav-link {
+    transition: .2s;
+    border-radius: 7px;
+    margin-left: 10px;
+    padding: 7px;
+    font-size: 14.5px;
+  }
+  #loginButton {
+    background-color: #18191a;
+    box-shadow: 0px 0px 3px #18191a;
+    transition: .2s;
+    padding: 5 10px;
+  }
+  #loginButton:hover {
+    background-color: rgba(24,25,26,.4);
+    box-shadow: 0px 0px 3px rgba(24,25,26,.4);
+    transition: .2s;
+  }
+</style>

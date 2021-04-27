@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <script>
+        $(document).keydown(function(e){if(e.which === 123){ return false; }});
+        $(document).bind("contextmenu", function(e) { e.preventDefault(); });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://pro.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <title><%= name %> | Projelerini aktif tutun! | <%= version %></title>
+    <link rel="icon" type="image/x-icon" href="<%= logo %>"/>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/plugins.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="assets/css/pages/privacy/privacy.css" rel="stylesheet" type="text/css" />
+    <!--  END CUSTOM STYLE FILE  -->
+</head>
+<body>
+    
+
+    <div id="headerWrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-12 text-center mb-5">
+                    <a href="/uptime" class="navbar-brand-privacy">
+                        <img src="<%= logo %>" class="img-fluid" alt="logo">
+                    </a>
+                </div>
+                <div class="col-md-12 col-sm-12 col-12 text-center">
+                    <h2 class="main-heading"><%= name %> Uptime</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacyWrapper" class="">
+        <div class="privacy-container">
+            <div class="privacyContent">
+
+                <div class="d-flex justify-content-between privacy-head">
+                    <div class="privacyHeader">
+                        <h1>Ana Sayfa</h1>
+                        <p>Devam etmek için aşağıdan bir işlem seçiniz...</p>
+                    </div>
+
+                    <div class="get-privacy-terms align-self-center">
+                        <a href="/logout" class="btn btn-primary"><i class="fad fa-sign-out"></i>&#160 Çıkış Yap</a>
+                    </div>
+
+                </div>
+
+                <div class="privacy-content-container">
+
+                    <section>
+                        <h5><i class="fad fa-list"></i>&#160 Linklerin</h5>
+                        <p>Uptime ettiğin linkleri görmek için tıkla!
+                        <br><br><a href="/uptime/links" class="btn btn-primary mb-2">&#160 <i class="fad fa-chevron-double-right"></i>&#160 Git &#160</a></p>
+                    </section><hr>
+
+                    <section>
+                        <h5><i class="fad fa-plus-circle"></i>&#160 Link Ekle</h5>
+                        <p>Uptime etmek istediğin bir linki eklemek için tıkla!
+                        <br><br><a href="/uptime/addLink" class="btn btn-primary mb-2">&#160 <i class="fad fa-chevron-double-right"></i>&#160 Git &#160</a></p>
+                    </section>
+
+                    <% if (system.admins.includes(user.id)) { %>
+                        <hr><section>
+                            <h5><i class="fad fa-users"></i>&#160 Admin Panel</h5>
+                            <p>Admin panel'e gitmek için tıkla!
+                            <br><br><a href="/uptime/panel" class="btn btn-primary mb-2">&#160 <i class="fad fa-chevron-double-right"></i>&#160 Git &#160</a></p>
+                        </section>
+                    <% } %>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="miniFooterWrapper" class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12">
+                    <div class="position-relative">
+                        <div class="arrow text-center">
+                            <p class=""><i class="fad fa-chevron-double-up"></i></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5 mx-auto col-lg-6 col-md-6 site-content-inner text-md-left text-center copyright align-self-center">
+                            <p class="mt-md-0 mt-4 mb-0">2020 &copy; <a target="_blank" href="https://discord.gg/darkcode">Swôth</a></p>
+                        </div>
+                        <div class="col-xl-5 mx-auto col-lg-6 col-md-6 site-content-inner text-md-right text-center align-self-center">
+                            <p class="mb-0">All rights reserved.</p>
+                        </div>
+                    </div>
+                </div>      
+            </div>
+        </div>
+    </div>
+
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script src="assets/js/libs/jquery-3.1.1.min.js"></script>
+    <script src="bootstrap/js/popper.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+
+    <script>
+        // Scroll To Top
+        $(document).on('click', '.arrow', function(event) {
+          event.preventDefault();
+          var body = $("html, body");
+          body.stop().animate({scrollTop:0}, 500, 'swing');
+        });
+    </script>
+
+</body>
+</html>

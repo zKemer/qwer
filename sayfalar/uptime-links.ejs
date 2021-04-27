@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <script>
+        $(document).keydown(function(e){if(e.which === 123){ return false; }});
+        $(document).bind("contextmenu", function(e) { e.preventDefault(); });
+    </script>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link href="https://pro.fontawesome.com/releases/v5.13.1/css/all.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, shrink-to-fit=no">
+    <title><%= name %> | Projelerini aktif tutun! | <%= version %></title>
+    <link rel="icon" type="image/x-icon" href="<%= logo %>"/>
+    <!-- BEGIN GLOBAL MANDATORY STYLES -->
+    <link href="https://fonts.googleapis.com/css?family=Quicksand:400,500,600,700&display=swap" rel="stylesheet">
+    <link href="bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="assets/css/plugins.css" rel="stylesheet" type="text/css" />
+    <!-- END GLOBAL MANDATORY STYLES -->
+
+    <!--  BEGIN CUSTOM STYLE FILE  -->
+    <link href="assets/css/pages/privacy/privacy.css" rel="stylesheet" type="text/css" />
+    <!--  END CUSTOM STYLE FILE  -->
+</head>
+<body>
+    
+
+    <div id="headerWrapper">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12 col-sm-12 col-12 text-center mb-5">
+                    <a href="/uptime" class="navbar-brand-privacy">
+                        <img src="<%= logo %>" class="img-fluid" alt="logo">
+                    </a>
+                </div>
+                <div class="col-md-12 col-sm-12 col-12 text-center">
+                    <h2 class="main-heading"><%= name %> Uptime > Linklerin</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="privacyWrapper" class="">
+        <div class="privacy-container">
+            <div class="privacyContent">
+
+                <div class="d-flex justify-content-between privacy-head">
+                    <div class="privacyHeader">
+                        <h1>Linklerin</h1>
+                        <p>Sisteme eklediğin linkler burada listelenir.</p>
+                    </div>
+
+                    <div class="get-privacy-terms align-self-center">
+                        <a href="/uptime" class="btn btn-primary"><i class="fad fa-home"></i>&#160 Geri Dön</a>
+                    </div>
+
+                </div>
+
+                <div class="privacy-content-container">
+
+                    <div id="bildirimKutusu" style="display: none;" class="alert alert-success mb-4" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fad fa-times"></i></button>
+                        <strong><i class="fad fa-check-double"></i></strong>&#160&#160 Link <strong>başarıyla</strong> sistemden kaldırıldı!</button>
+                    </div> 
+                    <div id="hataKutusu" style="display: none;" class="alert alert-danger mb-4" role="alert">
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><i class="fad fa-times"></i></button>
+                        <strong><i class="fad fa-bug"></i></strong>&#160&#160 Hata: <strong id="hataMesajı">asdhjaksd</strong></button>
+                    </div> 
+
+                    <div class="table-responsive">
+                        <script>
+                            function removeLink(linkID) {
+                                var xhr = new XMLHttpRequest();
+                                xhr.open("POST", "<%= path %>?id=" + linkID);
+                                xhr.send();
+                                xhr.onload = () => {
+                                    if (xhr.responseText == "true") {
+                                        $(document).ready(function(){
+                                            $('#bildirimKutusu').show(250);
+                                            $('#' + linkID).hide(250);
+                                            setTimeout(() => $('#bildirimKutusu').hide(250), 5000);
+                                        });
+                                    } else {
+                                        $(document).ready(function(){
+                                            $('#hataMesajı').text(xhr.responseText);
+                                            $('#hataKutusu').show(250);
+                                            setTimeout(() => $('#hataKutusu').hide(250), 5000);
+                                        });
+                                    };
+                                };
+                                return false;
+                            };
+                        </script>
+                        <table class="table table-bordered mb-4">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Link</th>
+                                    <th class="text-center">Tarih</th>
+                                    <th class="text-center">İşlemler</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <% const allLinks = Object.keys(system.db.fetch("links")).map(link => link); %>
+                                <% for(let i = 0; i < allLinks.length; i++) { %>
+                                <% let link = system.db.fetch(`links.${allLinks[i]}`); %>
+                                <% if (link.owner.id == user.id) { %>
+                                    <tr id="<%= link.code %>">
+                                        <td class="text-center"><%= link.link %></td>
+                                        <% const oldTime = system.moment(link.date).format('DD.MM.YYYY HH:mm'); %>
+                                        <% const newTime = oldTime.slice(11,13); %>
+                                        <td class="text-center"><%= oldTime.slice(0,11) + (parseInt(newTime) + 3) + oldTime.slice(13,20) %></td>
+                                        <td class="text-center"><form onsubmit="return removeLink('<%= link.code %>');"><button class="btn btn-danger mb-2"><i class="fad fa-trash-alt"></i>&#160 Kaldır</button></form></td>
+                                    </tr>
+                                <% } %>
+                                <% } %>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="miniFooterWrapper" class="">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-12 col-lg-12 col-md-12">
+                    <div class="position-relative">
+                        <div class="arrow text-center">
+                            <p class=""><i class="fad fa-chevron-double-up"></i></p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-5 mx-auto col-lg-6 col-md-6 site-content-inner text-md-left text-center copyright align-self-center">
+                            <p class="mt-md-0 mt-4 mb-0">2020 &copy; <a target="_blank" href="https://discord.gg/darkcode">Swôth</a></p>
+                        </div>
+                        <div class="col-xl-5 mx-auto col-lg-6 col-md-6 site-content-inner text-md-right text-center align-self-center">
+                            <p class="mb-0">All rights reserved.</p>
+                        </div>
+                    </div>
+                </div>      
+            </div>
+        </div>
+    </div>
+
+    <!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+    <script src="assets/js/libs/jquery-3.1.1.min.js"></script>
+    <script src="bootstrap/js/popper.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <!-- END GLOBAL MANDATORY SCRIPTS -->
+
+    <script>
+        // Scroll To Top
+        $(document).on('click', '.arrow', function(event) {
+          event.preventDefault();
+          var body = $("html, body");
+          body.stop().animate({scrollTop:0}, 500, 'swing');
+        });
+    </script>
+
+</body>
+</html>

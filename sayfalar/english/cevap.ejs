@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+    <center>
+      <br><br><br><hr>
+      <% if (type == false) { %>
+      <i class="fad fa-bug fa-7x" style="color: #E74C3C;"></i>
+      <% } else { %>
+      <i class="fad fa-clipboard-check fa-7x" style="color: #2ECC71;"></i>
+      <% } %>
+      <br><br>
+      <h1 style="color: white;">
+        <% if (type == false) { %>Hata<% } else { %>Bildirim<% } %>: <%=errorTitle%>
+      </h1>
+      <hr>
+      <h3 style="color: white;">
+        <%=errorMessage%>
+      </h3>
+      <hr>
+      <a style="color: white; width: 100px;" class="btn btn-dark" href="/"><i style="color: <% if (type == false) { %>#E74C3C<% } else { %>#2ECC71<% } %>;" class="fad fa-home-lg-alt"></i>&#160 Keşfet <span class="sr-only">(current)</span></a>
+      <hr><br><br><br><br>
+    </center>
+    <%- include('templates/footer') %>
+  </body>
+</html>

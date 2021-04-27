@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+    <center>
+      <div class="row" style="width: 90%;">
+        <div class="col" style="height: 500px;">
+          <br>
+          <script>
+            $(document).ready(function(){
+              $('#profileBannerURL').css('background', 'url("<%=system.db.fetch(`users.${profile.id}.banner`) || "https://images4.alphacoders.com/909/thumb-1920-909912.png"%>")');
+            });
+          </script>
+          <div id="profileBannerURL" class="profileBanner" style="margin-top: 10px; height: 175px; border-radius: 10px 10px 0px 0px; width: 80%; border: 3px solid #3a3b3c;">
+            <img style="margin-top: 70px; width: 50%; border-radius: 50%; border: 5px solid #242526;" src="https://cdn.discordapp.com/avatars/<%=profile.id%>/<%=profile.avatar%>">
+          </div>
+          <div class="underBanner">
+            <br><br>
+            <p style="color: white;" style="overflow-y: hidden;">
+              <i style="color: #148F77;" class="fad fa-pencil"></i>&#160 <%=system.db.fetch(`users.${profile.id}.bio`) || profile.username + " biografi ayarlamamış..."%>
+            </p>
+          </div>
+          
+        </div>
+        <div class="col">
+          <br>
+          <br>
+          <h3 style="color: white; text-align: left;">
+            <i style="color: #58D68D;" class="fad fa-id-card"></i>&#160 Profil Bilgileri
+          </h3>
+          <hr style="border: 1px solid #3a3b3c;">
+          <h2 style="color: white; text-align: left;">
+            <%=profile.username%><b style="font-size: 60%; opacity: .6;">#<%=profile.discriminator%></b> &#160<span data-toggle="tooltip" data-placement="top" title="<%=profile.username%>, <%=hasBots%> adet bota sahiptir." style="font-size: 50%;" class="badge badge-dark"><i style="color: #F1948A;" class="fad fa-user-robot"></i>&#160 <%=hasBots%></span> &#160<span data-toggle="tooltip" data-placement="top" title="<%=profile.username%>, <%= system.db.fetch(`wallet.${profile.id}`) ? system.db.fetch(`wallet.${profile.id}`).toString().slice(0, 5) : 0 %> adet DarkCoin'e sahiptir." style="font-size: 50%;" class="badge badge-dark"><i class="epic fad fa-coins"></i>&#160 <%= system.db.fetch(`wallet.${profile.id}`) ? system.db.fetch(`wallet.${profile.id}`).toString().slice(0, 5) : 0 %></span>
+          </h2>
+					
+					<br>
+          <br>
+          <h3 style="color: white; text-align: left;">
+            <i style="color: #F1E0AE;" class="fad fa-robot"></i>&#160 Kullanıcının Botları
+          </h3>
+          <hr style="border: 1px solid #3a3b3c;">
+					<% for(var i = 0; i < Object.keys(system.db.fetch('bots')).length; i++) { %>
+					<% let id = Object.keys(system.db.fetch('bots'))[i] %>
+					<% if (system.db.fetch(`bots.${id}.ownerID`) == profile.id) { %>
+					<% if (system.db.fetch(`bots.${id}.verified`) == true) { %>
+					<% const bot = system.db.fetch(`bots.${id}`) %>
+					<a class="botBadgeProfile btn" href="/bot/<%=bot.id%>" style="width: 100%; background-color: #343536; border-radius: 10px; color: white;"><img src="https://cdn.discordapp.com/avatars/<%=bot.id%>/<%=bot.avatar%>" style="width: 25px; border-radius: 2px; height: 25px;"> &#160&#160&#160&#160 <%=bot.username%>#<%=bot.discriminator%></a>
+					<div class="blankDiv"></div>
+					<% } %>
+					<% } %>
+					<% } %>
+          
+          <% if (user) { %>
+            <% if (user.id == profile.id) { %>
+              <div class="blankDiv"></div>
+              <a disabled class="btn rozet" data-toggle="tooltip" data-placement="top" title="Profil düzenleme sistemi yakında eklenecektir." style="color: white; background-color: #3498DB;">
+                <i class="fad fa-edit"></i>
+                &#160 Düzenle
+              </a>
+            <% } %>
+            <% if (!system.admins.includes(profile.id)) { %>
+              <% if (system.admins.includes(user.id)) { %>
+                <% if (!system.db.fetch(`blackList.${profile.id}`)) { %>
+                  <div class="blankDiv"></div>
+                  <a class="btn rozet" href="/user/<%=profile.id%>/blacklist" style="color: white; background-color: #C0392B;">
+                    <i class="fad fa-ban"></i>
+                    &#160 Kara Liste'ye Ekle
+                  </a> 
+                <% } else { %>
+                  <div class="blankDiv"></div>
+                  <a class="btn rozet" href="/user/<%=profile.id%>/blacklist" style="color: white; background-color: #2ECC71;">
+                    <i class="fad fa-shield-check"></i>
+                    &#160 Kara Liste'den Çıkar
+                  </a> 
+                <% } %>
+								<div class="blankDiv"></div>
+								<a class="btn rozet" id="ipButton" style="color: white; background-color: #F39C12;">
+									<i class="fad fa-browser"></i>
+									&#160 IP: <b style="padding: 3px; border-radius: 7px; background-color: rgba(0,0,0,.3);" id="ipAddress"><%=system.db.fetch(`users.${profile.id}.ip`) || "Giriş yapmamış!"%></b>
+								</a> 
+              <% } %>
+            <% } %>
+          <% } %>
+        </div>
+				<script>
+					$(document).ready(function(){
+						$('#ipButton').click(function(){
+							alert("IP kopyalandı!");
+							var $temp = $("<input>");
+							$("body").append($temp);
+							$temp.val($('#ipAddress').text()).select();
+							document.execCommand("copy");
+							$temp.remove();
+						});
+					});
+				</script>
+        <div class="col">
+          <style>
+            .rozet {
+              min-width: 70%;
+              border-radius: 25px;
+            }
+            .underBanner {
+              width: 80%;
+              background-color: #3a3b3c;
+              min-height: 240px;
+              border-radius: 0px 0px 10px 10px;
+            }
+            .profileBanner {
+              background-repeat: no-repeat;
+              background-size: cover;
+              background-image: url("https://images4.alphacoders.com/909/thumb-1920-909912.png");
+              width: 100%;
+            }
+            .blankDiv {
+              height: 10px;
+            }
+          </style>
+          <br>
+          <br>
+          
+          <h3 style="color: white; text-align: left;">
+            <i style="color: #DE3163;" class="fad fa-chess-queen-alt"></i>&#160 Yetkileri & Rozetleri
+          </h3>
+          <hr style="border: 1px solid #3a3b3c;">
+          
+          <% if (profile.id == "451444721089380373") { %>
+          <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="<%=name%> Geliştiricisi" style="color: #F39C12; background-color: rgba(243, 156, 18, 0.2);">
+            <i class="fad fa-cogs"></i>
+            &#160 Site Geliştiricisi
+          </a><div class="blankDiv"></div>
+          <% } %>
+          
+					
+					<% if (profile.id == "796414422822289439") { %>
+          <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="<%=name%> Geliştiricisi" style="color: #F39C12; background-color: rgba(243, 156, 18, 0.2);">
+            <i class="fad fa-cogs"></i>
+            &#160 Site Geliştiricisi
+          </a><div class="blankDiv"></div>
+          <% } %>
+					
+          
+          <% if (system.admins.includes(profile.id)) { %>
+          <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="En üst düzey yetkilidir." style="color: #E74C3C; background-color: rgba(231, 76, 60, 0.2);">
+            <i class="fad fa-chess-queen"></i>
+            &#160 Admin
+          </a><div class="blankDiv"></div>
+          <% } %>
+          
+          
+          <% if (system.db.fetch(`mods.${profile.id}`) === true) { %>
+          <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="Sitenin yetkili kişileridir." style="color: #2ECC71; background-color: rgba(46, 204, 113, 0.2);">
+            <i class="fad fa-wand-magic"></i>
+            &#160 Moderatör
+          </a><div class="blankDiv"></div>
+          <% } %>
+
+
+          <% if (system.guilds.cache.get('707544645168660490').member(system.users.cache.get(profile.id)).roles.cache.find(x => x.id == "769622574639874119")) { %>
+            <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="Sitede kod paylaşan kişileridir." style="color: #CD00E9; background-color: rgba(205, 0, 233, 0.1);">
+              <i class="fad fa-code"></i>
+              &#160 Kod Paylaşımcı
+            </a><div class="blankDiv"></div>
+          <% } %>
+          
+          
+          <% if (system.db.fetch(`certificatedDevelopers.${profile.id}`) === true) { %>
+          <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="Sertifika almış geliştirici yetkisidir." style="color: #3498DB; background-color: rgba(52, 152, 219, 0.2);">
+            <i class="fad fa-file-certificate"></i>
+            &#160 Sertifikalı Geliştirici
+          </a><div class="blankDiv"></div>
+          <% } %>
+          
+          
+          <% if (system.db.fetch(`developers.${profile.id}`) === true) { %>
+          <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="Geliştirici kişilere verilen yetkidir." style="color: #ECF0F1; background-color: rgba(236, 240, 241, 0.2);">
+            <i class="fad fa-tools"></i>
+            &#160 Geliştirici
+          </a><div class="blankDiv"></div>
+          <% } %>
+          
+          
+          <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="Varsayılan kullanıcı rolüdür." style="color: #A569BD; background-color: rgba(165, 105, 189, 0.2);">
+            <i class="fad fa-users"></i>
+            &#160 Kullanıcı
+          </a>
+          
+          
+        </div>
+      </div>
+    </center>
+    <%- include('templates/footer') %>
+  </body>
+</html>

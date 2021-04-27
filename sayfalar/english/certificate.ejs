@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+    <center>
+      <form method="POST">
+      <br><br>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col">
+          <h1 style="color: white;">
+            <i style="color: #D4AC0D;" class="fad fa-file-certificate"></i>&#160 Sertifika Başvurusu
+          </h1>
+          <h7 style="color: white;">
+            Başvurduktan sonra yetkilileri rahatsız etmeyin!
+          </h7>
+        </div>
+        <div class="col"></div>
+      </div>
+      <br><br><br>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col">
+          
+          <h3 style="color: white;">
+            <i style="color: #C0392B;" class="fad fa-exclamation-triangle"></i>&#160 Sertifika Şartları &#160<i style="color: #C0392B;" class="fad fa-exclamation-triangle"></i>
+          </h3>
+          <hr style="border: 1px solid #3a3b3c;">
+          <div style="text-align: left; color: white;">
+            <h4 id="terms">
+              <i class="fad fa-arrow-circle-right"></i>&#160 Sunucu Sayısı<b>:</b> <span class="badge badge-danger"><%=certificate.server%></span><br>
+              <i style="margin-top: 5px;" class="fad fa-arrow-circle-right"></i>&#160 Kullanıcı Sayısı<b>:</b> <span class="badge badge-danger"><%=certificate.user%></span><br><br>
+            </h4>
+          </div>
+          <style>
+            #terms i {
+              color: #F1948A;
+            }
+          </style>
+          
+        </div>
+        <div class="col"></div>
+      </div>
+      <br><br>
+      <form method="POST">
+      <script>
+        function enableDisableButton() {
+          if ($('#submitButton').attr('disabled')) {
+            $('#submitButton').removeAttr('disabled'); 
+          } else {
+            $('#submitButton').attr('disabled', 'true');
+          };
+        };
+      </script>
+      <div class="row">
+        <div class="col"></div>  
+        <div class="col-8">
+          <h3 style="color: white;">
+            <i style="color: #5DADE2;" class="fad fa-robot"></i>&#160 Botunu Seç
+          </h3>
+          <hr style="border: 1px solid #3a3b3c;">
+          <div style="padding: 5px; background-color: #3a3b3c; border-radius: 5px;">
+            <select required="true" class="form-control" id="selectedBot" name="selectedBot">
+              <% for(var i = 0; i < Object.keys(system.db.fetch('bots')).length; i++) { %>
+              <% let id = Object.keys(system.db.fetch('bots'))[i] %>
+              <% if (system.db.fetch(`bots.${id}.ownerID`) == user.id) { %>
+              <% if (system.db.fetch(`bots.${id}.verified`) == true) { %>
+              <% if (system.db.fetch(`bots.${id}.certificate`) == false) { %>
+              <% const bot = system.db.fetch(`bots.${id}`) %>
+              <option value="<%=bot.id%>"><%=bot.username%>#<%=bot.discriminator%></option>
+							<% } %>
+              <% } %>
+              <% } %>
+              <% } %>
+            </select>
+          </div>
+          <br><br>
+          <h3 style="color: white;">
+            <i style="color: #2ECC71;" class="fad fa-check-square"></i>&#160 Emin misin?
+          </h3>
+          <hr style="border: 1px solid #3a3b3c;">
+          <div style="padding: 5px; background-color: #3a3b3c; border-radius: 5px;">
+            <div class="form-check form-check-inline">
+              <input onchange="enableDisableButton()" style="width: 20px;" class="form-check-input" type="checkbox" id="checkButton">
+              <label style="color: white;" class="form-check-label" for="checkButton">Evet</label>
+            </div>
+          </div>
+        </div>  
+        <div class="col"></div>  
+      </div>
+      <br><br><br>
+      <button disabled type="submit" id="submitButton" class="submitButton btn btn-dark btn-lg btn-block"><i class="fad fa-paper-plane"></i>&#160 Başvur</button>
+      </form>
+      <br><br><br>
+        
+      <style>
+        .submitButton {
+          width: 50%;
+          background-color: #3a3b3c;
+          transition: .2s;
+          border-radius: 10px;
+        }
+        .submitButton:hover {
+          background-color: #D4AC0D;
+          transition: .2s;
+          border-radius: 10px;
+        }
+        .basvuruForm {
+          width: 90%;
+          height: 120px;
+          padding: 20px;
+        }
+        .form-control {
+          background-color: #18191a;
+          color: white;
+          border: 2px solid rgba(24,25,26,.5);
+        }
+        .form-control:focus {
+          background-color: #18191a;
+          color: white;
+        }
+        .darktheme:focus {
+          background-color: #18191a;
+          color: white;
+        }
+        .darktheme {
+          background-color: #18191a;
+          border: 2px solid rgba(24,25,26,.5);
+          color: white;
+        }
+        .form-row {
+          background-color: #242526;
+        }
+        body {
+          overflow-x: hidden;
+        }
+      </style>
+      </form>
+    </center>
+    
+    <style>
+      .code {
+        color: white;
+        padding: 3px 5px;
+        border-radius: 10px;
+        background-color: rgba(256,256,256,.2)
+      }
+    </style>
+    
+    <%- include('templates/footer') %>
+  </body>
+</html>

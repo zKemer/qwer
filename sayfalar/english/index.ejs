@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+    <style>nav { border-bottom: 0px; }</style>
+    <svg style="transform: rotate(180deg);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#242526" fill-opacity="1" d="M0,224L48,218.7C96,213,192,203,288,218.7C384,235,480,277,576,293.3C672,309,768,299,864,266.7C960,235,1056,181,1152,160C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+    <center>
+      <div style="margin-top: -150px;">
+        <i class="fad fa-user-robot fa-7x" style="color: #3498DB;"></i>
+        <h2 style="color: white; margin-top: 15px;">
+          <%=name%> Bot List
+        </h2>
+        <h7 style="color: white;">
+          Modern, şık ve hızlı! Botunu hemen ekle ve başla...
+        </h7>
+        <br>
+        <div style="margin-top: 10px;">
+          <a href="/bots?page=1&tag=Müzik" class="btn" style="margin-right: 3px; background-color: rgba(231, 76, 60, 0.2); color: #E74C3C; padding: 0 7px; border-radius: 25px;"><i class="fad fa-list-music"></i>&#160 Müzik</a>
+          <a href="/bots?page=1&tag=Moderasyon" class="btn" style="margin-right: 3px; background-color: rgba(165, 105, 189, 0.2); color: #A569BD; padding: 0 7px; border-radius: 25px;"><i class="fad fa-tools"></i>&#160 Moderasyon</a>
+          <a href="/bots?page=1&tag=Eğlence" class="btn" style="margin-right: 3px; background-color: rgba(46, 204, 113, 0.2); color: #2ECC71; padding: 0 7px; border-radius: 25px;"><i class="fad fa-grin-squint"></i>&#160 Eğlence</a>
+          <a href="/bots?page=1&tag=Diğer" class="btn" style="background-color: rgba(230, 126, 34, 0.2); color: #E67E22; padding: 0 7px; border-radius: 25px;"><i class="fad fa-ellipsis-h-alt"></i> Diğer</a>
+        </div>
+        <form style="margin-top: 15px;">
+          <div class="input-group mb-3" style="width: 400px;">
+            <input type="text" name="searchBox" style="border-radius: 10px 0px 0px 10px; border: 0; height: 40px;" id="searchBox" required="true" class="form-control" placeholder="<%=name%>'de ara..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button id="searchButton" data-toggle="tooltip" data-placement="top" title="Yükleniyor..." class="btn btn-primary" style="min-width: 50px; border-radius: 0px 10px 10px 0px; border: 0;" type="button"><i class="fad fa-search"></i></button>
+              <script>
+              $(document).ready(function(){
+                $('#searchButton').hover(function(){
+                  if (!$('#searchBox').val()) {
+                    $('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Arama kutusunu doldurun!</div>')
+                  } else {
+                    $('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Aramak için tıkla!</div>') 
+                  }
+                });
+                $('#searchButton').click(function(){
+                  if (!$('#searchBox').val()) return $('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Arama kutusunu doldurun!</div>') 
+                  window.location.href = "/bots?page=1&q=" + $('#searchBox').val();
+                });
+              });
+              </script>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#242526" fill-opacity="1" d="M0,224L48,218.7C96,213,192,203,288,218.7C384,235,480,277,576,293.3C672,309,768,299,864,266.7C960,235,1056,181,1152,160C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+      <div style="width: 100%; background-color: #242526; min-height: 500px;">
+        <div style="padding: 0 100px;" id="anaSayfa">
+          <h1 style="color: white; text-align: left;">
+            <br>
+            <i style="font-size: 110%; color: #F1C40F;" class="epic fad fa-ad"></i>&#160 Reklamlar &#160<span class="badge epic" style="font-size: 18px; background-color: rgba(255,255,255,.2);">Eklendikleri tarihe göre sıralanmaktadır.</span>
+            <hr>
+          </h1>
+          <div>
+            <script>
+              $(document).ready(function(){
+                var genişlik = $('#anaSayfa').width();
+                var reklam = (468 * 2);
+                var fark = genişlik - reklam;
+                $('.reklam').css('margin', '10px ' + (fark / 4) + 'px');
+              });
+            </script>
+
+            <% const datas = system.db.fetch(`ads`) || []; %>
+            <% const allAds = Object.keys(datas).map(ad => ad); %>
+
+            <% for(let i = 0; i < allAds.length; i++) { %>
+              <% var ad = datas[allAds[i]]; %>
+              <% var days = Math.floor((ad.day - (Date.now() - ad.start)) / (1000 * 60 * 60 * 24)); %>
+              <% var hours = Math.floor(((ad.day - (Date.now() - ad.start)) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); %>
+              <% var minutes = Math.floor(((ad.day - (Date.now() - ad.start)) % (1000 * 60 * 60)) / (1000 * 60)); %>
+              <a href="<%= ad.href %>">
+                <img class="reklam" src="<%= ad.link %>" data-toggle="tooltip" data-placement="top" title="<%= system.db.fetch(`users.${allAds[i]}`).username %> adlı kullanıcının reklamının bitmesine <%= days %> gün, <%= hours %> saat, <%= minutes %> dakika kaldı!" style="border-radius: 10px; float: left; width: 468px; height: 60px;">
+              </a>
+            <% } %>
+
+            <% if (datas.length < 1) { %>
+              <h3 style="color: white;">Hiçbir reklam bulunamadı!</h3>
+            <% } %>
+          </div>
+
+          <h1 style="color: white; text-align: left; clear: both;">
+            <br>
+            <i style="font-size: 110%; color: #F1C40F;" class="fad fa-vote-yea"></i>&#160 Popüler Botlar &#160<span class="badge" style="font-size: 18px; background-color: rgba(241,196,15,.5);">Aldıkları oylara göre sıralanmaktadır.</span>
+            <hr>
+          </h1>
+          <div class="row">
+            <!-- ------------------------------------------------------------------- -->
+            <div class="col">
+              <% if (bots.topVoted.one) { %>
+              <script>
+                $(document).ready(function(){
+                  $('#topVotedOneLink').click(function(){
+                    window.location.href = "/bot/<%=bots.topVoted.one.id%>"
+                  });
+                });
+              </script>
+              <div class="card btn" id="topVotedOneLink">
+                <center>
+                  <% if (bots.topVoted.one.banner) { %>
+                  <script>
+                    $(document).ready(function(){
+                      $('#topVotedOne').css('background', 'url("<%=bots.topVoted.one.banner%>")');
+                    });
+                  </script>
+                  <% } %>
+                  <div id="topVotedOne" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                    <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.one.id%>/<%=bots.topVoted.one.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                  </div>
+                  <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                    <%=bots.topVoted.one.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topVoted.one.discriminator%></b>
+                  </h4>
+                  <hr>
+                  <p style="font-size: 15px;">
+                    <%=bots.topVoted.one.shortDesc%>
+                  </p>
+                  <hr>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topVoted.one.votes%></a>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topVoted.one.owner%></a>
+                </center>
+              </div>
+              <% } else { %>
+              <div class="card btn">
+                <a href="/submit" style="color: white; text-decoration: none;">
+                  <center>
+                    <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                  </center>
+                </a>
+              </div>
+              <% } %>
+            </div>
+            <!-- ------------------------------------------------------------------- -->
+            <div class="col">
+              <% if (bots.topVoted.two) { %>
+              <script>
+                $(document).ready(function(){
+                  $('#topVotedTwoLink').click(function(){
+                    window.location.href = "/bot/<%=bots.topVoted.two.id%>"
+                  });
+                });
+              </script>
+              <div class="card btn" id="topVotedTwoLink">
+                <center>
+                  <% if (bots.topVoted.two.banner) { %>
+                  <script>
+                    $(document).ready(function(){
+                      $('#topVotedTwo').css('background', 'url("<%=bots.topVoted.two.banner%>")');
+                    });
+                  </script>
+                  <% } %>
+                  <div id="topVotedTwo" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                    <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.two.id%>/<%=bots.topVoted.two.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                  </div>
+                  <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                    <%=bots.topVoted.two.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topVoted.two.discriminator%></b>
+                  </h4>
+                  <hr>
+                  <p style="font-size: 15px;">
+                    <%=bots.topVoted.two.shortDesc%>
+                  </p>
+                  <hr>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topVoted.two.votes%></a>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topVoted.two.owner%></a>
+                </center>
+              </div>
+              <% } else { %>
+              <div class="card btn">
+                <a href="/submit" style="color: white; text-decoration: none;">
+                  <center>
+                    <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                  </center>
+                </a>
+              </div>
+              <% } %>
+            </div>
+            <!-- ------------------------------------------------------------------- -->
+            <div class="col">
+              <% if (bots.topVoted.three) { %>
+              <script>
+                $(document).ready(function(){
+                  $('#topVotedThreeLink').click(function(){
+                    window.location.href = "/bot/<%=bots.topVoted.three.id%>"
+                  });
+                });
+              </script>
+              <div class="card btn" id="topVotedThreeLink">
+                <center>
+                  <% if (bots.topVoted.three.banner) { %>
+                  <script>
+                    $(document).ready(function(){
+                      $('#topVotedThree').css('background', 'url("<%=bots.topVoted.three.banner%>")');
+                    });
+                  </script>
+                  <% } %>
+                  <div id="topVotedThree" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                    <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.three.id%>/<%=bots.topVoted.three.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                  </div>
+                  <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                    <%=bots.topVoted.three.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topVoted.three.discriminator%></b>
+                  </h4>
+                  <hr>
+                  <p style="font-size: 15px;">
+                    <%=bots.topVoted.three.shortDesc%>
+                  </p>
+                  <hr>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topVoted.three.votes%></a>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topVoted.three.owner%></a>
+                </center>
+              </div>
+              <% } else { %>
+              <div class="card btn">
+                <a href="/submit" style="color: white; text-decoration: none;">
+                  <center>
+                    <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                  </center>
+                </a>
+              </div>
+              <% } %>
+            </div>
+            <!-- ------------------------------------------------------------------- -->
+          </div>
+          <br>
+          <div class="row">
+            <!-- ------------------------------------------------------------------- -->
+            <div class="col">
+              <% if (bots.topVoted.four) { %>
+              <script>
+                $(document).ready(function(){
+                  $('#topVotedFourLink').click(function(){
+                    window.location.href = "/bot/<%=bots.topVoted.four.id%>"
+                  });
+                });
+              </script>
+              <div class="card btn" id="topVotedFourLink">
+                <center>
+                  <% if (bots.topVoted.four.banner) { %>
+                  <script>
+                    $(document).ready(function(){
+                      $('#topVotedFour').css('background', 'url("<%=bots.topVoted.four.banner%>")');
+                    });
+                  </script>
+                  <% } %>
+                  <div id="topVotedFour" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                    <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.four.id%>/<%=bots.topVoted.four.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                  </div>
+                  <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                    <%=bots.topVoted.four.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topVoted.four.discriminator%></b>
+                  </h4>
+                  <hr>
+                  <p style="font-size: 15px;">
+                    <%=bots.topVoted.four.shortDesc%>
+                  </p>
+                  <hr>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topVoted.four.votes%></a>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topVoted.four.owner%></a>
+                </center>
+              </div>
+              <% } else { %>
+              <div class="card btn">
+                <a href="/submit" style="color: white; text-decoration: none;">
+                  <center>
+                    <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                  </center>
+                </a>
+              </div>
+              <% } %>
+            </div>
+            <!-- ------------------------------------------------------------------- -->
+            <div class="col">
+              <% if (bots.topVoted.five) { %>
+              <script>
+                $(document).ready(function(){
+                  $('#topVotedFiveLink').click(function(){
+                    window.location.href = "/bot/<%=bots.topVoted.five.id%>"
+                  });
+                });
+              </script>
+              <div class="card btn" id="topVotedFiveLink">
+                <center>
+                  <% if (bots.topVoted.five.banner) { %>
+                  <script>
+                    $(document).ready(function(){
+                      $('#topVotedFive').css('background', 'url("<%=bots.topVoted.five.banner%>")');
+                    });
+                  </script>
+                  <% } %>
+                  <div id="topVotedFive" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                    <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.five.id%>/<%=bots.topVoted.five.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                  </div>
+                  <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                    <%=bots.topVoted.five.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topVoted.five.discriminator%></b>
+                  </h4>
+                  <hr>
+                  <p style="font-size: 15px;">
+                    <%=bots.topVoted.five.shortDesc%>
+                  </p>
+                  <hr>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topVoted.five.votes%></a>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topVoted.five.owner%></a>
+                </center>
+              </div>
+              <% } else { %>
+              <div class="card btn">
+                <a href="/submit" style="color: white; text-decoration: none;">
+                  <center>
+                    <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                  </center>
+                </a>
+              </div>
+              <% } %>
+            </div>
+            <!-- ------------------------------------------------------------------- -->
+            <div class="col">
+              <% if (bots.topVoted.six) { %>
+              <script>
+                $(document).ready(function(){
+                  $('#topVotedSixLink').click(function(){
+                    window.location.href = "/bot/<%=bots.topVoted.six.id%>"
+                  });
+                });
+              </script>
+              <div class="card btn" id="topVotedSixLink">
+                <center>
+                  <% if (bots.topVoted.six.banner) { %>
+                  <script>
+                    $(document).ready(function(){
+                      $('#topVotedSix').css('background', 'url("<%=bots.topVoted.six.banner%>")');
+                    });
+                  </script>
+                  <% } %>
+                  <div id="topVotedSix" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                    <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topVoted.six.id%>/<%=bots.topVoted.six.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                  </div>
+                  <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                    <%=bots.topVoted.six.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topVoted.six.discriminator%></b>
+                  </h4>
+                  <hr>
+                  <p style="font-size: 15px;">
+                    <%=bots.topVoted.six.shortDesc%>
+                  </p>
+                  <hr>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topVoted.six.votes%></a>
+                  <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topVoted.six.owner%></a>
+                </center>
+              </div>
+              <% } else { %>
+              <div class="card btn">
+                <a href="/submit" style="color: white; text-decoration: none;">
+                  <center>
+                    <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                  </center>
+                </a>
+              </div>
+              <% } %>
+            </div>
+            <!-- ------------------------------------------------------------------- -->
+          </div>
+          <hr>
+          <br>
+          <style>
+            .card {
+              height: 415px;
+              border-radius: 10px;
+              background-color: #3a3b3c;
+              border: 4px solid rgba(24,25,26,.5);
+              color: white;
+              transition: 0.2s;
+            }
+            .botBanner {
+              background: url('https://images4.alphacoders.com/909/thumb-1920-909912.png');
+              background-repeat: no-repeat;
+              background-size: cover;
+            }
+            .card:hover {
+              transition: 0.2s;
+              -webkit-transform: scale(1.02);
+	            transform: scale(1.02);
+            }
+          </style>
+        </div>
+        
+        <!-- ============================================================= -->
+        
+        <div style="padding: 0 100px;">
+          <h1 style="color: white; text-align: left;">
+            <br>
+            <i style="font-size: 110%; color: #E74C3C;" class="fad fa-file-certificate"></i>&#160 Sertifikalı Botlar &#160<span class="badge" style="font-size: 18px; background-color: rgba(231,76,60,.5);">Aldıkları oylara göre sıralanmaktadır.</span>
+            <hr>
+          </h1>
+          
+          <div class="row">
+            <!-- ------------------------------------------------------------------- -->
+            <div class="col">
+              <% if (bots.topCertified.one) { %>
+                <script>
+                  $(document).ready(function(){
+                    $('#topCertifiedOneLink').click(function(){
+                      window.location.href = "/bot/<%=bots.topCertified.one.id%>"
+                    });
+                  });
+                </script>
+                <div class="card btn" id="topCertifiedOneLink">
+                  <center>
+                    <% if (bots.topCertified.one.banner) { %>
+                    <script>
+                      $(document).ready(function(){
+                        $('#topCertifiedOne').css('background', 'url("<%=bots.topCertified.one.banner%>")');
+                      });
+                    </script>
+                    <% } %>
+                    <div id="topCertifiedOne" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                      <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.one.id%>/<%=bots.topCertified.one.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                    </div>
+                    <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                      <%=bots.topCertified.one.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topCertified.one.discriminator%></b>
+                    </h4>
+                    <hr>
+                    <p style="font-size: 15px;">
+                      <%=bots.topCertified.one.shortDesc%>
+                    </p>
+                    <hr>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topCertified.one.votes%></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topCertified.one.owner%></a>
+                  </center>
+                </div>
+                <% } else { %>
+                <div class="card btn">
+                  <a href="/submit" style="color: white; text-decoration: none;">
+                    <center>
+                      <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                    </center>
+                  </a>
+                </div>
+                <% } %>
+              </div>
+              <!-- ------------------------------------------------------------------- -->
+              <div class="col">
+                <% if (bots.topCertified.two) { %>
+                <script>
+                  $(document).ready(function(){
+                    $('#topCertifiedTwoLink').click(function(){
+                      window.location.href = "/bot/<%=bots.topCertified.two.id%>"
+                    });
+                  });
+                </script>
+                <div class="card btn" id="topCertifiedTwoLink">
+                  <center>
+                    <% if (bots.topCertified.two.banner) { %>
+                    <script>
+                      $(document).ready(function(){
+                        $('#topCertifiedTwo').css('background', 'url("<%=bots.topCertified.two.banner%>")');
+                      });
+                    </script>
+                    <% } %>
+                    <div id="topCertifiedTwo" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                      <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.two.id%>/<%=bots.topCertified.two.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                    </div>
+                    <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                      <%=bots.topCertified.two.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topCertified.two.discriminator%></b>
+                    </h4>
+                    <hr>
+                    <p style="font-size: 15px;">
+                      <%=bots.topCertified.two.shortDesc%>
+                    </p>
+                    <hr>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topCertified.two.votes%></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topCertified.two.owner%></a>
+                  </center>
+                </div>
+                <% } else { %>
+                <div class="card btn">
+                  <a href="/submit" style="color: white; text-decoration: none;">
+                    <center>
+                      <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                    </center>
+                  </a>
+                </div>
+                <% } %>
+              </div>
+              <!-- ------------------------------------------------------------------- -->
+              <div class="col">
+                <% if (bots.topCertified.three) { %>
+                <script>
+                  $(document).ready(function(){
+                    $('#topCertifiedThreeLink').click(function(){
+                      window.location.href = "/bot/<%=bots.topCertified.three.id%>"
+                    });
+                  });
+                </script>
+                <div class="card btn" id="topCertifiedThreeLink">
+                  <center>
+                    <% if (bots.topCertified.three.banner) { %>
+                    <script>
+                      $(document).ready(function(){
+                        $('#topCertifiedThree').css('background', 'url("<%=bots.topCertified.three.banner%>")');
+                      });
+                    </script>
+                    <% } %>
+                    <div id="topCertifiedThree" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                      <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.three.id%>/<%=bots.topCertified.three.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                    </div>
+                    <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                      <%=bots.topCertified.three.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topCertified.three.discriminator%></b>
+                    </h4>
+                    <hr>
+                    <p style="font-size: 15px;">
+                      <%=bots.topCertified.three.shortDesc%>
+                    </p>
+                    <hr>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topCertified.three.votes%></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topCertified.three.owner%></a>
+                  </center>
+                </div>
+                <% } else { %>
+                <div class="card btn">
+                  <a href="/submit" style="color: white; text-decoration: none;">
+                    <center>
+                      <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                    </center>
+                  </a>
+                </div>
+                <% } %>
+              </div>
+              <!-- ------------------------------------------------------------------- -->
+            </div>
+            <br>
+            <div class="row">
+              <!-- ------------------------------------------------------------------- -->
+              <div class="col">
+                <% if (bots.topCertified.four) { %>
+                <script>
+                  $(document).ready(function(){
+                    $('#topCertifiedFourLink').click(function(){
+                      window.location.href = "/bot/<%=bots.topCertified.four.id%>"
+                    });
+                  });
+                </script>
+                <div class="card btn" id="topCertifiedFourLink">
+                  <center>
+                    <% if (bots.topCertified.four.banner) { %>
+                    <script>
+                      $(document).ready(function(){
+                        $('#topCertifiedFour').css('background', 'url("<%=bots.topCertified.four.banner%>")');
+                      });
+                    </script>
+                    <% } %>
+                    <div id="topCertifiedFour" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                      <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.four.id%>/<%=bots.topCertified.four.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                    </div>
+                    <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                      <%=bots.topCertified.four.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topCertified.four.discriminator%></b>
+                    </h4>
+                    <hr>
+                    <p style="font-size: 15px;">
+                      <%=bots.topCertified.four.shortDesc%>
+                    </p>
+                    <hr>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topCertified.four.votes%></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topCertified.four.owner%></a>
+                  </center>
+                </div>
+                <% } else { %>
+                <div class="card btn">
+                  <a href="/submit" style="color: white; text-decoration: none;">
+                    <center>
+                      <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                    </center>
+                  </a>
+                </div>
+                <% } %>
+              </div>
+              <!-- ------------------------------------------------------------------- -->
+              <div class="col">
+                <% if (bots.topCertified.five) { %>
+                <script>
+                  $(document).ready(function(){
+                    $('#topCertifiedFiveLink').click(function(){
+                      window.location.href = "/bot/<%=bots.topCertified.five.id%>"
+                    });
+                  });
+                </script>
+                <div class="card btn" id="topCertifiedFiveLink">
+                  <center>
+                    <% if (bots.topCertified.five.banner) { %>
+                    <script>
+                      $(document).ready(function(){
+                        $('#topCertifiedFive').css('background', 'url("<%=bots.topCertified.five.banner%>")');
+                      });
+                    </script>
+                    <% } %>
+                    <div id="topCertifiedFive" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                      <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.five.id%>/<%=bots.topCertified.five.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                    </div>
+                    <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                      <%=bots.topCertified.five.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topCertified.five.discriminator%></b>
+                    </h4>
+                    <hr>
+                    <p style="font-size: 15px;">
+                      <%=bots.topCertified.five.shortDesc%>
+                    </p>
+                    <hr>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topCertified.five.votes%></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topCertified.five.owner%></a>
+                  </center>
+                </div>
+                <% } else { %>
+                <div class="card btn">
+                  <a href="/submit" style="color: white; text-decoration: none;">
+                    <center>
+                      <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                    </center>
+                  </a>
+                </div>
+                <% } %>
+              </div>
+              <!-- ------------------------------------------------------------------- -->
+              <div class="col">
+                <% if (bots.topCertified.six) { %>
+                <script>
+                  $(document).ready(function(){
+                    $('#topCertifiedSixLink').click(function(){
+                      window.location.href = "/bot/<%=bots.topCertified.six.id%>"
+                    });
+                  });
+                </script>
+                <div class="card btn" id="topCertifiedSixLink">
+                  <center>
+                    <% if (bots.topCertified.six.banner) { %>
+                    <script>
+                      $(document).ready(function(){
+                        $('#topCertifiedSix').css('background', 'url("<%=bots.topCertified.six.banner%>")');
+                      });
+                    </script>
+                    <% } %>
+                    <div id="topCertifiedSix" class="botBanner" style="margin-top: 10px; width: 97%; height: 175px; border-radius: 10px;">
+                      <img style="width: 125px; border-radius: 10px; margin-top: 80px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bots.topCertified.six.id%>/<%=bots.topCertified.six.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+                    </div>
+                    <h4 style="margin-top: 30px; margin-left: 15px; color: white;">
+                      <%=bots.topCertified.six.username%><b style="font-size: 70%; color: #B4B4B4;">#<%=bots.topCertified.six.discriminator%></b>
+                    </h4>
+                    <hr>
+                    <p style="font-size: 15px;">
+                      <%=bots.topCertified.six.shortDesc%>
+                    </p>
+                    <hr>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun oy sayısını gösterir." style="background-color: rgba(231,76,60,.05); border-radius: 10px; color: #E74C3C;" class="btn"><i class="fad fa-angle-up"></i>&#160 <%=bots.topCertified.six.votes%></a>
+                    <a data-toggle="tooltip" data-placement="top" title="Botun geliştiricisini gösterir." style="background-color: rgba(52,152,219,.05); border-radius: 10px; color: #3498DB;" class="btn"><i class="fad fa-crown"></i>&#160 <%=bots.topCertified.six.owner%></a>
+                  </center>
+                </div>
+                <% } else { %>
+                <div class="card btn">
+                  <a href="/submit" style="color: white; text-decoration: none;">
+                    <center>
+                      <i class="fad fa-plus-circle fa-7x" style="margin-top: 140px;"></i>
+                    </center>
+                  </a>
+                </div>
+                <% } %>
+              </div>
+              <!-- ------------------------------------------------------------------- -->
+            </div>
+          </div>
+          <hr>
+          <br>
+        </div>
+      </div>
+      <svg style="transform: rotate(180deg);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#242526" fill-opacity="1" d="M0,224L48,218.7C96,213,192,203,288,218.7C384,235,480,277,576,293.3C672,309,768,299,864,266.7C960,235,1056,181,1152,160C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+      <a type="button" href="/bots?page=1" class="viewAll btn btn-dark btn-lg btn-block"><i class="fad fa-telescope"></i>&#160 Bütün Botları Keşfet</a>
+      <br><br><br><hr>
+      <style>
+        .viewAll {
+          width: 50%;
+          background-color: #3a3b3c;
+          transition: .2s;
+          border-radius: 10px;
+        }
+        .viewAll:hover {
+          background-color: #3498DB;
+          transition: .2s;
+          border-radius: 10px;
+        }
+      </style>
+    </center>
+    <%- include('templates/footer') %>
+  </body>
+</html>

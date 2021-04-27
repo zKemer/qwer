@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+    <center>
+      <form method="POST">
+      <br><br>
+      <div class="row">
+        <div class="col"></div>
+        <div class="col">
+          <h1 style="color: white;">
+            <i style="color: #F1C40F;" class="fad fa-scroll-old"></i>&#160 Bot Başvurusu
+          </h1>
+          <h7 style="color: white;">
+            Başvurduktan sonra yetkilileri rahatsız etmeyin!
+          </h7>
+        </div>
+        <div class="col"></div>
+      </div>
+      <br><br>
+			
+			
+			<script>
+			
+				$(document).ready(function(){
+					
+					let activeForm = 1;
+				
+					$('#formGiris2').hide();
+					$('#formGiris3').hide();
+					$('#formGiris4').hide();
+					$('#formGiris5').hide();
+					$('#formGiris6').hide();
+					$('#formGiris7').hide();
+					$('#formGiris8').hide();
+					$('#formGiris9').hide();
+					$('#errMsg').hide();
+					
+					$('#gondermeTusu').click(function(){
+						setTimeout(() => {
+							$('#errMsg').show();
+						}, 5000);
+					});
+					
+					$('#nextButton').click(function(){
+						
+						let şuankiSayfa = parseInt(activeForm);
+						
+						if (şuankiSayfa >= 9) {
+						  return alert("Hata: Bu en sondaki formdur!")
+						}
+						
+						$('#formGiris' + şuankiSayfa).hide();
+						$('#formGiris' + (şuankiSayfa + 1)).show();
+						activeForm = şuankiSayfa + 1;
+						
+					});
+					$('#previusButton').click(function(){
+					
+						let şuankiSayfa2 = parseInt(activeForm);
+						
+						if (şuankiSayfa2 <= 1) {
+						  return alert("Hata: Bu en baştaki formdur!")
+						}
+						
+						$('#formGiris' + şuankiSayfa2).hide();
+						$('#formGiris' + (şuankiSayfa2 - 1)).show();
+						activeForm = şuankiSayfa2 - 1;
+					
+					});
+				});
+			
+			</script>
+			
+			
+			<style>
+				.form-row {
+					border-left: 5px solid #3a3b3c;
+					border-right: 5px solid #3a3b3c;
+					border-radius: 10px;
+					width: 80%;
+				}
+			</style>
+      
+      <div id="formGiris1" class="form-row" style="border-top: 5px solid #3a3b3c; border-bottom: 5px solid #3a3b3c;">
+				<div class="basvuruForm">
+					<h4 style="color: white; text-align: left;">
+						<i style="color: #D35400;" class="fad fa-id-card"></i>&#160 Bot ID &#160<span style="font-size: 50%;" class="badge badge-danger">Gerekli</span>
+					</h4>
+					<input placeholder="Örnek: 123456789123456789" minlength="18" maxlength="18" type="text" name="botId" id="botId" required="true" class="form-control">
+				</div>
+			</div>
+			
+				<div id="formGiris2" class="form-row" style="border-top: 5px solid #3a3b3c; border-bottom: 5px solid #3a3b3c;">
+          <div class="basvuruForm">
+            <h4 style="color: white; text-align: left;">
+              <i style="color: #AF7AC5;" class="fad fa-exclamation-square"></i>&#160 Bot Prefix &#160<span style="font-size: 50%;" class="badge badge-danger">Gerekli</span>
+            </h4>
+            <input placeholder="Örnek: !" minlength="1" maxlength="25" type="text" name="botPrefix" id="botPrefix" required="true" class="form-control">
+          </div>
+        </div>
+				
+				<div id="formGiris3" class="form-row" style="border-top: 5px solid #3a3b3c; border-bottom: 5px solid #3a3b3c;">
+					<div class="basvuruForm">
+            <h4 style="color: white; text-align: left;">
+              <i style="color: #58D68D;" class="fad fa-books"></i>&#160 Kütüphane &#160<span style="font-size: 50%;" class="badge badge-danger">Gerekli</span>
+            </h4>
+            <select class="darktheme custom-select" name="botLibrary" id="botLibrary" required="true">
+              <option value="discord.js" disabled selected>Seçiniz...</option>
+              <option value="discord.js">discord.js</option>
+              <option value="2">Two</option>
+              <option value="3">Three</option>
+              <option value="discordcr">discordcr</option>
+              <option value="Nyxx">Nyxx</option>
+              <option value="Discord.Net">Discord.Net</option>
+              <option value="DSharpPlus">DSharpPlus</option>
+              <option value="Nostrum">Nostrum</option>
+              <option value="coxir">coxir</option>
+              <option value="DiscordGo">DiscordGo</option>
+              <option value="Discord4J">Discord4J</option>
+              <option value="Javacord">Javacord</option>
+              <option value="JDA">JDA</option>
+              <option value="discord.js">discord.js</option>
+              <option value="Eris">Eris</option>
+              <option value="Discordia">Discordia</option>
+              <option value="RestCord">RestCord</option>
+              <option value="Yasmin">Yasmin</option>
+              <option value="disco">disco</option>
+              <option value="discord.py">discord.py</option>
+              <option value="discordrb">discordrb</option>
+              <option value="serenity">serenity</option>
+              <option value="SwiftDiscord">SwiftDiscord</option>
+              <option value="Sword">Sword</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+        </div>
+      
+      
+      
+				<div id="formGiris4" class="form-row" style="height: 220px; border-top: 5px solid #3a3b3c; border-bottom: 5px solid #3a3b3c;">
+					<div class="basvuruForm">
+            <h4 style="color: white; text-align: left;">
+              <i style="color: #5DADE2;" class="fad fa-tags"></i>&#160 Etiketler &#160<span style="font-size: 50%;" class="badge badge-danger">Gerekli</span>
+            </h4>
+            <select style="height: 140px;" class="darktheme custom-select" name="botTags" id="botTags" required="true" multiple>
+              <option value="Diğer" disabled selected>Seçiniz...</option>
+              <option value="Müzik">Müzik</option>
+              <option value="Moderasyon">Moderasyon</option>
+              <option value="Eğlence">Eğlence</option>
+              <option value="Diğer">Diğer</option>
+            </select>
+          </div>
+        </div>
+        <div id="formGiris5" class="form-row" style="border-top: 5px solid #3a3b3c; border-bottom: 5px solid #3a3b3c;">
+					<div class="basvuruForm">
+            <h4 style="color: white; text-align: left;">
+              <i style="color: #FA8072;" class="fad fa-user-headset"></i>&#160 Destek Sunucusu &#160<span style="font-size: 50%;" class="badge badge-success">Tercih</span>
+            </h4>
+            <input placeholder="Örnek: https://discord.gg/xxxxx" maxlength="25" type="text" name="botSupport" id="botSupport" class="form-control">
+          </div>
+        </div>
+        <div id="formGiris6" class="form-row" style="border-top: 5px solid #3a3b3c; border-bottom: 5px solid #3a3b3c;">
+					<div class="basvuruForm">
+            <h4 style="color: white; text-align: left;">
+              <i style="color: #DE3163;" class="fad fa-browser"></i>&#160 İnternet Sitesi &#160<span style="font-size: 50%;" class="badge badge-success">Tercih</span>
+            </h4>
+            <input placeholder="Örnek: https://predys.net" maxlength="30" type="text" name="botSite" id="botSite" class="form-control">
+          </div>
+        </div>
+        
+      
+        
+      <div id="formGiris7" class="form-row" style="border-top: 5px solid #3a3b3c; border-bottom: 5px solid #3a3b3c;">
+				<div class="basvuruForm">
+            <h4 style="color: white; text-align: left;">
+              <i style="color: #40E0D0;" class="fad fa-pennant"></i>&#160 Bot Afişi &#160<span style="font-size: 50%;" class="badge badge-success">Tercih</span>
+            </h4>
+            <input disabled placeholder="Afiş eklemek için mağazadan satın almalısınız!" type="text" name="botBanner" id="botBanner" class="form-control">
+          </div>
+        </div>
+				
+				<div id="formGiris8" class="form-row" style="border-top: 5px solid #3a3b3c; border-bottom: 5px solid #3a3b3c;">
+					<div class="basvuruForm">
+            <h4 style="color: white; text-align: left;">
+              <i style="color: #9FE2BF;" class="fad fa-pencil-ruler"></i>&#160 Kısa Açıklama &#160<span style="font-size: 50%;" class="badge badge-danger">Gerekli</span>
+            </h4>
+            <input placeholder="Örnek: Predys: Moderasyon ve Eğlence Botu" type="text" minlength="5" maxlength="45" name="botShortDesc" id="botShortDesc" required="true" class="form-control">
+          </div>
+        </div>
+        
+      
+        
+      <div id="formGiris9" class="form-row" style="border-top: 5px solid #3a3b3c; border-bottom: 5px solid #3a3b3c;">
+				<div class="basvuruForm" style="height: 200px;">
+            <h4 style="color: white; text-align: center;">
+              <i style="color: #D35400;" class="fad fa-pencil-paintbrush"></i>&#160 Uzun Açıklama &#160<span style="font-size: 50%;" class="badge badge-danger">Gerekli</span>
+            </h4>
+            <textarea name="botLongDesc" id="botLongDesc" class="form-control" style="text-align: left; height: 130px;" minlength="100" maxlength="5000" required></textarea>
+          </div>
+        </div>  
+
+
+      <br>
+			
+			<center>
+			<div style="margin-right: 25px;">
+			<a data-toggle="tooltip" data-placement="top" title="Önceki Form" class="btn" id="previusButton" style="background-color: #242526; color: white;">
+        Önceki Form &#160<i class="fad fa-arrow-left"></i>
+      </a>
+			
+			<a data-toggle="tooltip" data-placement="top" title="Sonraki Form" class="btn" id="nextButton" style="background-color: #242526; color: white;">
+        <i class="fad fa-arrow-right"></i>&#160 Sonraki Form
+      </a>
+			</div>
+			</center>
+			<br><br>
+			<h4 id="errMsg" style="color: #E74C3C;">Hata: Bir formu boş bıraktınız lütfen kontrol edin!</h4>
+			<br>
+      <button type="submit" id="gondermeTusu" class="submitButton btn btn-dark btn-lg btn-block"><i class="fad fa-paper-plane"></i>&#160 Başvur</button>
+      <br><br><br>
+      
+      <style>
+        .submitButton {
+          width: 50%;
+          background-color: #3a3b3c;
+          transition: .2s;
+          border-radius: 10px;
+        }
+				.submitButton2 {
+          width: 30%;
+          background-color: #3a3b3c;
+          transition: .2s;
+          border-radius: 10px;
+        }
+        .submitButton:hover {
+          background-color: #3498DB;
+          transition: .2s;
+          border-radius: 10px;
+        }
+        .basvuruForm {
+          width: 100%;
+          height: 120px;
+          padding: 20px;
+        }
+        .form-control {
+          background-color: #18191a;
+          color: white;
+          border: 2px solid rgba(24,25,26,.5);
+        }
+        .form-control:focus {
+          background-color: #18191a;
+          color: white;
+        }
+        .darktheme:focus {
+          background-color: #18191a;
+          color: white;
+        }
+        .darktheme {
+          background-color: #18191a;
+          border: 2px solid rgba(24,25,26,.5);
+          color: white;
+        }
+        .form-row {
+          background-color: #242526;
+        }
+        body {
+          overflow-x: hidden;
+        }
+      </style>
+      </form>
+    </center>
+    <%- include('templates/footer') %>
+  </body>
+</html>

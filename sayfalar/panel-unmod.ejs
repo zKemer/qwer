@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="tr">
+
+<head>
+    <%- include('templates/links') %>
+    <%- include('templates/panel') %>
+</head>
+  
+<body id="page-top">
+
+    <!-- Page Wrapper -->
+    <div id="wrapper">
+
+        <!-- Sidebar -->
+        <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+
+            <!-- Sidebar - Brand -->
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="/panel">
+                <div class="sidebar-brand-icon">
+                    <i class="fad fa-chess-queen"></i>
+                </div>
+                <div class="sidebar-brand-text mx-3"><%=name%><br><sup><%=version%> Panel</sup></div>
+            </a>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider my-0">
+
+            <!-- Nav Item - Dashboard -->
+            <li class="nav-item">
+                <a class="nav-link" href="/panel">
+                    <i class="fad fa-fw fa-tachometer-alt"></i>
+                    <span>Ana Sayfa</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/panel/logs">
+                    <i class="fad fa-desktop"></i>
+                    <span>Panel Log</span></a>
+            </li>
+
+            <% if (system.admins.includes(user.id)) { %>
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Admin Panel
+            </div>
+
+            <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
+                    aria-expanded="true" aria-controls="collapseTwo">
+                    <i class="fad fa-fw fa-cogs"></i>
+                    <span id="noIcon">Moderatörleri Yönet</span>
+                </a>
+                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Bir işlem seçiniz:</h6>
+                        <a class="collapse-item" href="/panel/addModerator">Moderatör Ekle</a>
+                        <a class="collapse-item" href="/panel/removeModerator">Moderatör Çıkar</a>
+                    </div>
+                </div>
+            </li>
+
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities"
+                    aria-expanded="true" aria-controls="collapseUtilities">
+                    <i class="fad fa-fw fa-wrench"></i>
+                    <span>Diğer İşlemler</span>
+                </a>
+                <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities"
+                    data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <h6 class="collapse-header">Bir işlem seçiniz:</h6>
+                        <a class="collapse-item" href="#">...</a>
+                        <a class="collapse-item" href="#">...</a>
+                        <a class="collapse-item" href="#">...</a>
+                        <a class="collapse-item" href="#">...</a>
+                    </div>
+                </div>
+            </li>
+            <% } %>
+
+            <!-- Divider -->
+            <hr class="sidebar-divider">
+
+            <!-- Heading -->
+            <div class="sidebar-heading">
+                Mod Panel
+            </div>
+
+            <!-- Nav Item - Charts -->
+            <li class="nav-item">
+                <a class="nav-link" href="/panel/bots">
+                <i class="fad fa-robot"></i>
+                <span>Bot Listesi</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/panel/waitingBots">
+                <i class="fad fa-comment-alt-check"></i>
+                <span>Bot İşlemleri</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/panel/waitingCertificate">
+                <i class="fad fa-diploma"></i>
+                <span>Sertifika İşlemleri</span></a>
+            </li>
+
+        </ul>
+        <!-- End of Sidebar -->
+
+        <!-- Content Wrapper -->
+        <div id="content-wrapper" class="d-flex flex-column">
+
+            <!-- Main Content -->
+            <div id="content">
+
+                <!-- Topbar -->
+                <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow">
+
+                    <!-- Sidebar Toggle (Topbar) -->
+                    <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
+                        <i class="fa fa-bars"></i>
+                    </button>
+                  
+                    <% if (user.id == "451444721089380373") { %>
+                    <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="<%=name%> Geliştiricisi" style="color: #F39C12; background-color: rgba(243, 156, 18, 0.2);">
+                      <i class="fad fa-cogs"></i>
+                      &#160 Site Geliştiricisi
+                    </a>&#160&#160
+                    <% } %>
+
+
+                    <% if (system.admins.includes(user.id)) { %>
+                    <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="En üst düzey yetkilidir." style="color: #E74C3C; background-color: rgba(231, 76, 60, 0.2);">
+                      <i class="fad fa-chess-queen"></i>
+                      &#160 Admin
+                    </a>&#160&#160
+                    <% } %>
+
+
+                    <% if (system.db.fetch(`mods.${user.id}`) === true) { %>
+                    <a class="btn rozet" data-toggle="tooltip" data-placement="top" title="Sitenin yetkili kişileridir." style="color: #2ECC71; background-color: rgba(46, 204, 113, 0.2);">
+                      <i class="fad fa-wand-magic"></i>
+                      &#160 Moderatör
+                    </a>&#160&#160
+                    <% } %>
+                    
+                    <!-- Topbar Navbar -->
+                    <ul class="navbar-nav ml-auto">
+
+                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
+                        <li class="nav-item dropdown no-arrow d-sm-none">
+                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fas fa-search fa-fw"></i>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
+                                aria-labelledby="searchDropdown">
+                                <form class="form-inline mr-auto w-100 navbar-search">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control bg-light border-0 small"
+                                            placeholder="Search for..." aria-label="Search"
+                                            aria-describedby="basic-addon2">
+                                        <div class="input-group-append">
+                                            <button class="btn btn-primary" type="button">
+                                                <i class="fas fa-search fa-sm"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Alerts -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <i class="fad fa-bell fa-fw"></i>
+                                <!-- Counter - Alerts -->
+                                <span class="badge badge-danger badge-counter">2</span>
+                            </a>
+                            <!-- Dropdown - Alerts -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="alertsDropdown">
+                                <h6 class="dropdown-header">
+                                    Bildirim Merkezi
+                                </h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-primary">
+                                            <i class="fad fa-file-alt text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">07.12.2020</div>
+                                        <span class="font-weight-bold"><%=name%> v1-beta: İlk Panel Tasarımı Yayınlandı</span>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="mr-3">
+                                        <div class="icon-circle bg-warning">
+                                            <i class="fad fa-crown text-white"></i>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <div class="small text-gray-500">07.12.2020</div>
+                                        Panel'e hoşgeldin sayın moderatör, iyi günler dileriz...
+                                    </div>
+                                </a>
+                                <a class="dropdown-item text-center small text-gray-500" disabled>Bütün Bildirimleri Göster</a>
+                            </div>
+                        </li>
+
+                        <!-- Nav Item - Messages -->
+                        <li class="nav-item dropdown no-arrow mx-1">
+                            <!--<a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                            <a class="nav-link dropdown-toggle" id="messagesDropdown" role="button"
+                                aria-haspopup="true" aria-expanded="false">
+                                <i class="fad fa-envelope fa-fw"></i>
+                                <!-- Counter - Messages -->
+                                <span class="badge badge-danger badge-counter"><i class="fas fa-times"></i></span>
+                            </a>
+                            <!-- Dropdown - Messages -->
+                            <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="messagesDropdown">
+                                <h6 class="dropdown-header">
+                                    Message Center
+                                </h6>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <img class="rounded-circle" src="img/undraw_profile_1.svg"
+                                            alt="">
+                                        <div class="status-indicator bg-success"></div>
+                                    </div>
+                                    <div class="font-weight-bold">
+                                        <div class="text-truncate">Hi there! I am wondering if you can help me with a
+                                            problem I've been having.</div>
+                                        <div class="small text-gray-500">Emily Fowler · 58m</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <img class="rounded-circle" src="img/undraw_profile_2.svg"
+                                            alt="">
+                                        <div class="status-indicator"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-truncate">I have the photos that you ordered last month, how
+                                            would you like them sent to you?</div>
+                                        <div class="small text-gray-500">Jae Chun · 1d</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <img class="rounded-circle" src="img/undraw_profile_3.svg"
+                                            alt="">
+                                        <div class="status-indicator bg-warning"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-truncate">Last month's report looks great, I am very happy with
+                                            the progress so far, keep up the good work!</div>
+                                        <div class="small text-gray-500">Morgan Alvarez · 2d</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item d-flex align-items-center" href="#">
+                                    <div class="dropdown-list-image mr-3">
+                                        <img class="rounded-circle" src="https://source.unsplash.com/Mv9hjnEUHR4/60x60"
+                                            alt="">
+                                        <div class="status-indicator bg-success"></div>
+                                    </div>
+                                    <div>
+                                        <div class="text-truncate">Am I a good boy? The reason I ask is because someone
+                                            told me that people say this to all dogs, even if they aren't good...</div>
+                                        <div class="small text-gray-500">Chicken the Dog · 2w</div>
+                                    </div>
+                                </a>
+                                <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
+                            </div>
+                        </li>
+
+                        <div class="topbar-divider d-none d-sm-block"></div>
+
+                        <!-- Nav Item - User Information -->
+                        <li class="nav-item dropdown no-arrow">
+                            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Hoşgeldin, <%=user.username%>#<%=user.discriminator%></span>
+                                <img class="img-profile rounded-circle"
+                                    src="https://cdn.discordapp.com/avatars/<%=user.id%>/<%=user.avatar%>">
+                            </a>
+                            <!-- Dropdown - User Information -->
+                            <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
+                                aria-labelledby="userDropdown">
+                                <a class="dropdown-item" href="/user/<%=user.id%>">
+                                    <i class="fad fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Profil
+                                </a>
+                                <a class="dropdown-item" href="#">
+                                    <i class="fad fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Ayarlar &#160<span class="badge badge-secondary">Yakında</span>
+                                </a>
+                                <a class="dropdown-item" href="/">
+                                    <i class="fad fa-home fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Ana Sayfa
+                                </a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="/logout" data-toggle="modal" data-target="#logoutModal">
+                                    <i class="fad fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                    Çıkış Yap
+                                </a>
+                            </div>
+                        </li>
+
+                    </ul>
+
+                </nav>
+                <!-- End of Topbar -->
+
+                <!-- Begin Page Content -->
+                <div class="container-fluid">
+
+                    <!-- Page Heading -->
+                    <h1 class="h3 mb-4 text-gray-800">Moderatör Ekle</h1>
+                    <center>
+                      <% if (success) { %>
+                      <a style="color: white;" id="bildirim" class="btn btn-dark"><%=success%>, ID'li kullanıcı moderatörlükten çıkarıldı!</a>
+                      <br><br>
+                      <% } %>
+                      <i class="fad fa-user-times fa-7x" style="color: red;"></i>
+                      <br><br>
+                      <form method="POST">
+                        <input required="true" type="text" placeholder="Çıkarmak istediğiniz moderatörün ID'sini yazınız..." name="userID" id="userID" minlength="18" maxlength="18" class="form-control" style="width: 50%;">
+                        <br>
+                        <button class="btn btn-danger" type="submit">
+                          <i class="fad fa-paper-plane"></i>&#160 Moderatör Çıkar
+                        </button>
+                      </form>
+                    </center>
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+
+            <!-- Footer -->
+            <footer class="sticky-footer bg-white">
+                <div class="container my-auto">
+                    <div class="copyright text-center my-auto">
+                        <span>Copyright &copy; 2020 Swôth - SpiX</span>
+                    </div>
+                </div>
+            </footer>
+            <!-- End of Footer -->
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+
+    <!-- Logout Modal-->
+    <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Emin misin?</h5>
+                    <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                </div>
+                <div class="modal-body">Çıkış yapmak için 'Çıkış Yap' tuşuna bas, iptal etmek için 'İptal' tuşuna bas.</div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">İptal</button>
+                    <a class="btn btn-primary" href="/logout">Çıkış Yap</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap core JavaScript-->
+    <script src="vendor/jquery/jquery.min.js"></script>
+    <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+    <!-- Core plugin JavaScript-->
+    <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
+
+    <!-- Custom scripts for all pages-->
+    <script src="js/sb-admin-2.min.js"></script>
+
+</body>
+
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+    
+    <% if (bot.verified !== true) { %>
+    <div style="width: 85%; margin: 25px auto;">
+      <div class="alert alert-danger" role="alert">
+        <h4 class="alert-heading">Bot beklemede!</h4>
+        <p>Bu bot daha onay almamıştır, bu yüzden bota oy veremezsiniz ve davet edemezsiniz. Botunuz en yakın zamanda incelenecektir.</p>
+        <hr>
+        <p class="mb-0">İnceleme ile ilgili sorularla yetkilileri darlamayınız!</p>
+      </div>
+    </div>
+    <% } %>
+
+    <center>
+    <div class="row" style="width: 90%;">
+      <div class="col-8">
+        <div class="row" style="height: 50px;"></div>
+        <style>
+          #botBanner {
+            background-image: url('<%=bot.banner || "https://cdn.wallpapersafari.com/74/18/ohNFH8.jpg"%>');
+            background-repeat: no-repeat;
+            background-size: cover;
+            border-radius: 10px;
+            border: 5px solid #3a3b3c;
+          }
+        </style>
+        <center>
+          <h3 style="color: white;">
+            <i class="fad fa-fill"></i>&#160 Afiş & Resim
+          </h3>
+          <hr style="border: 1px solid #3a3b3c;">
+          <div id="botBanner" style="width: 90%; height: 400px;">
+            <div class="row" style="height: 110px;"></div>
+            <div class="row">
+              <div class="col">
+                <a class="btn botBadge" data-toggle="tooltip" data-placement="top" title="Bot <%=bot.votes%> oy almıştır." style="width: 70%; float: right; margin-top: 60px; color: #3498DB; border: 2px solid #3498DB; background-color: rgba(52, 152, 219, 0.2);"><i class="fad fa-angle-up"></i>&#160 <%=bot.votes%></a>
+              </div>
+              <div class="col">
+                <img style=" width: 125px; border-radius: 10px; margin-top: 20px; height: 125px;" src="https://cdn.discordapp.com/avatars/<%=bot.id%>/<%=bot.avatar%>" onerror="this.src='https://www.fbtakipci.com/upload/6542370-preview-201549.png';">
+              </div>
+              <div class="col">
+                <% if (bot.certificate == true) { %>
+                <a class="btn botBadge" data-toggle="tooltip" data-placement="top" title="Bot sertifikaya sahiptir." style="width: 70%; float: left; margin-top: 60px; color: #F39C12; border: 2px solid #F39C12; background-color: rgba(243, 156, 18, 0.2);"><i class="fad fa-file-certificate"></i>&#160 Sertifikalı</a>
+                <% } else { %>
+                <a class="btn botBadge" data-toggle="tooltip" data-placement="top" title="Botun sertifikası yoktur." style="width: 70%; float: left; margin-top: 60px; color: #ECF0F1; border: 2px solid #ECF0F1; background-color: rgba(236, 240, 241, 0.2);"><i class="fad fa-robot"></i>&#160 Normal</a>
+                <% } %>
+              </div>
+            </div>
+          </div>
+        </center>
+        <div class="row" style="height: 50px;"></div>
+        <h3 style="color: white;">
+          <i class="fad fa-pencil-ruler"></i>&#160 Kısa Açıklama
+        </h3>
+        <hr style="border: 1px solid #3a3b3c;">
+        <div style="background-color: #242526; border: 5px solid #3a3b3c; width: 90%; border-radius: 10px; padding: 7px 5px 0px 5px;">
+          <h5 style="color: white;">
+            <%=bot.shortDesc%>
+          </h5>
+        </div>
+        <div class="row" style="height: 50px;"></div>
+        <h3 style="color: white;">
+          <i class="fad fa-pencil-paintbrush"></i>&#160 Uzun Açıklama
+        </h3>
+        <hr style="border: 1px solid #3a3b3c;">
+        <div style="background-color: #242526; border: 5px solid #3a3b3c; width: 90%; border-radius: 10px; padding: 7px 5px 0px 5px;">
+          <h5 style="color: white;">
+            <% let $ = system.cheerio.load(bot.longDesc); %>
+			<%-$.html()%>
+          </h5>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="row" style="height: 100px;"></div>
+        <style>
+          .botBadge {
+            width: 80%;
+            border-radius: 25px;
+            transition: .2s;
+          }
+          .sidebarButtonInvite {
+            width: 80%;
+            border-radius: 25px;
+            border: 2px solid #E74C3C;
+            color: #E74C3C;
+            transition: .2s;
+            background-color: rgba(231, 76, 60, 0.2);
+          }
+          .sidebarButtonInvite:hover {
+            color: #E74C3C;
+            transition: .2s;
+            transform: scale(.950)
+          }
+          .sidebarButtonVote {
+            width: 80%;
+            border-radius: 25px;
+            border: 2px solid #2ECC71;
+            color: #2ECC71;
+            transition: .2s;
+            background-color: rgba(46, 204, 113, 0.2);
+          }
+          .sidebarButtonVote:hover {
+            color: #2ECC71;
+            transition: .2s;
+            transform: scale(.950)
+          }
+          .blankDiv {
+            height: 10px;
+            with: 25px;
+          }
+          html {
+            overflow-x: hidden;
+          }
+          .botInfo {
+            background-color: rgba(256,256,256,.2);
+            color: white;
+          }
+          .sidebarButtonSupport {
+            width: 80%;
+            border-radius: 25px;
+            border: 2px solid #A569BD;
+            color: #A569BD;
+            transition: .2s;
+            background-color: rgba(165, 105, 189, 0.2);
+          }
+          .sidebarButtonSupport:hover {
+            color: #A569BD;
+            transition: .2s;
+            transform: scale(.950)
+          }
+          .sidebarButtonSite {
+            width: 80%;
+            border-radius: 25px;
+            border: 2px solid #F1948A;
+            color: #F1948A;
+            transition: .2s;
+            background-color: rgba(241, 148, 138, 0.2);
+          }
+          .sidebarButtonSite:hover {
+            color: #F1948A;
+            transition: .2s;
+            transform: scale(.950)
+          }
+        </style>
+        <h3 style="color: white;">
+          <i class="fad fa-fingerprint"></i>&#160 <%=bot.username%><b style="opacity: .6; font-size: 50%;">#<%=bot.discriminator%></b>
+        </h3>
+        <hr style="border: 1px solid #3a3b3c;">
+		
+		<% if (bot.verified != true) { %>
+        <a class="btn sidebarButtonInvite" href="#" data-toggle="tooltip" data-placement="top" title="Bot onaylanmadan bu seçenekleri kullanamazsınız!"><i class="fad fa-envelope-open-text"></i>&#160 Davet Et</a>
+        <div class="blankDiv"></div>
+        <% if (user) { %>
+        <a class="btn sidebarButtonVote" href="#" data-toggle="tooltip" data-placement="top" title="Bot onaylanmadan bu seçenekleri kullanamazsınız!"><i class="fad fa-vote-yea"></i>&#160 Oy Ver</a>
+        <% } else { %>
+        <a class="btn sidebarButtonVote" href="#" data-toggle="tooltip" data-placement="top" title="Bot onaylanmadan bu seçenekleri kullanamazsınız!"><i class="fad fa-vote-yea"></i>&#160 Oy Ver</a>
+        <% } %>
+        <% if (bot.support) { %>
+        <div class="blankDiv"></div>
+        <a class="btn sidebarButtonSupport" href="#" data-toggle="tooltip" data-placement="top" title="Bot onaylanmadan bu seçenekleri kullanamazsınız!"><i class="fad fa-user-headset"></i>&#160 Destek Sunucusu</a>
+        <% } %>
+        <% if (bot.site) { %>
+        <div class="blankDiv"></div>
+        <a class="btn sidebarButtonSite" href="#" data-toggle="tooltip" data-placement="top" title="Bot onaylanmadan bu seçenekleri kullanamazsınız!"><i class="fad fa-browser"></i>&#160 İnternet Sitesi</a>
+        <% } %>
+		<% } else { %>
+		<a class="btn sidebarButtonInvite" href="/invite/<%=bot.id%>"><i class="fad fa-envelope-open-text"></i>&#160 Davet Et</a>
+        <div class="blankDiv"></div>
+        <% if (user) { %>
+        <a class="btn sidebarButtonVote" href="/vote/<%=bot.id%>"><i class="fad fa-vote-yea"></i>&#160 Oy Ver</a>
+        <% } else { %>
+        <a class="btn sidebarButtonVote" href="/login"><i class="fad fa-vote-yea"></i>&#160 Oy Ver</a>
+        <% } %>
+        <% if (bot.support) { %>
+        <div class="blankDiv"></div>
+        <a class="btn sidebarButtonSupport" href="<%=bot.support%>"><i class="fad fa-user-headset"></i>&#160 Destek Sunucusu</a>
+        <% } %>
+        <% if (bot.site) { %>
+        <div class="blankDiv"></div>
+        <a class="btn sidebarButtonSite" href="<%=bot.site%>"><i class="fad fa-browser"></i>&#160 İnternet Sitesi</a>
+        <% } %>
+		<% } %>
+		
+		
+				<div class="row" style="height: 50px;"></div>
+        <h3 style="color: white;">
+          <i class="fad fa-address-card"></i>&#160 Bot İstatistikleri
+        </h3>
+        <hr style="border: 1px solid #3a3b3c;">
+				<a class="btn botBadge" style="width: 100%; color: #ECF0F1; border: 2px solid #ECF0F1; background-color: rgba(236, 240, 241, 0.2);"><i class="fad fa-server"></i>&#160 <%=bot.server ? (bot.server + " Sunucu") : "Veri yok!"%></a>
+				<div class="blankDiv"></div>
+        <a class="btn botBadge" style="width: 100%; color: #ECF0F1; border: 2px solid #ECF0F1; background-color: rgba(236, 240, 241, 0.2);"><i class="fad fa-users"></i>&#160 <%=bot.user ? (bot.user + " Kullanıcı") : "Veri yok!" %></a>
+        <div class="blankDiv"></div>
+				<a class="btn botBadge" style="width: 100%; color: #ECF0F1; border: 2px solid #ECF0F1; background-color: rgba(236, 240, 241, 0.2);"><i class="fad fa-mail-bulk"></i>&#160 <%=bot.invites ? (bot.invites + " Davet") : "Veri yok!" %></a>
+				
+		
+        <div class="row" style="height: 50px;"></div>
+        <h3 style="color: white;">
+          <i class="fad fa-list"></i>&#160 Bot Bilgileri
+        </h3>
+        <hr style="border: 1px solid #3a3b3c;">
+        
+          <a class="btn botInfo" style="text-align: left; color: white; border: 2px solid white; border-bottom: none; border-radius: 10px 10px 0px 0px; width: 100%;">&#160&#160 <i class="fad fa-crown"></i>&#160 Geliştirici &#160&#160&#160&#160&#160<i style="font-size: 75%;" class="fad fa-arrow-alt-right"></i>&#160&#160&#160&#160&#160 <%=bot.owner%><b style="opacity: .6; font-size: 70%;">#<%=bot.ownerDiscriminator%></b></a><br>
+          <a class="btn botInfo" style="text-align: left; color: white; border: 2px solid white; border-bottom: none; border-top: none; border-radius: 0px; width: 100%;">&#160&#160 <i class="fad fa-question-circle"></i>&#160 Prefix &#160&#160&#160&#160&#160<i style="font-size: 75%;" class="fad fa-arrow-alt-right"></i>&#160&#160&#160&#160&#160 <%=bot.prefix%></a><br>
+          <a class="btn botInfo" style="text-align: left; color: white; border: 2px solid white; border-bottom: none; border-top: none; border-radius: 0px; width: 100%;">&#160&#160 <i class="fad fa-books"></i>&#160 Kütüphane &#160&#160&#160&#160&#160<i style="font-size: 75%;" class="fad fa-arrow-alt-right"></i>&#160&#160&#160&#160&#160 <%=bot.library%></a><br>
+          <a class="btn botInfo" style="text-align: left; color: white; border: 2px solid white; border-top: none; border-radius: 0px 0px 10px 10px; width: 100%;">&#160&#160 <i class="fad fa-tags"></i>&#160 Etiketler &#160&#160&#160&#160&#160<i style="font-size: 75%;" class="fad fa-arrow-alt-right"></i>&#160&#160&#160&#160&#160 <b style="font-size: 70%;"><% if (bot.tags.size > 1) { %><%=bot.tags.map(tag => tag).join(", ")%><% } else { %><%=bot.tags%><% } %></b></a><br>
+        
+        <% if (user) { %>
+        <% if (user.id == bot.ownerID) { %>
+        <div class="row" style="height: 50px;"></div>
+        <h3 style="color: white;">
+          <i class="fad fa-chess-king"></i>&#160 Sahip Seçenekleri
+        </h3>
+        <hr style="border: 1px solid #3a3b3c;">
+        <a style="width: 80%; color: white; border-radius: 25px;" data-toggle="modal" data-target="#editBot" class="btn btn-primary"><i class="fad fa-edit"></i>&#160 Düzenle</a>
+				<div class="blankDiv"></div>
+				<a style="width: 80%; color: white; border-radius: 25px;" data-toggle="modal" data-target="#botURL" class="btn btn-danger"><i class="fad fa-link"></i>&#160 Özel URL</a>
+				<div class="blankDiv"></div>
+		<a id="<%=bot.botKey%>" style="width: 80%; color: white; border-radius: 25px;" data-toggle="tooltip" data-placement="top" title="Kopyalamak için tıkla!" class="copyButton btn btn-success"><i class="fad fa-key"></i>&#160 API Anahtarı</a>
+		<script>
+		$(document).ready(function(){
+		  $('.copyButton').click(function(){
+			alert("Kopyalandı!");
+			var $temp = $("<input>");
+			$("body").append($temp);
+			$temp.val($('.copyButton').attr('id')).select();
+			document.execCommand("copy");
+			$temp.remove();
+		  });
+		});
+		</script>
+        
+				<div class="modal fade" id="botURL" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+					<div class="modal-dialog modal-dialog-centered" role="document">
+						<div class="modal-content" style="text-align: left; border-radius: 20px; background-color: rgba(58,59,60,1);">
+							<div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+								<h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #48C9B0;" class="fad fa-link"></i>&#160 <%=bot.username%> <b style="opacity: .4;">için Özel URL</b></h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+									<i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+								</button>
+							</div>
+							<div class="modal-body" style="color: white;">
+								<label for="specialURL"><i class="fad fa-network-wired"></i>&#160 Özel URL: &#160&#160&#160&#160&#160&#160&#160 <b id="errorMsg" style="color: #F4D03F;"></b></label>
+								<div class="input-group mb-2">
+									<div class="input-group-prepend">
+										<div class="input-group-text">darklists.com/@</div>
+									</div>
+									<input type="text" value="<%=bot.url || ''%>" class="form-control" id="specialURL">
+								</div>
+								<br>
+								<a id="URLbutton" class="btn btn-danger"><i class="fad fa-link"></i>&#160 Özel URL Ayarla</a> &#160 <a href="/bot/<%=bot.id%>/urlRemove" class="btn btn-primary"><i class="fad fa-trash-alt"></i>&#160 Özel URL Kaldır</a>
+								<script>
+								$(document).ready(function(){
+									$('#errorMsg').hide();
+									$('#specialURL').change(function(){
+										$('#errorMsg').hide(100);
+									});
+									$('#URLbutton').click(function(){
+										if (!$('#specialURL').val()) { $('#errorMsg').text('Hata: Bir URL yazınız.'); $('#errorMsg').show(100); return; };
+										window.location.href = "/bot/<%=bot.id%>/url/" + $('#specialURL').val();
+									});
+								});
+								</script>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+        <div class="modal fade" id="editBot" style="text-align: left;" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+              <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+                <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #48C9B0;" class="fad fa-edit"></i>&#160 <%=bot.username%><b style="opacity: .4;">#<%=bot.discriminator%></b> &#160<span class="badge" style="background-color: rgba(72,201,176,.5);">Botu Düzenle</span></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+                  <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+                </button>
+              </div>
+              <div class="modal-body" style="color: white;">
+                <!--  <hr style="background-color: rgba(68,69,70,1);">  -->
+                <form method="POST">
+                  <div class="row">
+                    <div class="col">
+                      <h7>Prefix:</h7>
+                      <input value="<%=bot.prefix%>" class="form-control" type="text" name="botPrefix" id="botPrefix" min-length="1" max-length="10" required="true">
+                    </div>
+                    <div class="col">
+                      <h7>Kütüphane:</h7>
+                      <select class="custom-select" name="botLibrary" id="botLibrary" required="true">
+                        <option value="<%=bot.library%>" selected><%=bot.library%></option>
+                        <option value="discord.js">discord.js</option>
+                        <option value="2">Two</option>
+                        <option value="3">Three</option>
+                        <option value="discordcr">discordcr</option>
+                        <option value="Nyxx">Nyxx</option>
+                        <option value="Discord.Net">Discord.Net</option>
+                        <option value="DSharpPlus">DSharpPlus</option>
+                        <option value="Nostrum">Nostrum</option>
+                        <option value="coxir">coxir</option>
+                        <option value="DiscordGo">DiscordGo</option>
+                        <option value="Discord4J">Discord4J</option>
+                        <option value="Javacord">Javacord</option>
+                        <option value="JDA">JDA</option>
+                        <option value="discord.js">discord.js</option>
+                        <option value="Eris">Eris</option>
+                        <option value="Discordia">Discordia</option>
+                        <option value="RestCord">RestCord</option>
+                        <option value="Yasmin">Yasmin</option>
+                        <option value="disco">disco</option>
+                        <option value="discord.py">discord.py</option>
+                        <option value="discordrb">discordrb</option>
+                        <option value="serenity">serenity</option>
+                        <option value="SwiftDiscord">SwiftDiscord</option>
+                        <option value="Sword">Sword</option>
+                        <option value="Other">Other</option>
+                      </select>
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <h7>Etiketler:</h7>
+                      <select style="height: 40px;" class="custom-select" name="botTags" id="botTags" required="true" multiple>
+                        <option value="Diğer" disabled selected>Seçiniz...</option>
+                        <option value="Müzik">Müzik</option>
+                        <option value="Moderasyon">Moderasyon</option>
+                        <option value="Eğlence">Eğlence</option>
+                        <option value="Diğer">Diğer</option>
+                      </select>
+                    </div>
+                    <div class="col">
+                      <h7>Afiş URL:</h7>
+                      <input <% if (!bot.perms) { %>disabled<% } else if (!bot.perms.banner) { %>disabled<% } %> value="https://cdn.wallpapersafari.com/74/18/ohNFH8.jpg" type="text" name="botBannerURL" id="botBannerURL" class="form-control" required="true">
+                    </div>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="col">
+                      <h7>İnternet Sitesi:</h7>
+                      <input value="<%=bot.site%>" class="form-control" type="text" name="botSite" id="botSite">
+                    </div>
+                    <div class="col">
+                      <h7>Destek Sunucusu:</h7>
+                      <input value="<%=bot.support%>" class="form-control" type="text" name="botSupport" id="botSupport">
+                    </div>
+                  </div>
+                  <hr>
+                  <div style="padding: 0px 15px;" class="row">
+                    <h7>Kısa Açıklama:</h7>
+                    <input value="<%=bot.shortDesc%>" type="text" minlength="5" maxlength="45" name="botShortDesc" id="botShortDesc" required="true" class="form-control">
+                  </div>
+                  <hr>
+                  <div style="padding: 0px 15px;" class="row">
+                    <h7>Uzun Açıklama:</h7>
+                    <textarea name="botLongDesc" id="botLongDesc" class="form-control" style="height: 130px;" minlength="100" maxlength="5000" required="true"><%=bot.longDesc%></textarea>
+                  </div>
+                  <hr>
+                  <center><button type="submit" class="btn btn-success"><i class="fad fa-save"></i>&#160 Kaydet</button></center>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% } %>
+        <% } %>
+      </div>
+    </div>
+    </center>
+    <div class="row" style="height: 100px;"></div>
+    <%- include('templates/footer') %>
+  </body>
+</html>

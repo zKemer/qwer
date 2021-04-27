@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+    <center>
+    <div class="row" style="height: 50px;"></div>
+    <h1 style="color: white;">
+      <i class="fad fa-code" style="color: #2E86C1;"></i>&#160 Bütün Kodlar &#160<span style="font-size: 50%;" class="badge badge-primary">Sayfa: <%=page%></span>
+    </h1>
+    <h7 style="color: white;">
+      Kodlar eklenme tarihlerine göre sıralanmıştır.
+    </h7>
+    <div class="row" style="height: 20px;"></div>
+      <hr>
+			<form style="margin-top: 15px;">
+				<div class="input-group mb-3" style="width: 400px;">
+					<input type="text" name="searchBox" style="border-radius: 10px 0px 0px 10px; border: 0; height: 40px;" id="searchBox" required="true" class="form-control" placeholder="<%=name%> Kod Paylaşım'da ara..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+					<div class="input-group-append">
+						<button id="searchButton" data-toggle="tooltip" data-placement="top" title="Yükleniyor..." class="btn btn-primary" style="min-width: 50px; border-radius: 0px 10px 10px 0px; border: 0;" type="button"><i class="fad fa-search"></i></button>
+						<script>
+						$(document).ready(function(){
+							$('#searchButton').hover(function(){
+								if (!$('#searchBox').val()) {
+									$('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Arama kutusunu doldurun!</div>')
+								} else {
+									$('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Aramak için tıkla!</div>') 
+								}
+							});
+							$('#searchButton').click(function(){
+								if (!$('#searchBox').val()) return $('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Arama kutusunu doldurun!</div>') 
+								window.location.href = "/code/codes?page=1&q=" + $('#searchBox').val();
+							});
+						});
+						</script>
+					</div>
+				</div>
+			</form>
+      <% if (q) { %>
+        <a href="/code/codes?page=<%=page%>&q=<%=q%>&tag=JavaScript" class="btn" style="margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 25px;"><i class="fab fa-js"></i>&#160 JavaScript</a>
+        <a href="/code/codes?page=<%=page%>&q=<%=q%>&tag=HTML" class="btn" style="margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 25px;"><i class="fab fa-html5"></i>&#160 HTML</a>
+        <a href="/code/codes?page=<%=page%>&q=<%=q%>&tag=Altyapı" class="btn" style="margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 25px;"><i class="fad fa-toolbox"></i>&#160 Altyapı</a>
+				<a href="/code/codes?page=<%=page%>&q=<%=q%>&tag=Sizden Gelenler" class="btn" style="margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 25px;"><i class="fad fa-user"></i>&#160 Sizden Gelenler</a>
+      <% } else { %>
+        <a href="/code/codes?page=<%=page%>&tag=JavaScript" class="btn" style="margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 25px;"><i class="fab fa-js"></i>&#160 JavaScript</a>
+        <a href="/code/codes?page=<%=page%>&tag=HTML" class="btn" style="margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 25px;"><i class="fab fa-html5"></i>&#160 HTML</a>
+        <a href="/code/codes?page=<%=page%>&tag=Altyapı" class="btn" style="margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 25px;"><i class="fad fa-toolbox"></i>&#160 Altyapı</a>
+				<a href="/code/codes?page=<%=page%>&tag=Sizden Gelenler" class="btn" style="margin-right: 3px; background-color: rgba(256, 256, 256, 0.2); color: #fff; padding: 0 7px; border-radius: 25px;"><i class="fad fa-user"></i>&#160 Sizden Gelenler</a>
+      <% } %>
+      <hr>
+    <div class="row" style="height: 50px;"></div>
+      
+    <style>
+      .card {
+        height: 200px;
+				width: 90%;
+				margin-left: 2%;
+				margin-right: 2%;
+        border-radius: 10px;
+        background-color: #3a3b3c;
+        border: 4px solid rgba(24,25,26,.5);
+        color: white;
+        transition: 0.2s;
+      }
+      .card:hover {
+        transition: 0.2s;
+        -webkit-transform: scale(1.02);
+        transform: scale(1.02);
+      }
+			.row { width: 100%; }
+    </style>
+		<script>
+			$(document).ready(function(){
+			  $('.addCode').click(function(){
+				  window.location.href = "/code/publish";
+				});
+			});
+		</script>
+      
+			
+			
+		<div class="row" style="width: 100%; margin: auto;">
+			<div class="card col">
+				<div class="row">
+					<% if (codes.one) { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+						<div class="col">
+							<% if (codes.one.category == "JavaScript") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #f0db4f;" class="fab fa-js"></i>
+							<% } %>
+							<% if (codes.one.category == "HTML") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #e34c26;" class="fab fa-html5"></i>
+							<% } %>
+							<% if (codes.one.category == "Altyapı") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #28B463;" class="fad fa-toolbox"></i>
+							<% } %>
+							<% if (codes.one.category == "Sizden Gelenler") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #3498DB;" class="fad fa-user"></i>
+							<% } %>
+						</div>
+							
+						<div class="col" style="text-align: left;">
+							<h3 style="margin-top: 15px;"><%=codes.one.title%></h3> <!-- BURASI DEĞİŞTİRİLECEK -->
+							<hr>
+							<% const allLikes1 = Object.keys(system.db.fetch(`codes.${codes.one.id}.voted`) ? system.db.fetch(`codes.${codes.one.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.one.id}.voted.${x}`) == "like"); %>
+							<% const likesMap1 = allLikes1.map(like => like); %>
+							<% const allDisLikes1 = Object.keys(system.db.fetch(`codes.${codes.one.id}.voted`) ? system.db.fetch(`codes.${codes.one.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.one.id}.voted.${x}`) == "dislike"); %>
+							<% const disLikesMap1 = allDisLikes1.map(dislike => dislike); %>
+							<a style="margin-top: 10px;" href="/code/view/<%=codes.one.id%>" class="btn btn-success">Görüntüle</a> &#160<a style="margin-top: 10px;" class="btn btn-primary"><i class="fad fa-thumbs-up"></i>&#160 <%= likesMap1.length %> &#160|&#160 <i class="fad fa-thumbs-down"></i>&#160 <%= disLikesMap1.length %></a>
+						</div>
+					<% } else { %>
+						<div class="col addCode">
+							<center>
+								<br>
+								<i style="text-align: center; font-size: 140px;" class="fad fa-plus-circle"></i>
+							</center>
+						</div>
+					<% } %>
+				</div>
+			</div>
+			<div class="card col">
+				<div class="row">
+					<% if (codes.two) { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+						<div class="col">
+							<% if (codes.two.category == "JavaScript") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #f0db4f;" class="fab fa-js"></i>
+							<% } %>
+							<% if (codes.two.category == "HTML") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #e34c26;" class="fab fa-html5"></i>
+							<% } %>
+							<% if (codes.two.category == "Altyapı") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #28B463;" class="fad fa-toolbox"></i>
+							<% } %>
+							<% if (codes.one.category == "Sizden Gelenler") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #3498DB;" class="fad fa-user"></i>
+							<% } %>
+						</div>
+							
+						<div class="col" style="text-align: left;">
+							<h3 style="margin-top: 15px;"><%=codes.two.title%></h3> <!-- BURASI DEĞİŞTİRİLECEK -->
+							<hr>
+							<% const allLikes2 = Object.keys(system.db.fetch(`codes.${codes.two.id}.voted`) ? system.db.fetch(`codes.${codes.two.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.two.id}.voted.${x}`) == "like"); %>
+							<% const likesMap2 = allLikes2.map(like => like); %>
+							<% const allDisLikes2 = Object.keys(system.db.fetch(`codes.${codes.two.id}.voted`) ? system.db.fetch(`codes.${codes.two.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.two.id}.voted.${x}`) == "dislike"); %>
+							<% const disLikesMap2 = allDisLikes2.map(dislike => dislike); %>
+							<a style="margin-top: 10px;" href="/code/view/<%=codes.two.id%>" class="btn btn-success">Görüntüle</a> &#160<a style="margin-top: 10px;" class="btn btn-primary"><i class="fad fa-thumbs-up"></i>&#160 <%= likesMap2.length %> &#160|&#160 <i class="fad fa-thumbs-down"></i>&#160 <%= disLikesMap2.length %></a>
+						</div>
+					<% } else { %>
+						<div class="col addCode">
+							<center>
+								<br>
+								<i style="text-align: center; font-size: 140px;" class="fad fa-plus-circle"></i>
+							</center>
+						</div>
+					<% } %>
+				</div>
+			</div>
+		</div>
+		
+		<hr>
+		
+		<div class="row" style="width: 100%; margin: auto;">
+			<div class="card col">
+				<div class="row">
+					<% if (codes.three) { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+						<div class="col">
+							<% if (codes.three.category == "JavaScript") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #f0db4f;" class="fab fa-js"></i>
+							<% } %>
+							<% if (codes.three.category == "HTML") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #e34c26;" class="fab fa-html5"></i>
+							<% } %>
+							<% if (codes.three.category == "Altyapı") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #28B463;" class="fad fa-toolbox"></i>
+							<% } %>
+							<% if (codes.one.category == "Sizden Gelenler") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #3498DB;" class="fad fa-user"></i>
+							<% } %>
+						</div>
+							
+						<div class="col" style="text-align: left;">
+							<h3 style="margin-top: 15px;"><%=codes.three.title%></h3> <!-- BURASI DEĞİŞTİRİLECEK -->
+							<hr>
+							<% const allLikes3 = Object.keys(system.db.fetch(`codes.${codes.three.id}.voted`) ? system.db.fetch(`codes.${codes.three.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.three.id}.voted.${x}`) == "like"); %>
+							<% const likesMap3 = allLikes3.map(like => like); %>
+							<% const allDisLikes3 = Object.keys(system.db.fetch(`codes.${codes.three.id}.voted`) ? system.db.fetch(`codes.${codes.three.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.three.id}.voted.${x}`) == "dislike"); %>
+							<% const disLikesMap3 = allDisLikes3.map(dislike => dislike); %>
+							<a style="margin-top: 10px;" href="/code/view/<%=codes.three.id%>" class="btn btn-success">Görüntüle</a> &#160<a style="margin-top: 10px;" class="btn btn-primary"><i class="fad fa-thumbs-up"></i>&#160 <%= likesMap3.length %> &#160|&#160 <i class="fad fa-thumbs-down"></i>&#160 <%= disLikesMap3.length %></a>
+						</div>
+					<% } else { %>
+						<div class="col addCode">
+							<center>
+								<br>
+								<i style="text-align: center; font-size: 140px;" class="fad fa-plus-circle"></i>
+							</center>
+						</div>
+					<% } %>
+				</div>
+			</div>
+			<div class="card col">
+				<div class="row">
+					<% if (codes.four) { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+						<div class="col">
+							<% if (codes.four.category == "JavaScript") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #f0db4f;" class="fab fa-js"></i>
+							<% } %>
+							<% if (codes.four.category == "HTML") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #e34c26;" class="fab fa-html5"></i>
+							<% } %>
+							<% if (codes.four.category == "Altyapı") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #28B463;" class="fad fa-toolbox"></i>
+							<% } %>
+							<% if (codes.one.category == "Sizden Gelenler") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #3498DB;" class="fad fa-user"></i>
+							<% } %>
+						</div>
+							
+						<div class="col" style="text-align: left;">
+							<h3 style="margin-top: 15px;"><%=codes.four.title%></h3> <!-- BURASI DEĞİŞTİRİLECEK -->
+							<hr>
+							<% const allLikes4 = Object.keys(system.db.fetch(`codes.${codes.four.id}.voted`) ? system.db.fetch(`codes.${codes.four.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.four.id}.voted.${x}`) == "like"); %>
+							<% const likesMap4 = allLikes4.map(like => like); %>
+							<% const allDisLikes4 = Object.keys(system.db.fetch(`codes.${codes.four.id}.voted`) ? system.db.fetch(`codes.${codes.four.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.four.id}.voted.${x}`) == "dislike"); %>
+							<% const disLikesMap4 = allDisLikes4.map(dislike => dislike); %>
+							<a style="margin-top: 10px;" href="/code/view/<%=codes.four.id%>" class="btn btn-success">Görüntüle</a> &#160<a style="margin-top: 10px;" class="btn btn-primary"><i class="fad fa-thumbs-up"></i>&#160 <%= likesMap4.length %> &#160|&#160 <i class="fad fa-thumbs-down"></i>&#160 <%= disLikesMap4.length %></a>
+						</div>
+					<% } else { %>
+						<div class="col addCode">
+							<center>
+								<br>
+								<i style="text-align: center; font-size: 140px;" class="fad fa-plus-circle"></i>
+							</center>
+						</div>
+					<% } %>
+				</div>
+			</div>
+		</div>
+		
+		<hr>
+		
+		<div class="row" style="width: 100%; margin: auto;">
+			<div class="card col">
+				<div class="row">
+					<% if (codes.five) { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+						<div class="col">
+							<% if (codes.five.category == "JavaScript") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #f0db4f;" class="fab fa-js"></i>
+							<% } %>
+							<% if (codes.five.category == "HTML") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #e34c26;" class="fab fa-html5"></i>
+							<% } %>
+							<% if (codes.five.category == "Altyapı") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #28B463;" class="fad fa-toolbox"></i>
+							<% } %>
+							<% if (codes.one.category == "Sizden Gelenler") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #3498DB;" class="fad fa-user"></i>
+							<% } %>
+						</div>
+							
+						<div class="col" style="text-align: left;">
+							<h3 style="margin-top: 15px;"><%=codes.five.title%></h3> <!-- BURASI DEĞİŞTİRİLECEK -->
+							<hr>
+							<% const allLikes5 = Object.keys(system.db.fetch(`codes.${codes.five.id}.voted`) ? system.db.fetch(`codes.${codes.five.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.five.id}.voted.${x}`) == "like"); %>
+							<% const likesMap5 = allLikes5.map(like => like); %>
+							<% const allDisLikes5 = Object.keys(system.db.fetch(`codes.${codes.five.id}.voted`) ? system.db.fetch(`codes.${codes.five.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.five.id}.voted.${x}`) == "dislike"); %>
+							<% const disLikesMap5 = allDisLikes5.map(dislike => dislike); %>
+							<a style="margin-top: 10px;" href="/code/view/<%=codes.five.id%>" class="btn btn-success">Görüntüle</a> &#160<a style="margin-top: 10px;" class="btn btn-primary"><i class="fad fa-thumbs-up"></i>&#160 <%= likesMap5.length %> &#160|&#160 <i class="fad fa-thumbs-down"></i>&#160 <%= disLikesMap5.length %></a>
+						</div>
+					<% } else { %>
+						<div class="col addCode">
+							<center>
+								<br>
+								<i style="text-align: center; font-size: 140px;" class="fad fa-plus-circle"></i>
+							</center>
+						</div>
+					<% } %>
+				</div>
+			</div>
+			<div class="card col">
+				<div class="row">
+					<% if (codes.six) { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+						<div class="col">
+							<% if (codes.six.category == "JavaScript") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #f0db4f;" class="fab fa-js"></i>
+							<% } %>
+							<% if (codes.six.category == "HTML") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #e34c26;" class="fab fa-html5"></i>
+							<% } %>
+							<% if (codes.six.category == "Altyapı") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #28B463;" class="fad fa-toolbox"></i>
+							<% } %>
+							<% if (codes.one.category == "Sizden Gelenler") { %> <!-- BURASI DEĞİŞTİRİLECEK -->
+								<i style="font-size: 120px; margin-top: 35px; color: #3498DB;" class="fad fa-user"></i>
+							<% } %>
+						</div>
+							
+						<div class="col" style="text-align: left;">
+							<h3 style="margin-top: 15px;"><%=codes.six.title%></h3> <!-- BURASI DEĞİŞTİRİLECEK -->
+							<hr>
+							<% const allLikes6 = Object.keys(system.db.fetch(`codes.${codes.six.id}.voted`) ? system.db.fetch(`codes.${codes.six.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.six.id}.voted.${x}`) == "like"); %>
+							<% const likesMap6 = allLikes6.map(like => like); %>
+							<% const allDisLikes6 = Object.keys(system.db.fetch(`codes.${codes.six.id}.voted`) ? system.db.fetch(`codes.${codes.six.id}.voted`) : []).filter(x => system.db.fetch(`codes.${codes.six.id}.voted.${x}`) == "dislike"); %>
+							<% const disLikesMap6 = allDisLikes6.map(dislike => dislike); %>
+							<a style="margin-top: 10px;" href="/code/view/<%=codes.six.id%>" class="btn btn-success">Görüntüle</a> &#160<a style="margin-top: 10px;" class="btn btn-primary"><i class="fad fa-thumbs-up"></i>&#160 <%= likesMap6.length %> &#160|&#160 <i class="fad fa-thumbs-down"></i>&#160 <%= disLikesMap6.length %></a>
+						</div>
+					<% } else { %>
+						<div class="col addCode">
+							<center>
+								<br>
+								<i style="text-align: center; font-size: 140px;" class="fad fa-plus-circle"></i>
+							</center>
+						</div>
+					<% } %>
+				</div>
+			</div>
+		</div>
+			
+		<br>
+		<hr>
+			
+		<script>
+		$(document).ready(function(){
+			$('#oncekiSayfa').click(function(){
+				<% if (q) { %>
+					<% if (tag) { %>
+						window.location.href = "/code/codes?page=<%=parseInt(page) - 1%>&q=<%=q%>&tag=<%=tag%>";
+					<% } else { %>
+						window.location.href = "/code/codes?page=<%=parseInt(page) - 1%>&q=<%=q%>";
+					<% } %>
+				<% } else if (tag) { %>
+					window.location.href = "/code/codes?page=<%=parseInt(page) - 1%>&tag=<%=tag%>";
+				<% } else { %>
+					window.location.href = "/code/codes?page=<%=parseInt(page) - 1%>";
+				<% } %>
+			});
+			$('#sonrakiSayfa').click(function(){
+				<% if (q) { %>
+					<% if (tag) { %>
+						window.location.href = "/code/codes?page=<%=parseInt(page) + 1%>&q=<%=q%>&tag=<%=tag%>";
+					<% } else { %>
+						window.location.href = "/code/codes?page=<%=parseInt(page) + 1%>&q=<%=q%>";
+					<% } %>
+				<% } else if (tag) { %>
+					window.location.href = "/code/codes?page=<%=parseInt(page) + 1%>&tag=<%=tag%>";
+				<% } else { %>
+					window.location.href = "/code/codes?page=<%=parseInt(page) + 1%>";
+				<% } %>
+			});
+		});
+		</script>
+		<% if (page == 1) { %>
+		<a disabled data-toggle="tooltip" data-placement="top" title="Önceki Sayfa" class="btn" id="oncekiSayfaBlocked" style="opacity: .4; background-color: #242526; color: white;">
+			<i class="fad fa-arrow-left"></i>
+		</a>
+		<% } else { %>
+		<a data-toggle="tooltip" data-placement="top" title="Önceki Sayfa" class="btn" id="oncekiSayfa" style="background-color: #242526; color: white;">
+			<i class="fad fa-arrow-left"></i>
+		</a>
+		<% } %>
+		<a class="btn" style="background-color: #242526; color: white;">
+			<%=page%>
+		</a>
+		<a data-toggle="tooltip" data-placement="top" title="Sonraki Sayfa" class="btn" id="sonrakiSayfa" style="background-color: #242526; color: white;">
+			<i class="fad fa-arrow-right"></i>
+		</a>
+		<hr>
+		<br><br><br><br>      
+    </center>
+    <%- include('templates/footer') %>
+  </body>
+</html>

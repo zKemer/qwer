@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<title><%=name%> | Bot List & Kod Paylaşım | <%=version%></title>
+<nav id="siteNavbar" class="navbar navbar-expand-lg navbar-light darkcode" style="transition: top 0.5s; z-index: 100; position: fixed; left: 0; top: 0; width: 90%; margin-left: 5%; margin-right: 5%; padding: 5px 80px; background-color: #000; border-bottom: 5px solid #18191a; border-right: 5px solid #18191a; border-left: 5px solid #18191a; border-radius: 0px 0px 10px 10px;">
+  <a class="navbar-brand" href="/" style="color: white;"><i class="fad fa-user-robot" style="color: #5DADE2; font-size: 130%;"></i>&#160 <%=name%> <span class="badge" style="background-color: #3a3b3c; box-shadow: 0px 0px 3px #3a3b3c;"><%=version%></span></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+			<style>
+				.dropdown-item:hover {
+				  background-color: #1E1E1E;
+				}
+			</style>
+			<li class="nav-item">
+				<a data-toggle="modal" data-target="#gotoProfile" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link">&#160<i style="color: #2FACFF;" class="fad fa-search"></i>&#160</a>
+			</li>
+      <% if (user) { %>
+        <li class="nav-item">
+          <a data-toggle="modal" data-target="#userNotification" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link">&#160<i style="color: #F39C12;" class="fad fa-bell"></i>&#160<% if (system.db.fetch(`notifications.${user.id}`)) { %>&#160<span class="badge badge-danger"><%=Object.keys(system.db.fetch(`notifications.${user.id}`)).length%></span>&#160<% } %></a>
+        </li>
+      
+        <% if (system.admins.includes(user.id)) { %>
+        <% if (!system.db.fetch(`siteBakım`)) { %>
+        <li class="nav-item">
+          <a data-toggle="modal" data-target="#maintenance" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link">&#160<i style="color: #E74C3C;" class="fad fa-ban"></i>&#160</a>
+        </li>
+        <% } else { %>
+				
+        <li class="nav-item">
+          <a data-toggle="modal" data-target="#maintenance" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link">&#160<i style="color: #E74C3C;" class="fad fa-ban"></i>&#160 Bakım Aktif&#160</a>
+        </li>
+        <% } %>
+        <% } %>
+			
+			<li class="nav-item dropdown">
+				<a style="color: white;" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i style="color: #AC43FF;" class="fad fa-toolbox"></i>&#160 Sayfalar
+        </a>
+        <div style="background-color: #202020; box-shadow: 0px 0px 10px black;" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a style="color: white;" class="dropdown-item" href="/"><i style="color: #AF7AC5;" class="fad fa-home-lg-alt"></i>&#160 Keşfet</a>
+          <a style="color: white;" class="dropdown-item" href="/bots?page=1"><i style="color: #2ECC71;" class="fad fa-robot"></i>&#160 Botlar</a>
+          <a style="color: white;" class="dropdown-item" href="/team"><i style="color: #AED6F1;" class="fad fa-users"></i>&#160 Ekip</a>
+					<a style="color: white;" class="dropdown-item" href="/code"><i style="color: #9FE2BF;" class="fad fa-code"></i>&#160 Kod Paylaşım</a>
+					<% if (user) { %>
+						<% if (system.db.fetch(`mods.${user.id}`) === true) { %>
+							<a style="color: white;" class="dropdown-item" href="/panel"><i style="color: #EC7063;" class="fad fa-toolbox"></i>&#160 Panel</a>
+						<% } %>
+					<% } %>
+        </div>
+			</li>
+			
+        <li class="nav-item">
+          <a data-toggle="modal" data-target="#userOptions" style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link"><i style="color: #48C9B0;" class="fad fa-user-circle"></i>&#160 <%=user.username%> &#160<i style="color: #48C9B0;" class="fad fa-angle-down"></i></a>
+        </li>
+      <% } else { %>
+			
+			<li class="nav-item dropdown">
+				<a style="color: white;" class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <i style="color: #AC43FF;" class="fad fa-toolbox"></i>&#160 Sayfalar
+        </a>
+        <div style="background-color: #202020; box-shadow: 0px 0px 10px black;" class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <a style="color: white;" class="dropdown-item" href="/"><i style="color: #AF7AC5;" class="fad fa-home-lg-alt"></i>&#160 Keşfet</a>
+          <a style="color: white;" class="dropdown-item" href="/bots?page=1"><i style="color: #2ECC71;" class="fad fa-robot"></i>&#160 Botlar</a>
+          <a style="color: white;" class="dropdown-item" href="/team"><i style="color: #AED6F1;" class="fad fa-users"></i>&#160 Ekip</a>
+					<a style="color: white;" class="dropdown-item" href="/code"><i style="color: #9FE2BF;" class="fad fa-code"></i>&#160 Kod Paylaşım</a>
+					<% if (user) { %>
+						<% if (system.db.fetch(`mods.${user.id}`) === true) { %>
+							<a style="color: white;" class="dropdown-item" href="/panel"><i style="color: #EC7063;" class="fad fa-toolbox"></i>&#160 Panel</a>
+						<% } %>
+					<% } %>
+        </div>
+			</li>
+			
+        <li class="nav-item">
+          <a style="color: white; border-radius: 7px;" id="loginButton" class="btn nav-link" href="/login"><i style="color: #F1C40F;" class="fad fa-sign-in"></i>&#160 Giriş Yap</a>
+        </li>
+      <% } %>
+    </ul>
+  </div>
+</nav>
+
+
+<div class="modal fade" id="gotoProfile" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+      <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+        <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #48C9B0;" class="fad fa-user-circle"></i>&#160 Profile Git &#160<span class="badge" style="background-color: rgba(72,201,176,.5);">ID Yazınız</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+          <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: white;">
+        <label for="profileUserID"><i class="fad fa-id-card-alt"></i>&#160 ID:</label>
+				<input class="form-control" max-length="18" min-length="18" type="text" name="profileUserID" id="profileUserID">
+				<hr style="border: 1px solid rgba(0,0,0,0);">
+				<a id="gotoProfileButton" class="btn btn-success" style="color: white;"><i class="fad fa-users"></i>&#160 Profile Git</a>
+				<script>
+				$(document).ready(function(){
+					$('#gotoProfileButton').click(function(){
+						if (!$('#profileUserID').val()) return alert("Hata: Lütfen bir ID yazınız!");
+						window.location.href = "/user/" + $('#profileUserID').val();
+					});
+				});
+				</script>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<% if (user) { %>
+<div class="modal fade" id="userOptions" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+      <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+        <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #48C9B0;" class="fad fa-user-circle"></i>&#160 <%=user.username%><b style="opacity: .4;">#<%=user.discriminator%></b> &#160<span class="badge" style="background-color: rgba(72,201,176,.5);">Kullanıcı Seçenekleri</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+          <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: white;">
+        <a href="/user/<%=user.id%>" style="background: transparent; color: white; text-decoration: none;"><i style="color: #3498DB;" class="fad fa-user-circle"></i>&#160 Profil &#160<span class="badge" style="background-color: rgba(52,152,219,.5);">Kendi profiline gözatabilirsin.</span></a>
+        <hr style="background-color: rgba(68,69,70,1);">
+        <a href="/submit" style="background: transparent; color: white; text-decoration: none;"><i style="color: #A569BD;" class="fad fa-plus"></i>&#160 Bot Başvurusu &#160<span class="badge" style="background-color: rgba(165,105,189,.5);">Botunu eklemek için başvurabilirsin.</span></a>
+        <hr style="background-color: rgba(68,69,70,1);">
+        <a href="/certificate" style="background: transparent; color: white; text-decoration: none;"><i style="color: #D4AC0D;" class="fad fa-file-certificate"></i>&#160 Sertifika Başvurusu &#160<span class="badge" style="background-color: rgba(212,172,13,.5);">Sertifika almak için başvurabilirsin.</span></a>
+        <hr style="background-color: rgba(68,69,70,1);">
+        <a href="/logout" style="background: transparent; color: white; text-decoration: none;"><i style="color: #EC7063;" class="fad fa-sign-out"></i>&#160 Çıkış Yap &#160<span class="badge" style="background-color: rgba(236,112,99,.7);">Sitedeki oturumunu kapatır.</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="userNotification" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+      <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+        <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #F39C12;" class="fad fa-bell"></i>&#160 <%=user.username%><b style="opacity: .4;">#<%=user.discriminator%></b> &#160<span class="badge" style="background-color: rgba(243,156,18,.5);">Bildirimler</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+          <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: white;">
+        <% if (system.db.fetch(`notifications.${user.id}`)) { %>
+        <% for(var i = 0; i < Object.keys(system.db.fetch(`notifications.${user.id}`)).length; i++) { %>
+        <% let userNot = system.db.fetch(`notifications.${user.id}`)[i] %>
+        <h6>
+          <%=userNot%>
+        </h6>
+        <% } %>
+        <hr style="background-color: rgba(68,69,70,1);">
+        <a class="btn btn-danger" href="/clearNotifications/<%=user.id%>"><i class="fad fa-trash"></i>&#160 Temizle</a>
+        <% } else { %>
+        <h6>
+          ▪ Hiçbir bildirim bulunamadı!
+        </h6>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% if (system.admins.includes(user.id)) { %>
+<% if (!system.db.fetch(`siteBakım`)) { %>
+<div class="modal fade" id="maintenance" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+      <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+        <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #E74C3C;" class="fad fa-ban"></i>&#160 Siteyi Bakıma Al &#160<span class="badge" style="background-color: rgba(231,76,60,.5);">Emin misin?</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+          <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: white;">
+        <a href="#" data-toggle="modal" data-target="#mainReason" style="background: transparent; color: #fff; text-decoration: none;"><i style="color: #2ECC71;" class="fad fa-plus-hexagon"></i>&#160 Evet &#160<span class="badge" style="background-color: rgba(46,204,113,0.5);">Siteyi bakıma alır.</span></a>
+        <hr style="border: 1px solid rgba(68,69,70,1);">
+        <a href="#" data-dismiss="modal" aria-label="Close" style="background: transparent; color: #fff; text-decoration: none;"><i style="color: #EC7063;" class="fad fa-times-hexagon"></i>&#160 Hayır &#160<span class="badge" style="background-color: rgba(236,112,99,.7);">İşlemi iptal eder.</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="mainReason" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	<div class="modal-dialog modal-dialog-centered" role="document">
+		<div class="modal-content" style="border-radius: 20px; background-color: #2471A3;">
+			<div class="modal-header" style="border-bottom: 2px solid #1A5276;">
+				<h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i class="fad fa-crown"></i>&#160 Bakım Sebebi &#160<span class="badge" style="background-color: #922B21; border: 2px solid #922B21; color: white;">Sebep Yazınız</span></h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+					<i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+				</button>
+			</div>
+			<div class="modal-body" style="color: #fff;">
+				<form>
+					<label for="removeReason"><i class="fad fa-flag-checkered"></i>&#160 Sebep:</label>
+					<input class="form-control" max-length="100" min-length="1" type="text" name="removeReason" id="removeReason">
+					<hr style="border: 1px solid #1A5276;">
+					<a id="removeButton" class="btn btn-danger" style="color: white;"><i class="fad fa-times-circle"></i>&#160 Bakımı Aç</a>
+					<script>
+					$(document).ready(function(){
+						$('#removeButton').click(function(){
+							if (!$('#removeReason').val()) return alert("Hata: Lütfen bir sebep yazınız!");
+							window.location.href = "/panel/maintenance?reason=" + $('#removeReason').val();
+						});
+					});
+					</script>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+<% } else { %>
+<div class="modal fade" id="maintenance" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content" style="border-radius: 20px; background-color: rgba(58,59,60,1);">
+      <div class="modal-header" style="border-bottom: 2px solid rgba(68,69,70,1);">
+        <h5 class="modal-title" style="color: white;" id="exampleModalCenterTitle"><i style="color: #E74C3C;" class="fad fa-ban"></i>&#160 Siteyi Bakımdan Çıkar &#160<span class="badge" style="background-color: rgba(231,76,60,.5);">Emin misin?</span></h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <style>#closeButton:select { outline: none; } #closeButton { transition: .2; }</style>
+          <i id="closeButton" area-hidden="true" class="fad fa-times-circle" style="transition: .2; color: white;"></i>
+        </button>
+      </div>
+      <div class="modal-body" style="color: white;">
+        <a href="/panel/maintenance" style="background: transparent; color: #fff; text-decoration: none;"><i style="color: #2ECC71;" class="fad fa-plus-hexagon"></i>&#160 Evet &#160<span class="badge" style="background-color: rgba(46,204,113,0.5);">Siteyi bakımdan çıkarır.</span></a>
+        <hr style="border: 1px solid rgba(68,69,70,1);">
+        <a href="#" data-dismiss="modal" aria-label="Close" style="background: transparent; color: #fff; text-decoration: none;"><i style="color: #EC7063;" class="fad fa-times-hexagon"></i>&#160 Hayır &#160<span class="badge" style="background-color: rgba(236,112,99,.7);">İşlemi iptal eder.</span></a>
+      </div>
+    </div>
+  </div>
+</div>
+<% } %>
+<% } %>
+<% } %>
+
+<style>
+  .nav-link:hover {
+    background-color: rgba(24,25,26,.9);
+		box-shadow: 0px 0px 3px #18191a;
+    border-radius: 7px;
+    transition: .1s;
+  }
+  .nav-link {
+    transition: .1s;
+		background-color: #18191a;
+		box-shadow: 0px 0px 3px rgba(24,25,26,.4);
+    border-radius: 7px;
+    margin-left: 10px;
+		box-shadow: 0px 0px 3px rgba(24,25,26,1);
+    padding: 7px;
+    font-size: 14.5px;
+  }
+	.navbar-brand {
+    transition: .1s;
+		background-color: #18191a;
+    border-radius: 7px;
+		box-shadow: 0px 0px 6px rgba(24,25,26,.4);
+    padding: 7px;
+  }
+  #loginButton {
+    background-color: #18191a;
+    box-shadow: 0px 0px 3px #18191a;
+    transition: .2s;
+    padding: 5 10px;
+  }
+  #loginButton:hover {
+    background-color: rgba(24,25,26,.9);
+    box-shadow: 0px 0px 3px rgba(24,25,26,.4);
+    transition: .2s;
+  }
+</style>
+<hr><hr>

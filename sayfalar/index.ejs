@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+    <style>nav { border-bottom: 0px; }</style>
+    <svg style="transform: rotate(180deg);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#242526" fill-opacity="1" d="M0,224L48,218.7C96,213,192,203,288,218.7C384,235,480,277,576,293.3C672,309,768,299,864,266.7C960,235,1056,181,1152,160C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+    <center>
+      <div style="margin-top: -150px;">
+        <i class="fad fa-user-robot fa-7x" style="color: #3498DB;"></i>
+        <h2 style="color: white; margin-top: 15px;">
+          <%=name%> Bot List
+        </h2>
+        <h7 style="color: white;">
+          Modern, şık ve hızlı! Botunu hemen ekle ve başla...
+        </h7>
+        <br>
+        <div style="margin-top: 10px;">
+          <a href="/bots?page=1&tag=Müzik" class="btn" style="margin-right: 3px; background-color: rgba(231, 76, 60, 0.2); color: #E74C3C; padding: 0 7px; border-radius: 25px;"><i class="fad fa-list-music"></i>&#160 Müzik</a>
+          <a href="/bots?page=1&tag=Moderasyon" class="btn" style="margin-right: 3px; background-color: rgba(165, 105, 189, 0.2); color: #A569BD; padding: 0 7px; border-radius: 25px;"><i class="fad fa-tools"></i>&#160 Moderasyon</a>
+          <a href="/bots?page=1&tag=Eğlence" class="btn" style="margin-right: 3px; background-color: rgba(46, 204, 113, 0.2); color: #2ECC71; padding: 0 7px; border-radius: 25px;"><i class="fad fa-grin-squint"></i>&#160 Eğlence</a>
+          <a href="/bots?page=1&tag=Diğer" class="btn" style="background-color: rgba(230, 126, 34, 0.2); color: #E67E22; padding: 0 7px; border-radius: 25px;"><i class="fad fa-ellipsis-h-alt"></i> Diğer</a>
+        </div>
+        <form style="margin-top: 15px;">
+          <div class="input-group mb-3" style="width: 400px;">
+            <input type="text" name="searchBox" style="border-radius: 10px 0px 0px 10px; border: 0; height: 40px;" id="searchBox" required="true" class="form-control" placeholder="<%=name%>'de ara..." aria-label="Recipient's username" aria-describedby="basic-addon2">
+            <div class="input-group-append">
+              <button id="searchButton" data-toggle="tooltip" data-placement="top" title="Yükleniyor..." class="btn btn-primary" style="min-width: 50px; border-radius: 0px 10px 10px 0px; border: 0;" type="button"><i class="fad fa-search"></i></button>
+              <script>
+              $(document).ready(function(){
+                $('#searchButton').hover(function(){
+                  if (!$('#searchBox').val()) {
+                    $('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Arama kutusunu doldurun!</div>')
+                  } else {
+                    $('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Aramak için tıkla!</div>') 
+                  }
+                });
+                $('#searchButton').click(function(){
+                  if (!$('#searchBox').val()) return $('.tooltip').html('<div class="arrow"></div><div class="tooltip-inner">Arama kutusunu doldurun!</div>') 
+                  window.location.href = "/bots?page=1&q=" + $('#searchBox').val();
+                });
+              });
+              </script>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#242526" fill-opacity="1" d="M0,224L48,218.7C96,213,192,203,288,218.7C384,235,480,277,576,293.3C672,309,768,299,864,266.7C960,235,1056,181,1152,160C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+      <div style="width: 100%; background-color: #242526; min-height: 500px;">
+        <div style="padding: 0 100px;" id="anaSayfa">
+          <h1 style="color: white; text-align: left;">
+            <br>
+            <i style="font-size: 110%; color: #F1C40F;" class="epic fad fa-ad"></i>&#160 Reklamlar &#160<span class="badge epic" style="font-size: 18px; background-color: rgba(255,255,255,.2);">Eklendikleri tarihe göre sıralanmaktadır.</span>
+            <hr>
+          </h1>
+          <div>
+            <script>
+              $(document).ready(function(){
+                var genişlik = $('#anaSayfa').width();
+                var reklam = (468 * 2);
+                var fark = genişlik - reklam;
+                $('.reklam').css('margin', '10px ' + (fark / 4) + 'px');
+              });
+            </script>
+
+            <% const datas = system.db.fetch(`ads`) || []; %>
+            <% const allAds = Object.keys(datas).map(ad => ad); %>
+
+            <% for(let i = 0; i < allAds.length; i++) { %>
+              <% var ad = datas[allAds[i]]; %>
+              <% var days = Math.floor((ad.day - (Date.now() - ad.start)) / (1000 * 60 * 60 * 24)); %>
+              <% var hours = Math.floor(((ad.day - (Date.now() - ad.start)) % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)); %>
+              <% var minutes = Math.floor(((ad.day - (Date.now() - ad.start)) % (1000 * 60 * 60)) / (1000 * 60)); %>
+              <a href="<%= ad.href %>">
+                <img class="reklam" src="<%= ad.link %>" data-toggle="tooltip" data-placement="top" title="<%= system.db.fetch(`users.${allAds[i]}`).username %> adlı kullanıcının reklamının bitmesine <%= days %> gün, <%= hours %> saat, <%= minutes %> dakika kaldı!" style="border-radius: 10px; float: left; width: 468px; height: 60px;">
+              </a>
+            <% } %>
+
+            <% if (datas.length < 1) { %>
+              <h3 style="color: white;">Hiçbir reklam bulunamadı!</h3>
+            <% } %>
+          </div>
+
+          <script>
+            $(document).ready(function(){
+              $('.botFrame').css('margin', '20px ' + ($('#anaSayfa').width() / 100 * 2) + 'px');
+            });
+          </script>
+          <style>
+            .botBadge {
+              padding: 3px;
+              margin: 2px;
+              width: 100px;
+              font-size: 80%;
+              transform: translate(-40px, 0px);
+              background-color: #151515;
+            }
+            .botButtons {
+              background-color: #131313;
+              color: white;
+              width: 47%;
+              text-decoration: none;
+              border-radius: 5px;
+            }
+            .botButtons:hover {
+              color: white;
+            }
+            .botBadge2 {
+              padding: 7px 10px;
+              border-radius: 5px;
+              transform: translate(-30px, 0px);
+              background-color: #181818;
+            }
+            .botFrame {
+              width: 29%;
+              background-color: #202020;
+              border: 3px solid #222222;
+              float: left;
+              transition: .2s;
+              box-shadow: 0px 0px 10px #151515;
+            }
+            .botFrame:hover {
+              transform: translate(0px, -10px);
+              transition: .2s;
+            }
+          </style>
+          
+          <h1 style="color: white; text-align: left; clear: both;">
+            <br>
+            <i style="font-size: 110%; color: #F1C40F;" class="fad fa-vote-yea"></i>&#160 Popüler Botlar &#160<span class="badge" style="font-size: 18px; background-color: rgba(241,196,15,.5);">Aldıkları oylara göre sıralanmaktadır.</span>
+            <hr>
+          </h1>
+          <% const allBots = system.db.fetch(`bots`); %>
+          <% const bots1 = bots.topVoted; %>
+          <% for(let i = 0; i < bots1.length; i++) { %>
+            <% const bot = allBots[bots1[i]]; %>
+            <div class="botFrame" style="padding: 10px; border-radius: 7px;">
+                <div class="row">
+                  <div class="col">
+                    <img src="https://cdn.discordapp.com/avatars/<%=bot.id%>/<%=bot.avatar%>" style="width: 100px; border-radius: 10px; transform: translate(-50px, -30px); height: 100px;">
+                  </div>
+                  <div class="col">
+                    <a style="color: #fff;" class="btn botBadge"><i class="fad fa-angle-up"></i>&#160 <%= bot.votes ? bot.votes : 0 %></a>
+                    <br>
+                    <a style="color: #fff;" class="btn botBadge"><i class="fad fa-mail-bulk"></i>&#160 <%= bot.invites ? bot.invites : 0 %></a>
+                  </div>
+                </div>
+                <h5 class="botBadge2" style="text-align: left; color: white;"><%= bot.username %></h5>
+                <p style="padding: 7px; text-align: left; color: white;"><%= bot.shortDesc.length > 33 ? (bot.shortDesc.slice(0, 30) + "...") : bot.shortDesc.slice(0, 33) %></p>
+    
+                <a class="btn botButtons" href="/bot/<%= bot.id %>">İncele</a>&#160 <a class="btn botButtons" href="/invite/<%= bot.id %>">Davet Et</a>
+            </div>
+          <% } %>
+          
+        
+        <!-- ============================================================= -->
+        
+        
+          <h1 style="color: white; text-align: left; clear: both;">
+            <br>
+            <i style="font-size: 110%; color: #E74C3C;" class="fad fa-file-certificate"></i>&#160 Sertifikalı Botlar &#160<span class="badge" style="font-size: 18px; background-color: rgba(231,76,60,.5);">Aldıkları oylara göre sıralanmaktadır.</span>
+            <hr>
+          </h1>
+          <% const bots2 = bots.topCertified; %>
+          <% for(let i = 0; i < bots2.length; i++) { %>
+            <% const bot = allBots[bots2[i]]; %>
+            <div class="botFrame" style="padding: 10px; border-radius: 7px;">
+                <div class="row">
+                  <div class="col">
+                    <img src="https://cdn.discordapp.com/avatars/<%=bot.id%>/<%=bot.avatar%>" style="width: 100px; border-radius: 10px; transform: translate(-60px, -30px); height: 100px;">
+                  </div>
+                  <div class="col">
+                    <a style="color: #fff;" class="btn botBadge"><i class="fad fa-angle-up"></i>&#160 <%= bot.votes ? bot.votes : 0 %></a>
+                    <br>
+                    <a style="color: #fff;" class="btn botBadge"><i class="fad fa-mail-bulk"></i>&#160 <%= bot.invites ? bot.invites : 0 %></a>
+                  </div>
+                </div>
+                <h5 class="botBadge2" style="text-align: left; color: white;"><%= bot.username %></h5>
+                <p style="padding: 7px; text-align: left; color: white;"><%= bot.shortDesc.length > 33 ? (bot.shortDesc.slice(0, 30) + "...") : bot.shortDesc.slice(0, 33) %></p>
+    
+                <a class="btn botButtons" href="/bot/<%= bot.id %>">İncele</a>&#160 <a class="btn botButtons" href="/invite/<%= bot.id %>">Davet Et</a>
+            </div>
+          <% } %>
+
+          </div>
+          <hr style="clear: both;">
+          <br>
+      </div>
+      <svg style="transform: rotate(180deg);" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="#242526" fill-opacity="1" d="M0,224L48,218.7C96,213,192,203,288,218.7C384,235,480,277,576,293.3C672,309,768,299,864,266.7C960,235,1056,181,1152,160C1248,139,1344,149,1392,154.7L1440,160L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>
+      <a type="button" href="/bots?page=1" class="viewAll btn btn-dark btn-lg btn-block"><i class="fad fa-telescope"></i>&#160 Bütün Botları Keşfet</a>
+      <br><br><br><hr>
+      <style>
+        .viewAll {
+          width: 50%;
+          background-color: #3a3b3c;
+          transition: .2s;
+          border-radius: 10px;
+        }
+        .viewAll:hover {
+          background-color: #3498DB;
+          transition: .2s;
+          border-radius: 10px;
+        }
+      </style>
+    </center>
+    <%- include('templates/footer') %>
+  </body>
+</html>

@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+		<style>.row { width: 101%; }</style>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+		<div class="row" style="height: 75px;"></div>
+    <center>
+      <h1 style="color: white;"><i style="color: #F39C12;" class="fad fa-users"></i>&#160 Ekibimiz</h1>
+			<h7 style="color: white;">Resmi ve ismi gözükmeyen kişiler siteye bir kere giriş yapmalıdır.</h7>
+    </center>
+		<div class="row" style="height: 75px;"></div>
+		<style>
+		
+			.siteDev { border: 2px solid rgba(243, 156, 18, 0.5); background: linear-gradient(to bottom right, rgba(243, 156, 18, 0.7), rgba(243, 156, 18, 0.2)); transition: .2s; box-shadow: 0px 5px 1px #343536; border-radius: 5px; padding: 10px; color: white; }
+			.siteDev:hover { transition: .2s; transform: translateY(-10px); }
+			.admin { border: 2px solid rgba(231, 76, 60, 0.5); background: linear-gradient(to bottom right, rgba(231, 76, 60, 0.7), rgba(231, 76, 60, 0.2)); transition: .2s; box-shadow: 0px 5px 1px #343536; border-radius: 5px; padding: 10px; color: white; }
+			.admin:hover { transition: .2s; transform: translateY(-10px); }
+			.moderator { border: 2px solid rgba(46, 204, 113, 0.5); background: linear-gradient(to bottom right, rgba(46, 204, 113, 0.7), rgba(46, 204, 113, 0.2)); transition: .2s; box-shadow: 0px 5px 1px #343536; border-radius: 5px; padding: 10px; color: white; }
+			.moderator:hover { transition: .2s; transform: translateY(-10px); }
+			.blank { background: linear-gradient(to bottom right, rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.1)); transition: .2s; box-shadow: 0px 5px 1px #343536; border-radius: 5px; padding: 10px; color: white; }
+			.designer { border: 2px solid rgba(142, 68, 173, 0.5); background: linear-gradient(to bottom right, rgba(142, 68, 173, 0.7), rgba(142, 68, 173, 0.2)); transition: .2s; box-shadow: 0px 5px 1px #343536; border-radius: 5px; padding: 10px; color: white; }
+			.designer:hover { transition: .2s; transform: translateY(-10px); }
+		
+		</style>
+		<script>
+		$(document).ready(function(){
+			$('img').attr('onerror', 'this.src="https://cdn.shopify.com/s/files/1/0099/9562/files/Header-Icon-User.png?14597416339728210630"');
+		});
+		</script>
+		<div class="row" style="width: 95%; margin: auto;">
+			<div class="col siteDev" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['1'] ? staffs['1'].id : '.'%>/<%=staffs['1'] ? staffs['1'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['1'] ? staffs['1'].username : "Boş"%></h6>
+						Geliştirici
+					</div>
+				</div>
+			</div>
+			<div class="col siteDev" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['2'] ? staffs['2'].id : '.'%>/<%=staffs['2'] ? staffs['2'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['2'] ? staffs['2'].username : "Boş"%></h6>
+						Geliştirici
+					</div>
+				</div>
+			</div>
+			<div class="col admin" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['3'] ? staffs['3'].id : '.'%>/<%=staffs['3'] ? staffs['3'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['3'] ? staffs['3'].username : "Boş"%></h6>
+						Admin
+					</div>
+				</div>
+			</div>
+			<div class="col admin" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['4'] ? staffs['4'].id : '.'%>/<%=staffs['4'] ? staffs['4'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['4'] ? staffs['4'].username : "Boş"%></h6>
+						Admin
+					</div>
+				</div>
+			</div>
+			<div class="col admin" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['5'] ? staffs['5'].id : '.'%>/<%=staffs['5'] ? staffs['5'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['5'] ? staffs['5'].username : "Boş"%></h6>
+						Admin
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" style="width: 95%; margin: auto;">
+			<div class="col moderator" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['6'] ? staffs['6'].id : '.'%>/<%=staffs['6'] ? staffs['6'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['6'] ? staffs['6'].username : "Boş"%></h6>
+						Moderatör
+					</div>
+				</div>
+			</div>
+			<div class="col moderator" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['7'] ? staffs['7'].id : '.'%>/<%=staffs['7'] ? staffs['7'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['7'] ? staffs['7'].username : "Boş"%></h6>
+						Moderatör
+					</div>
+				</div>
+			</div>
+			<div class="col moderator" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['8'] ? staffs['8'].id : '.'%>/<%=staffs['8'] ? staffs['8'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['8'] ? staffs['8'].username : "Boş"%></h6>
+						Moderatör
+					</div>
+				</div>
+			</div>
+			<div class="col moderator" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['9'] ? staffs['9'].id : '.'%>/<%=staffs['9'] ? staffs['9'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['9'] ? staffs['9'].username : "Boş"%></h6>
+						Moderatör
+					</div>
+				</div>
+			</div>
+			<div class="col moderator" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['10'] ? staffs['10'].id : '.'%>/<%=staffs['10'] ? staffs['10'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['10'] ? staffs['10'].username : "Boş"%></h6>
+						Moderatör
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" style="width: 95%; margin: auto;">
+			<div class="col moderator" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['11'] ? staffs['11'].id : '.'%>/<%=staffs['11'] ? staffs['11'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['11'] ? staffs['11'].username : "Boş"%></h6>
+						Moderatör
+					</div>
+				</div>
+			</div>
+			<div class="col moderator" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['12'] ? staffs['12'].id : '.'%>/<%=staffs['12'] ? staffs['12'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['12'] ? staffs['12'].username : "Boş"%></h6>
+						Moderatör
+					</div>
+				</div>
+			</div>
+			<div class="col moderator" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['13'] ? staffs['13'].id : '.'%>/<%=staffs['13'] ? staffs['13'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['13'] ? staffs['13'].username : "Boş"%></h6>
+						Moderatör
+					</div>
+				</div>
+			</div>
+			<div class="col moderator" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%=staffs['14'] ? staffs['14'].id : '.'%>/<%=staffs['14'] ? staffs['14'].avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%=staffs['14'] ? staffs['14'].username : "Boş"%></h6>
+						Moderatör
+					</div>
+				</div>
+			</div>
+			<div class="col designer" style="width: 95%; margin: 5px;">
+				<div class="row" style="width: 100%; margin: auto;">
+					<div style="margin: auto; margin-left: 15px; margin-right: 15px;">
+						<img style="width: 50px; height: 50px; border-radius: 10px;"
+						src="https://cdn.discordapp.com/avatars/<%= system.db.fetch('users.513780345380798466') ? system.db.fetch('users.513780345380798466').id : '.'%>/<%= system.db.fetch('users.513780345380798466') ? system.db.fetch('users.513780345380798466').avatar : '.'%>">
+					</div>
+					<div style="float: left;">
+						<h6 style="text-align: left;"><%= system.db.fetch('users.513780345380798466') ? system.db.fetch('users.513780345380798466').username : "Boş"%></h6>
+						Tasarımcı
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="row" style="height: 75px;"></div>
+    <%- include('templates/footer') %>
+  </body>
+</html>

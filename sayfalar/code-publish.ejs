@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <%- include('templates/links') %>
+  </head>
+  <body>
+    <%- include('templates/header') %>
+		<style>.row { width: 101%; }</style>
+		<div class="row" style="height: 75px;"></div>
+		<center>
+			<h1 style="color: white;"><i style="color: #E74C3C;" class="fad fa-edit"></i>&#160 Kod Paylaş</h1>
+		</center>
+		<div class="row" style="height: 75px;"></div>
+		
+		<form action="/code/publish" method="POST">
+		<div class="row" style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+			<div class="col" style="padding: 15px;">
+				<label for="codeTitle"><i class="fad fa-heading"></i>&#160 Kod Başlığı:</label>
+				<input type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c;" placeholder="Örnek: Sil Komutu" name="codeTitle" id="codeTitle" required="true">
+				<hr>
+				<label for="codeTitle"><i class="fad fa-user-shield"></i>&#160 Kodu Görmek için Gerekli Rol:</label>
+				<select class="form-control" id="codePerm" name="codePerm" style="color: white; background-color: #18191a; border: 2px solid #3a3b3c;" required="true">
+					<% if (system.guilds.cache.get('707544645168660490').member(system.users.cache.get(user.id)).roles.cache.find(x => x.id == "769622574639874119")) { %>
+						<% const rolSıralama = roles.sort((a, b) => { return (b.position || 0) - (a.position || 0) }); %>
+						<% for(let i = 0; i < rolSıralama.length; i++) { %>
+							<% const rol = rolSıralama[i]; %>
+							<option value="<%=rol.id%>"><%=rol.name%></option>
+						<% } %>
+					<% } else { %>
+						<option selected value="783333792223068210">DarkCode Üye</option>
+					<% } %>
+				</select>
+			</div>
+			<div class="col" style="padding: 15px;">
+				<label for="codeTitle"><i class="fad fa-comment-medical"></i>&#160 Kod Açıklaması:</label>
+				<input type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c;" placeholder="Örnek: Kanaldaki mesajları siler." name="codeDesc" id="codeDesc" required="true">
+				<hr>
+				<label for="codeCategory"><i class="fad fa-books"></i>&#160 Kod Kategorisi:</label>
+				<select class="form-control" id="codeCategory" name="codeCategory" style="color: white; background-color: #18191a; border: 2px solid #3a3b3c;" required="true">
+					<% if (system.guilds.cache.get('707544645168660490').member(system.users.cache.get(user.id)).roles.cache.find(x => x.id == "769622574639874119")) { %>
+						<option value="JavaScript">JavaScript</option>
+						<option value="HTML">HTML</option>
+						<option value="Altyapı">Altyapı</option>
+					<% } else { %>
+						<option selected value="Sizden Gelenler">Sizden Gelenler</option>
+					<% } %>
+				</select>
+			</div>
+			<div class="col" style="padding: 15px;">
+				<label for="codeTitle"><i class="fad fa-toolbox"></i>&#160 Gerekli Modüller:</label>
+				<input type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c;" placeholder="Örnek: discord.js, quick.db, fs" name="codePackage" id="codePackage" required="true">
+				<hr>
+				<label for="codeTitle"><i class="fad fa-crown"></i>&#160 Kod Yapımcısı:</label>
+				<input type="text" class="form-control" style="color: white; background-color: #18191a; border: 2px solid #3a3b3c;" value="<%=user.username%>#<%=user.discriminator%>" name="codeOwner" id="codeOwner" disabled>
+			</div>
+		</div>
+		<div class="row" style="height: 50px;"></div>
+		<div style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+			<div style="padding: 25px;">
+				<label for="codeTitle"><i class="fad fa-file"></i>&#160 Kod Adı:</label>
+				<input type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c; width: 500px;" placeholder="Örnek: komutlar/sil.js" name="codeName1" id="codeName1" required="true">
+				<hr>
+				<textarea style="width: 100%;" id="editor1" name="editor1"></textarea>
+				<script>
+				var editor1 = CodeMirror.fromTextArea(document.getElementById('editor1'), {
+						mode: "javascript",
+						theme: "3024-night",
+						lineNumbers: true
+				});
+				editor1.save()
+				</script>
+			</div>
+		</div>
+		
+		<script>
+			$(document).ready(function(){
+				$('#fullEditor2').hide(100);
+				$('#fullEditor3').hide(100);
+				$('#fullEditor4').hide(100);
+				$('#fullEditor5').hide(100);
+			
+				$('#closeEditor2').click(function(){
+					$('#codeName2').val('');
+					$('#editor2').text('');
+					editor2.setValue('');
+					$('#fullEditor2').hide(100);
+				});
+				$('#closeEditor3').click(function(){
+					$('#codeName3').val('');
+					$('#editor3').text('');
+					editor3.setValue('');
+					$('#fullEditor3').hide(100);
+				});
+				$('#closeEditor4').click(function(){
+					$('#codeName4').val('');
+					$('#editor4').text('');
+					editor4.setValue('');
+					$('#fullEditor4').hide(100);
+				});
+				$('#closeEditor5').click(function(){
+					$('#codeName5').val('');
+					$('#editor5').text('');
+					editor5.setValue('');
+					$('#fullEditor5').hide(100);
+				});
+				
+				$('#addCode').click(function(){
+				  if ($('#fullEditor2').is(':visible') == true) {
+						if ($('#fullEditor3').is(':visible') == true) {
+							if ($('#fullEditor4').is(':visible') == true) {
+								if ($('#fullEditor5').is(':visible') == true) {
+									alert("Hata: Maksimum 5 kod alanı ekleyebilirsiniz!");
+								} else {
+									$('#fullEditor5').show(100);
+								};
+							} else {
+								$('#fullEditor4').show(100);
+							};
+						} else {
+							$('#fullEditor3').show(100);
+						};
+					} else {
+					  $('#fullEditor2').show(100);
+					};
+				});
+				
+				editor2.on('change', () => {
+					$('#editor2').text(editor2.getValue());
+				});
+				editor3.on('change', () => {
+					$('#editor3').text(editor3.getValue());
+				});
+				editor4.on('change', () => {
+					$('#editor4').text(editor4.getValue());
+				});
+				editor5.on('change', () => {
+					$('#editor5').text(editor5.getValue());
+				});
+			});
+		</script>
+		
+		<div id="fullEditor2">
+			<hr>
+			<div style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+				<div style="padding: 25px;">
+					<label for="codeTitle"><i class="fad fa-file"></i>&#160 Kod Adı:</label> <a id="closeEditor2" class="btn btn-danger" style="float: right;"><i class="fad fa-times"></i>&#160 Kod Bölmesini Kaldır</a>
+					<input type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c; width: 500px;" placeholder="Örnek: komutlar/sil.js" name="codeName2" id="codeName2">
+					<hr>
+					<textarea style="width: 100%;" id="editor2" name="editor2"></textarea>
+					<script>
+					var editor2 = CodeMirror.fromTextArea(document.getElementById('editor2'), {
+							mode: "javascript",
+							theme: "3024-night",
+							lineNumbers: true
+					});
+					editor2.save()
+					</script>
+				</div>
+			</div>
+		</div>
+		
+		<div id="fullEditor3">
+			<hr>
+			<div style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+				<div style="padding: 25px;">
+					<label for="codeTitle"><i class="fad fa-file"></i>&#160 Kod Adı:</label> <a id="closeEditor3" class="btn btn-danger" style="float: right;"><i class="fad fa-times"></i>&#160 Kod Bölmesini Kaldır</a>
+					<input type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c; width: 500px;" placeholder="Örnek: komutlar/sil.js" name="codeName3" id="codeName3">
+					<hr>
+					<textarea style="width: 100%;" id="editor3" name="editor3"></textarea>
+					<script>
+					var editor3 = CodeMirror.fromTextArea(document.getElementById('editor3'), {
+							mode: "javascript",
+							theme: "3024-night",
+							lineNumbers: true
+					});
+					editor3.save()
+					</script>
+				</div>
+			</div>
+		</div>
+		
+		<div id="fullEditor4">
+			<hr>
+			<div style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+				<div style="padding: 25px;">
+					<label for="codeTitle"><i class="fad fa-file"></i>&#160 Kod Adı:</label> <a id="closeEditor4" class="btn btn-danger" style="float: right;"><i class="fad fa-times"></i>&#160 Kod Bölmesini Kaldır</a>
+					<input type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c; width: 500px;" placeholder="Örnek: komutlar/sil.js" name="codeName4" id="codeName4">
+					<hr>
+					<textarea style="width: 100%;" id="editor4" name="editor4"></textarea>
+					<script>
+					var editor4 = CodeMirror.fromTextArea(document.getElementById('editor4'), {
+							mode: "javascript",
+							theme: "3024-night",
+							lineNumbers: true
+					});
+					editor4.save()
+					</script>
+				</div>
+			</div>
+		</div>
+		
+		<div id="fullEditor5">
+			<hr>
+			<div style="color: white; margin: auto; width: 90%; background-color: #242526; border: 5px solid #3a3b3c; border-radius: 5px;">
+				<div style="padding: 25px;">
+					<label for="codeTitle"><i class="fad fa-file"></i>&#160 Kod Adı:</label> <a id="closeEditor5" class="btn btn-danger" style="float: right;"><i class="fad fa-times"></i>&#160 Kod Bölmesini Kaldır</a>
+					<input type="text" class="form-control" style="background-color: #18191a; border: 2px solid #3a3b3c; width: 500px;" placeholder="Örnek: komutlar/sil.js" name="codeName5" id="codeName5">
+					<hr>
+					<textarea style="width: 100%;" id="editor5" name="editor5"></textarea>
+					<script>
+					var editor5 = CodeMirror.fromTextArea(document.getElementById('editor5'), {
+							mode: "javascript",
+							theme: "3024-night",
+							lineNumbers: true
+					});
+					editor5.save()
+					</script>
+				</div>
+			</div>
+		</div>
+		
+		<hr>
+		<center><a style="color: white;" id="addCode" class="btn btn-success"><i class="fad fa-plus-circle"></i>&#160 Kod Bölmesi Ekle</a></center>
+		<hr>
+		<center>
+			<style>
+			#codeName1, #codeName2, #odeName3, #codeName4, #codeName5, .form-control:focus, .form-control { color: white; }
+			.submitButton {
+				width: 50%;
+				background-color: #3a3b3c;
+				transition: .2s;
+				border-radius: 10px;
+			}
+			.submitButton:hover {
+				background-color: #3498DB;
+				transition: .2s;
+				border-radius: 10px;
+			}
+			</style>
+			<button type="submit" value="submit" id="submitButton" class="submitButton btn btn-dark btn-lg btn-block"><i class="fad fa-edit"></i>&#160 Paylaş</button>
+			</form>
+		</center>
+		<div class="row" style="height: 75px;"></div>
+    <%- include('templates/footer') %>
+  </body>
+</html>
